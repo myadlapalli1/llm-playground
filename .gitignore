@@ -1,0 +1,29 @@
+# Environment variables (VERY IMPORTANT)
+.env
+backend/.env
+
+# Python virtual environments
+venv/
+backend/venv/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Node modules (React)
+node_modules/
+frontend/node_modules/
+
+# Build outputs
+dist/
+frontend/dist/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE settings
+.vscode/
+
+# Optional
+*.log
