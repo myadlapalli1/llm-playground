@@ -11,9 +11,6 @@ from pydantic import BaseModel
 from openai import OpenAI
 from typing import List, Optional, Dict, Any
 
-# -------------------------------------------------
-# ENV + MODELS
-# -------------------------------------------------
 load_dotenv()
 
 def load_models():
@@ -26,17 +23,11 @@ def get_model_info(model_id: str):
     clean_id = model_id.split(":", 1)[-1]
     return next((m for m in MODELS if m["model_id"] == clean_id), None)
 
-# -------------------------------------------------
-# CLIENT (NVIDIA / OpenAI-compatible)
-# -------------------------------------------------
 client = OpenAI(
     api_key=os.getenv("NVIDIA_API_KEY"),
     base_url="https://integrate.api.nvidia.com/v1"
 )
 
-# -------------------------------------------------
-# DB INIT (3 TABLES)
-# -------------------------------------------------
 def init_db():
     with sqlite3.connect("comparisons.db") as conn:
         cursor = conn.cursor()
@@ -86,15 +77,11 @@ def init_db():
 
         conn.commit()
 
-# -------------------------------------------------
-# APP
-# -------------------------------------------------
+
 app = FastAPI()
 init_db()
 
-# -------------------------------------------------
-# ERROR HELPERS
-# -------------------------------------------------
+# ERROR STRUCTURE
 def error_response(code: str, message: str, details: Optional[Dict[str, Any]] = None):
     return {
         "error": {
@@ -110,16 +97,12 @@ def api_error(status_code: int, code: str, message: str, details=None):
         content=error_response(code, message, details)
     )
 
-# -------------------------------------------------
 # MODELS ENDPOINT
-# -------------------------------------------------
 @app.get("/api/models")
 def get_models():
     return {"models": MODELS}
 
-# -------------------------------------------------
 # SCHEMAS
-# -------------------------------------------------
 class ChatParams(BaseModel):
     temperature: float = 0.7
     max_tokens: int = 2048
@@ -138,9 +121,7 @@ class ComparisonCreateRequest(BaseModel):
     notes: str
     is_public: bool
 
-# -------------------------------------------------
 # MODEL RUNNER
-# -------------------------------------------------
 async def run_model(model_id: str, request: ChatRequest, start_time: float):
 
     model_info = get_model_info(model_id)
@@ -206,9 +187,7 @@ async def run_model(model_id: str, request: ChatRequest, start_time: float):
             }
         }
 
-# -------------------------------------------------
 # CHAT ENDPOINT
-# -------------------------------------------------
 @app.post("/api/chat")
 async def chat(request: ChatRequest):
 
@@ -289,9 +268,7 @@ async def chat(request: ChatRequest):
         "responses": responses
     }
 
-# -------------------------------------------------
-# CREATE COMPARISON API (NEW CLEAN ONE)
-# -------------------------------------------------
+# CREATE COMPARISON 
 @app.post("/api/comparisons")
 def create_comparison(request: ComparisonCreateRequest):
 
@@ -322,9 +299,7 @@ def create_comparison(request: ComparisonCreateRequest):
         "created_at": created_at,
     }
 
-# -------------------------------------------------
-# GET FULL COMPARISON
-# -------------------------------------------------
+# COMPARISON FROM ID
 @app.get("/api/comparisons/{comparison_id}")
 def get_comparison(comparison_id: str):
 
@@ -403,9 +378,7 @@ def get_comparison(comparison_id: str):
         "created_at": created_at,
     }
 
-# -------------------------------------------------
 # LIST COMPARISONS
-# -------------------------------------------------
 @app.get("/api/comparisons")
 def list_comparisons():
 
