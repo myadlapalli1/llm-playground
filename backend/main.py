@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 import os
 import time
@@ -13,6 +14,9 @@ from typing import List, Optional, Dict, Any
 
 load_dotenv()
 
+app = FastAPI()
+
+
 def load_models():
     with open("data/models.json", "r") as f:
         return json.load(f)["models"]
@@ -26,6 +30,19 @@ def get_model_info(model_id: str):
 client = OpenAI(
     api_key=os.getenv("NVIDIA_API_KEY"),
     base_url="https://integrate.api.nvidia.com/v1"
+)
+
+#For frontend
+origins = [
+    "http://localhost:5173",
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 def init_db():
@@ -78,7 +95,6 @@ def init_db():
         conn.commit()
 
 
-app = FastAPI()
 init_db()
 
 # ERROR STRUCTURE
@@ -113,7 +129,7 @@ class ChatRequest(BaseModel):
     system_prompt: Optional[str] = None
     model_ids: List[str]
     params: ChatParams
-    per_model_overrides: Dict[str, Any] = {}
+    per_model_overrides: Optional[Dict[str, Any]] = None
 
 class ComparisonCreateRequest(BaseModel):
     request_id: str
