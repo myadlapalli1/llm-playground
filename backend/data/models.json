@@ -23,7 +23,7 @@
     {
       "provider": "nvidia",
       "model_id": "openai/gpt-oss-120b",
-      "display_name": "GPT 20b",
+      "display_name": "GPT 120b",
       "context_window": 131072,
       "input_cost_per_million_tokens_cents": 0,
       "output_cost_per_million_tokens_cents": 0,

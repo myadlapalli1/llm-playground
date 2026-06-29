@@ -35,6 +35,7 @@ client = OpenAI(
 #For frontend
 origins = [
     "http://localhost:5173",
+    "http://localhost:3000"
 ]
 
 app.add_middleware(
@@ -120,9 +121,9 @@ def get_models():
 
 # SCHEMAS
 class ChatParams(BaseModel):
-    temperature: float = 0.7
-    max_tokens: int = 2048
-    top_p: float = 0.9
+    temperature: float
+    max_tokens: int
+    top_p: float
 
 class ChatRequest(BaseModel):
     prompt: str
@@ -142,6 +143,10 @@ async def run_model(model_id: str, request: ChatRequest, start_time: float):
 
     model_info = get_model_info(model_id)
 
+    override_temp = None
+    override_max_tokens = None
+    override_top_p = None
+
     if not model_info:
         return {
             "model_id": model_id,
@@ -154,7 +159,12 @@ async def run_model(model_id: str, request: ChatRequest, start_time: float):
         }
 
     try:
-        overrides = request.per_model_overrides.get(model_id, {})
+        if (request.per_model_overrides != None):
+            overrides = request.per_model_overrides.get(model_id, {})
+            override_temp = overrides.get("temperature")
+            override_max_tokens = overrides.get("max_tokens")
+            override_top_p = overrides.get("top_p")
+        
 
         response = client.chat.completions.create(
             model=model_info["model_id"],
@@ -162,9 +172,12 @@ async def run_model(model_id: str, request: ChatRequest, start_time: float):
                 {"role": "system", "content": request.system_prompt or ""},
                 {"role": "user", "content": request.prompt}
             ],
-            temperature=overrides.get("temperature", request.params.temperature),
-            max_tokens=overrides.get("max_tokens", request.params.max_tokens),
-            top_p=overrides.get("top_p", request.params.top_p)
+            temperature=(override_temp if override_temp is not None 
+                         else request.params.temperature),
+            max_tokens=(override_max_tokens if override_max_tokens is not None 
+                        else request.params.max_tokens),
+            top_p=(override_top_p if override_top_p is not None
+                   else request.params.top_p)
         )
 
         text = response.choices[0].message.content
