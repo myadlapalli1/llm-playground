@@ -1,12 +1,12 @@
 .dropdown {
-    display: flex;
-    flex-direction: column;
-    max-height: 100px;
-    max-width: 200px;
-    margin-left: 550px;
+    max-height: 10%;
+    width : 17%;
+    margin-left: 22%;
+    border-radius: 1px;
+    margin-top: -13%;
     position: relative;
-    top: -70px;
     border-radius: 5px;
+    text-align: left;
     align-self: center;
 }
 
@@ -27,12 +27,14 @@
 
 .dropdown .toggle,
 .dropdown .options button {
-    display: flex;
-    justify-content: space-between;
-    text-align: center;
-    padding: 8px 16px;
+    display: block;
+    text-wrap: nowrap;
+    border-radius: 5px;
+    max-height: 10%;
+    max-width: 20%;
+    padding: 5% 100% 5% 30%;
     border:  1px solid #303030aa;
-    background-color: #5e5e5edd;
+    background-color: #ffffffdd;
     transition: background-color 0.005s ease;
     cursor: pointer;
 }

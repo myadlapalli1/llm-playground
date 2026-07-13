@@ -1,8 +1,9 @@
-import "./dropdown.css"
-import { useState, useEffect, useRef} from "react"
+import "./dropdown.css";
+import data from "../../../../backend/data/models.json";
+import { useState, useEffect, useRef} from "react";
 
 
-const Dropdown = ({setModel, updateId}) => {
+const Dropdown = ({setModel, updateId, updateNames}) => {
     const [dropdownToggled, setDropdownToggled] = useState(false)
     const [selectedOption, setSelectedOption] = useState(null)
     const dropdownRef = useRef(null);
@@ -24,43 +25,78 @@ const Dropdown = ({setModel, updateId}) => {
         }
     });
 
-    const modelOptions = [
-        {
-            id: 1,
-            label: "Llama 3.3 70B Instruct",
-            value: "meta/llama-3.3-70b-instruct",
-        },
-        {
-            id: 2,
-            label: "Llama 3.2 1B Instruct",
-            value: "meta/llama-3.2-1b-instruct",
-        },
-        {
-            id: 3,
-            label: "GPT 120b",
-            value: "openai/gpt-oss-120b",
-        },
-        {
-            id: 4,
-            label: "Mixtral 14B Instruct",
-            value: "mistralai/ministral-14b-instruct-2512",
-        },
-        {
-            id: 5,
-            label: "Qwen 3.5 122B",
-            value: "qwen/qwen3.5-122b-a10b",
-        },
-        {
-            id: 6,
-            label: "Gemma 2 2B Instruct",
-            value: "google/gemma-3n-e2b-it",
-        },
-        {
-            id: 7,
-            label: "Deepseek v4 flash",
-            value: "deepseek-ai/deepseek-v4-flash",
-        },
-    ];
+   const modelOptions = [];
+
+if (data.models[0]) {
+    modelOptions.push({
+        id: 1,
+        label: data.models[0].display_name,
+        value: data.models[0].model_id,
+    });
+}
+if (data.models[1]) {
+    modelOptions.push({
+        id: 2,
+        label: data.models[1].display_name,
+        value: data.models[1].model_id,
+    });
+}
+if (data.models[2]) {
+    modelOptions.push({
+        id: 3,
+        label: data.models[2].display_name,
+        value: data.models[2].model_id,
+    });
+}
+if (data.models[3]) {
+    modelOptions.push({
+        id: 4,
+        label: data.models[3].display_name,
+        value: data.models[3].model_id,
+    });
+}
+if (data.models[4]) {
+    modelOptions.push({
+        id: 5,
+        label: data.models[4].display_name,
+        value: data.models[4].model_id,
+    });
+}
+if (data.models[5]) {
+    modelOptions.push({
+        id: 6,
+        label: data.models[5].display_name,
+        value: data.models[5].model_id,
+    });
+}
+if (data.models[6]) {
+    modelOptions.push({
+        id: 7,
+        label: data.models[6].display_name,
+        value: data.models[6].model_id,
+    });
+}
+if (data.models[7]) {
+    modelOptions.push({
+        id: 8,
+        label: data.models[7].display_name,
+        value: data.models[7].model_id,
+    });
+}
+if (data.models[8]) {
+    modelOptions.push({
+        id: 9,
+        label: data.models[8].display_name,
+        value: data.models[8].model_id,
+    });
+}
+if (data.models[9]) {
+    modelOptions.push({
+        id: 10,
+        label: data.models[9].display_name,
+        value: data.models[9].model_id,
+    });
+}
 
     return (
         <div className="dropdown" ref={dropdownRef}>
@@ -71,7 +107,7 @@ const Dropdown = ({setModel, updateId}) => {
             }}
             >
                 <span>{selectedOption ? selectedOption.label : "Select models"}</span>
-                <span>{dropdownToggled ? "-": "+"}</span>
+                <span>{dropdownToggled ? " -": " +"}</span>
             </button>
             <div className={`options ${dropdownToggled ? "visible" : ""}`}>
                 {modelOptions.map((option, index) => {
@@ -80,6 +116,7 @@ const Dropdown = ({setModel, updateId}) => {
                         setModel(option.value);
                         setDropdownToggled(false);
                         updateId(option.value);
+                        updateNames(option.label)
                     }}>{option.label}</button>;
                 })}
             </div>

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import Dropdown from "./assets/Components/dropdown";
 
 export default function App() {
@@ -8,223 +8,833 @@ export default function App() {
   const [max_tokens, setTokens] = useState("");
   const [top_P, setP] = useState("");
   const [per_model_overrides, setOverrides] = useState("");
+  const [compTitle, setTitle] = useState("");
+  const [compNotes, setNotes] = useState("");
+  const [comparsionTxt, setComparisonTxt] = useState("");
+  const [comparsionURL, setComparisonURL] = useState("");
+  const [errorTxt, setError] = useState("");
+  const [costTxt, setCostTxt] = useState("");
+  const [requestID, setRequestId] = useState("");
+  const [prompts, setPrompts] = useState([]);
   const [responses, setResponse] = useState([]);
+  const [allResponses, setAllResponses] = useState([]);
+  const [displayTxt, setDisplayTxt] = useState("");
+  const [isPublic, setIsPublic] = useState(false); 
   const [loading, setLoading] = useState(false);
-  let isStopped = false;
+  const [viewParam, setParam] = useState(false);
+  const [viewModels, setViewModels] = useState(false);
+  const [viewCompare, setViewCompare] = useState(false);
+  const [viewResponse, setViewResponse] = useState(false);
+  const [viewComparison, setviewComparison] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
+  const [generateURL, setGenerateURL] = useState(false);
+  const [showInfo, editInfo] = useState(false);
   const [models, setModels] = useState([]);
+  const [costs, setCosts] = useState([]);
+  const [modelNames, setModelNames] = useState([]);
+  const [requestIDs, setRequestIDs] = useState([]);
+
+  const controllerRef = useRef(null);
+
+  let modelResponses = "";
+  let modelComparsion = "";
+
+  const styles = {
+  container: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "flex-start",
+    gap: "20px",
+    padding: "20px",
+    backgroundColor: "#16171d",
+    minHeight: "100vh",
+    color: "white",
+  },
+
+  mainColumn: {
+    width: "800px",
+    display: "flex",
+    flexDirection: "column",
+    gap: "15px",
+  },
+
+  paramColumn: {
+    width: "400px",
+    display: "flex",
+    flexDirection: "column",
+    gap: "10px",
+  },
+
+  promptArea: {
+    width: "100%",
+    height: "150px",
+    padding: "10px",
+    fontSize: "16px",
+    resize: "none",
+    borderRadius: "15px",
+  },
+
+  paramArea: {
+    width: "100%",
+    height: "40px",
+    padding: "5px",
+    fontSize: "16px",
+    borderRadius: "5px",
+    resize: "none",
+  },
+
+  compareArea: {
+    width: "80%",
+    height: "8%",
+    padding: "5px",
+    fontSize: "16px",
+    backgroundColor: "#ffffffdd",
+    border: "2px solid #d2d2d2dd",
+    borderRadius: "5px",
+    resize: "none",
+  },
+
+  compareNotes: {
+    width: "80%",
+    height: "30%",
+    padding: "5px",
+    marginTop: "5%",
+    fontSize: "16px",
+backgroundColor: "#ffffffdd",
+    border: "2px solid #d2d2d2dd",
+    borderRadius: "5px",
+    resize: "none",
+  },
+
+  buttonRow: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    gap: "10px",
+  },
+
+  button: {
+    padding: "10px 15px",
+    fontSize: "16px",
+    borderRadius: "5px",
+    backgroundColor: "#ffffffdd",
+    border: "2px solid #d2d2d2dd",
+    cursor: "pointer",
+  },
+
+  clearModels: {
+    margin: "0px 50% 0px 25%",
+    padding: "8px",
+    fontSize: "14px",
+    borderRadius: "4px",
+    backgroundColor: "#ffffffdd",
+    border: "2px solid #d2d2d2dd",
+    cursor: "pointer",
+  },
+
+  backButton: {
+    margin: "30px",
+    padding: "10px 15px",
+    fontSize: "16px",
+    cursor: "pointer",
+  },
+
+  infoButton: {
+    padding: "5px 10px",
+    margin: "10px 360px -70px 0px",
+    fontSize: "14px",
+  },
+
+  infoLabel: {
+    marginTop: "70px",
+    fontSize: "14px",
+    borderRadius: "4px",
+  },
+
+  modelBackButton: {
+    margin: "0px 50% 0px 25%",
+    padding: "8px",
+    fontSize: "14px",
+    borderRadius: "5px",
+    backgroundColor: "#ffffffdd",
+    border: "2px solid #d2d2d2dd",
+    cursor: "pointer",
+  },
+
+  compareBackButton: {
+    display: "block",
+    padding: "1% 8%",
+    fontSize: "16px",
+    borderRadius: "5px",
+    margin: "0 auto",
+    marginTop: "1%",
+    backgroundColor: "#ffffffdd",
+    border: "2px solid #d2d2d2dd",
+    cursor: "pointer",
+  },
+
+  responseBackButton: {
+    display: "block",
+    padding: "1% 15%",
+    fontSize: "16px",
+    borderRadius: "5px",
+    margin: "0 auto",
+    marginTop: "10%",
+    backgroundColor: "#ffffffdd",
+    border: "2px solid #d2d2d2dd",
+    cursor: "pointer",
+  },
+
+  selectedModels: {
+    alignSelf: "center",
+    border: "1px solid white",
+    borderRadius: "8px",
+    minHeight: "100px",
+    width: "400px",
+    whiteSpace: "pre-wrap",
+  },
+
+  response: {
+    padding: "15px",
+    width: "800px",
+    height: "30%",
+    minHeight: "100px",
+    margin: "0 auto",
+    alignSelf: "center",
+    border: "1px solid white",
+    borderRadius: "8px",
+    whiteSpace: "pre-wrap",
+  },
+
+  responseButton: {
+    display: "block",
+    padding: "10px 15px",
+    fontSize: "16px",
+    margin: "0 auto 5%",
+    borderRadius: "5px",
+    backgroundColor: "#ffffffdd",
+    border: "2px solid #d2d2d2dd",
+    cursor: "pointer",
+  },
+
+  responseBg: {
+    display: "flex",
+    justifyContent: "center",
+    marginTop: "10%",
+    gap: "10px",
+    flexWrap: "wrap",
+  },
+
+  compareBg: {
+    backgroundColor: "#ffffffdd",
+  },
+
+  viewCompareBtn: {
+    padding: "1%",
+    fontSize: "16px",
+    margin: "0 40%",
+    marginTop: "10px",
+    borderRadius: "5px",
+    backgroundColor: "#ffffffdd",
+    border: "2px solid #d2d2d2dd",
+    cursor: "pointer",
+  },
+
+  createCompareButton: {
+    width: "80%", 
+    height: "8%", 
+    fontSize: "16px", 
+    minHeight: "30px", 
+    borderRadius: "5px", 
+    marginTop: "3%",    
+    backgroundColor: "#ffffffdd", 
+    border: "2px solid #d2d2d2dd"
+  },
+
+  error: {
+    color: "#ff8e8e",
+  },
+
+  cost: {
+    color: "#c0f4c5",
+  }
+};
+  /* =====================
+     MODEL LOGIC
+  ===================== */
 
   const addModel = (modelId) => {
     if (models.includes(modelId)) {
-      console.log("Duplicate id");
+      console.log("duplicate id");
       return;
-    }
-    else {
-      console.log(modelId);
     }
     setModels([...models, modelId]);
   };
 
-  const formatModels = (modelList) => {
-    var modelText = "";
-    if (modelList.length != 0) {
-      for (var i = 0; i < modelList.length; i++) {
-        modelText += `${modelList[i]}\n`;      
-      }
+  const addModelName = (modelName) => {
+    if (modelNames.includes(modelName)) {
+      return;
     }
-    return modelText;
-  }
 
-  const clearModels = (modelList) => {
+    setModelNames([...modelNames, modelName]);
+    console.log(modelNames);
+  };
+
+  const clearModels = () => {
     setModels([]);
-  }
+    setModelNames([]);
+  };
+
+  const showResponse = (buttonIndex) => {
+    const newCosts = [...costs, responses[buttonIndex].cost_cents];
+    setCosts(newCosts);
+
+    setDisplayTxt(
+      responses[buttonIndex].text +
+      "\n\ncost: $" + String(responses[buttonIndex].cost_cents).slice(0, 8) +
+      "\ntokens out: " + String(responses[buttonIndex].tokens_out).slice(0, 8) +
+      "\nlatency ms: " + String(responses[buttonIndex].latency_ms).slice(0, 8)
+    );
+    if (newCosts.length != 0) {
+      const minCost = Math.min(...newCosts);
+      const cheapestIndex = newCosts.indexOf(minCost);
+      setCostTxt(
+      "Of selected models, " + 
+      responses[cheapestIndex].model_id +
+      " is the cheapest ($" +
+      String(minCost).slice(0, 8) +
+      ")"
+    );
+    }
+  };
+
+  const saveComparison = async () => {
+        toggleURL();
+        setComparisonURL("");
+        console.log("id: " + requestID)
+        const comp = await fetch("http://localhost:8000/api/comparisons", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          request_id : String(requestID),
+          title : String(compTitle),
+          notes : String(compNotes),
+          is_public : Boolean(isPublic)
+        }),
+      });
+
+      const compData = await comp.json();
+      setComparisonURL(compData.share_url)
+      console.log(compData.created_at);
+  
+
+    modelComparsion = {
+      "comparison_id": "21a4e57a-a7bb-4e95-b3ac-44b6f78c62c4",
+      "title": "Quantum Computing Comparison",
+      "notes": "Comparing responses from two NVIDIA models.",
+      "is_public": false,
+      "request": {
+        "prompt": "Explain quantum computing in simple terms.",
+        "system_prompt": "You are a helpful assistant.",
+        "model_ids": [
+          "meta/llama-3.3-70b-instruct",
+          "meta/llama-3.2-1b-instruct"
+        ],
+        "params": {
+          "temperature": 0.7,
+          "max_tokens": 200,
+          "top_p": 0.9
+        },
+        "per_model_overrides": {}
+      },
+      "created_at": "2026-07-08T15:30:00Z",
+      "share_url": "http://localhost:8000/api/comparisons/21a4e57a-a7bb-4e95-b3ac-44b6f78c62c4"
+    };
+
+    setComparisonTxt(
+      "Title: " + modelComparsion.title +
+      "\n\nnotes: " + modelComparsion.notes +
+      "\nrrequest: " + modelComparsion.request +
+      "\nmodels: " + modelComparsion.model_ids +
+      "\nparameters: " + modelComparsion.params +
+      "\nresponses: " + modelComparsion.responses
+    );
+  };
+  
+
+  const formatModels = (modelList) =>
+    modelList.map((m) => `• ${m}`).join("\n");
+
+
+  /* =====================
+     API CALL
+  ===================== */
 
   const sendPrompt = async () => {
-    if (!prompt.trim()) return;
 
     setLoading(true);
     setResponse([]);
 
-      console.log(models);
+    const controller = new AbortController();
+    controllerRef.current = controller;
+
+    if (prompt.trim() === "") {
+      setLoading(false);
+      setError("Prompt cannot be empty.");
+      return;
+    }
+    else if (models.length === 0) {
+      setLoading(false);
+      setError("Select at least one model.");
+      return;
+    }
+    else if (temp.trim() === "" || isNaN(temp) || temp < 0 || temp > 1) {
+      setLoading(false);
+      setError("Invalid temperature value, must be a number between 0 and 1 inclusive.");
+      return;
+    }
+    else if (max_tokens.trim() === "" || isNaN(max_tokens) || max_tokens <= 0) {
+      setLoading(false);
+      setError("Invalid max tokens value, must be a positive number.");
+      return;
+    }
+    else if (top_P.trim() === "" || isNaN(top_P) || top_P < 0 || top_P > 1) {
+      setLoading(false);
+      setError("Invalid top P value, must be a number between 0 and 1 inclusive.");
+      return;
+    }
+    else if (per_model_overrides.trim() !== "") {
       try {
-
-        console.log(prompt);
-        console.log(models);
-        console.log(temp);
-        console.log(max_tokens);
-        console.log(top_P);
-        const res = await fetch("http://localhost:8000/api/chat", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            prompt: prompt,
-            system_prompt: prompt,
-            model_ids: models,
-            params: {
-              temperature:  parseFloat(temp),
-              max_tokens:  parseInt(max_tokens),
-              top_p: parseFloat(top_P)
-            },
-            per_model_overrides: null
-          }),
-        });
-        
-        if (isStopped == false) {
-          const data = await res.json();
-        setResponse([responses => [...responses, Object.values(Object.values(data.responses)[0])[1]]])
-          console.log(data);
-          setLoading(false);
-        }
-        else {
-          return;
-        }
-
-        //console.log(data);
-
-
-      } catch (error) {
-        setResponse(`Error: ${error.message}`);
+        JSON.parse(per_model_overrides);
+      }
+      catch (e) {
         setLoading(false);
-      } 
-        
-      
-    };
-    
+        setError("Invalid JSON format in per model overrides.");
+        return;
+      }
+    }
 
-  const cancelRequest = async () => {
-    isStopped = true;
-    setLoading(false);
+    setError("");
+
+    try {
+      const res = await fetch("http://localhost:8000/api/chat", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        signal: controller.signal,
+        body: JSON.stringify({
+          prompt,
+          system_prompt: prompt,
+          model_ids: models,
+          params: {
+            temperature: parseFloat(temp),
+            max_tokens: parseInt(max_tokens),
+            top_p: parseFloat(top_P),
+          },
+          per_model_overrides: per_model_overrides
+            ? JSON.parse(per_model_overrides)
+            : {},
+        }),
+      });
+
+      const data = await res.json();
+
+      setRequestIDs([...requestIDs, data.request_id]);
+
+      const responses = data.responses ?? [];
+      console.log(responses);
+      setCosts([]);
+      setAllResponses([...allResponses, data]);
+      setPrompts([...prompts, prompt]);
+      setResponse(responses);
+
+    } catch (error) {
+      if (error.name !== "AbortError") {
+        setResponse((prev) => [
+          ...prev,
+          `Error: ${error.message}`
+        ]);
+      }
+    } finally {
+      setLoading(false);
+      setViewResponse(true);
+    }
+  };
+  const cancelRequest = () => {
+    controllerRef.current?.abort();
+  };
+
+  const toggleParams = () => {
+    setParam((v) => !v);
+  };
+
+  const toggleModels = () => {
+    setViewModels((v) => !v);
+  };
+
+  const toggleCompare = () => {
+    setViewCompare((v) => !v);
+  };
+
+  const toggleInfo = () => {
+    editInfo((v) => !v);
+  };
+
+  const toggleResponse = () => {
+    setViewResponse((v) => !v);
+  };
+
+  const toggleSaving = () => {
+    setIsSaving((v) => !v);
+  };
+
+  const toggleURL = () => {
+    setGenerateURL((v) => !v);
+    console.log("ran");
   }
+
+  /* =====================
+     UI
+  ===================== */
 
   return (
     <div style={styles.container}>
-      <h1>LLM Compare</h1>
 
-      <textarea
-        style={styles.promptArea}
-        value={prompt}
-        onChange={(e) => setPrompt(e.target.value)}
-        placeholder="Prompt"
-      />
+      {viewParam && (
+        <div style={styles.paramColumn}>
+          <h2 align="center">Parameters</h2>
 
-            <textarea
-        style={styles.paramArea}
-        value={temp}
-        onChange={(e) => setTemp(e.target.value)}
-        placeholder="Temp"
-      />
+          <input
+            style={styles.paramArea}
+            value={temp}
+            onChange={(e) => setTemp(e.target.value)}
+            placeholder="Temp"
+          />
 
-      <textarea
-        style={styles.paramArea}
-        value={max_tokens}
-        onChange={(e) => setTokens(e.target.value)}
-        placeholder="Max Tokens"
-      />
+          <input
+            style={styles.paramArea}
+            value={max_tokens}
+            onChange={(e) => setTokens(e.target.value)}
+            placeholder="Max Tokens"
+          />
 
-      <textarea
-        style={styles.paramArea}
-        value={top_P}
-        onChange={(e) => setP(e.target.value)}
-        placeholder="Set Top P"
-      />
+          <input
+            style={styles.paramArea}
+            value={top_P}
+            onChange={(e) => setP(e.target.value)}
+            placeholder="Top P"
+          />
 
-        <textarea
-        style={styles.paramArea}
-        value={per_model_overrides}
-        onChange={(e) => setOverrides(e.target.value)}
-        placeholder="Overrides *optional*"
-      /> 
+          <textarea
+            style={styles.paramArea}
+            value={per_model_overrides}
+            onChange={(e) => setOverrides(e.target.value)}
+            placeholder={"Overrides *optional* (JSON format)"}
+          />
 
-            <Dropdown
-      setModel={setId}
-      updateId={addModel}
-      />
+          <button
+            style={styles.infoButton}
+            onClick={toggleInfo}
+          >
+            ⓘ
+          </button>
+
+          <label
+            style={{
+              ...styles.infoLabel,
+              opacity: showInfo ? 1 : 0,
+            }}
+          >
+            Input per model overrides in JSON format. For example: {"{\"meta/llama-3.3-70b-instruct\":{\"temperature\":0.9}}"}
+          </label>
+
+          <button
+            style={styles.backButton}
+            onClick={toggleParams}
+          >
+            Back
+          </button>
+        </div>
+      )}
 
 
-            <div style={styles.selectedModels}>
-        {formatModels(models)}
-      </div>
+      {viewModels && (
+        <div style={styles.mainColumn}>
+          <h2 align="center">Models</h2>
 
-                  <button
-        style={styles.clearButton}
-        onClick={clearModels}
-        disabled={loading}
-      >      
-      Clear models
-      </button>
+          <div style={styles.selectedModels} align="center">
+            {formatModels(modelNames)}
+          </div>
 
-            <div style={styles.response}>
-        {responses}
-      </div>
+          <button
+            style={styles.clearModels}
+            onClick={clearModels}
+            disabled={models.length === 0}
+          >
+            Clear
+          </button>
+
+          <button
+            style={styles.modelBackButton}
+            onClick={toggleModels}
+          >
+            Back
+          </button>
+
+          <Dropdown
+            setModel={setId}
+            updateId={addModel}
+            updateNames={addModelName}
+          />
+
+        </div>
+      )}
 
 
-      <button
-        style={styles.button}
-        onClick={sendPrompt}
-        disabled={loading}
-      >
-        {loading ? "Loading..." : "Send"}        
-      </button> 
-      
-      <button
-        style={styles.button}
-        onClick={cancelRequest}
-        disabled={loading}
-      >      
-      Cancel
-      </button> 
+      {viewCompare && (
+        <div style={styles.mainColumn}>
+
+          <h2 align="center">Comparison</h2>
+
+          <button onClick={toggleSaving} style={styles.viewCompareBtn}>
+            Create New
+          </button>
+          <button
+            style={styles.compareBackButton}
+            onClick={toggleCompare}
+          >
+            Back
+          </button>
+          <h3 align="center">{comparsionURL}</h3>
+           <div style={styles.responseBg}>
+        {generateURL && (
+            <>
+          <div style={{
+            position: "fixed",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            width: "100%",
+            minHeight: "150px",
+            height: "100%",
+            opacity: "50%",
+            background: "#0d0d0d",
+            borderRadius: "8px",
+            zIndex: 1000,
+          }}
+          />
+          <div
+            style={{
+            position: "fixed",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            width: "40%",
+            minHeight: "150px",
+            height: "60%",
+            background: "#2e2e2e",
+            borderRadius: "8px",
+            textAlign:"center",
+            zIndex: 1000,
+            }}
+            >
+          <h3 style={{margin: "10%"}}>Comparison Create
+          </h3>
+
+          <input
+            style={styles.compareArea}
+            value={compTitle}
+            onChange={(e) => setTitle(e.target.value)}
+            placeholder="Title"
+          />
+          <textarea
+            style={styles.compareNotes}
+            value={compNotes}
+            onChange={(e) => setNotes(e.target.value)}
+            placeholder="Notes"
+          />
+
+          <label
+            style={{
+              display: "block",
+              marginTop: "5%",
+            }}
+          >
+            <input
+              type="checkbox"
+              checked={isPublic}
+              onChange={(e) => setIsPublic(e.target.checked)}
+            />
+            {" "}Public
+          </label>
+        <button onClick={() => saveComparison()} style={styles.createCompareButton}> Create 
+        </button>         
+        <button  onClick={() => toggleURL()} style={styles.createCompareButton}> Close 
+        </button>         
+          </div>
+        </>
+        )}
+          {isSaving && (
+            <div>
+              {requestIDs.length != 0 && (
+              <h3 align="center" style={null}>
+                Select a chat to create a comparison.
+              </h3>
+              )}
+              {requestIDs.length == 0 && (
+              <h3 align="center" style={styles.error}>
+                No previous chats
+              </h3>
+              )}
+              {requestIDs.map((id, index) => (
+                <button align="center"
+                  style={styles.responseButton}
+                  key={id}
+                  onClick={() => {toggleURL(); setRequestId(id)}
+                  }
+                >
+                  {prompts[index].length > 30 ? prompts[index].slice(0, 30) + "..." : prompts[index]}
+                </button>
+              ))}
+            </div>
+          )}
+            </div>
+        </div>
+
+      )}
+        
+
+      {viewResponse && (
+        <div>
+
+          <h2 align="center">Response</h2>
+          <h4 align="center">Select a model ID to view its response</h4>
+          <div>
+
+            <div style={styles.responseBg}>
+              {responses.map((model, index) => (
+                <button
+                  style={styles.responseButton}
+                  key={model.model_id}
+                  onClick={() => showResponse(index)}
+                >
+                  {model.model_id}
+                </button>
+                
+              ))}
+            </div>
+            
+            <div
+              style={styles.cost}
+              align="center"
+            >
+              {costTxt}
+            </div>
+
+
+            <div
+              style={{
+                ...styles.response,
+                opacity: responses.length === 0 ? 0 : 1
+              }}
+              align="center"
+            >
+              {displayTxt}
+            </div>
+
+          </div>
+
+
+          <button
+            style={styles.responseBackButton}
+            onClick={toggleResponse}
+            align="center"
+          >
+            Back
+          </button>
+
+        </div>
+      )}
+
+
+      {!viewParam &&
+       !viewModels &&
+       !viewCompare &&
+       !viewResponse && (
+
+        <div style={styles.mainColumn}>
+
+          <h1 align="center">LLM Compare</h1>
+
+
+          <textarea
+            style={styles.promptArea}
+            value={prompt}
+            onChange={(e) => setPrompt(e.target.value)}
+            placeholder="Prompt"
+          />
+
+
+          <div style={styles.buttonRow}>
+
+            <button
+              style={styles.button}
+              onClick={sendPrompt}
+              disabled={loading}
+            >
+              {loading ? "Loading..." : "Send"}
+            </button>
+
+
+            <button
+              style={styles.button}
+              onClick={cancelRequest}
+              disabled={!loading}
+            >
+              Cancel
+            </button>
+
+
+            <button
+              style={styles.button}
+              onClick={toggleParams}
+            >
+              Parameters
+            </button>
+
+
+            <button
+              style={styles.button}
+              onClick={toggleModels}
+            >
+              Models
+            </button>
+
+
+            <button
+              style={styles.button}
+              onClick={toggleCompare}
+            >
+              Comparison
+            </button>
+
+          </div>
+
+
+          <h4
+            style={styles.error}
+            align="center"
+          >
+            {errorTxt}
+          </h4>
+
+        </div>
+
+      )}
+
     </div>
   );
-}
-
-const styles = {
-  container: {
-    maxWidth: "800px",
-    margin: "40px auto",
-    padding: "20px",
-    fontFamily: "Arial, sans-serif",
-  },
-  promptArea: {
-    width: "800px",
-    height: "150px",
-    padding: "10px",
-    fontSize: "16px",
-  },
-  paramArea: {
-    display: "block",
-    margin: "20px",
-    width: "40%",
-    height: "30px",
-    fontSize: "16px",
-  },
-  button: {
-    margin: "20px",
-    padding: "15px 20px",
-    fontSize: "16px",
-    cursor: "pointer",
-  },
-    clearButton: {
-    margin: "150px 0 0px auto",
-    padding: "15px 20px",
-    fontSize: "16px",
-    cursor: "pointer",
-  },
-    selectedModels: {
-    padding: "10px",
-    margin: "-250px 0 10px auto",
-    border: "1px solid #ffffff",
-    borderRadius: "8px",
-    minHeight: "100px",
-    maxWidth: "300px",
-    whiteSpace: "pre-wrap",
-  },
-  response: {
-    marginTop: "20px",
-    padding: "15px",
-    border: "1px solid #ffffff",
-    borderRadius: "8px",
-    minHeight: "100px",
-    whiteSpace: "pre-wrap",
-  },
 };

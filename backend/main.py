@@ -28,8 +28,8 @@ def get_model_info(model_id: str):
     return next((m for m in MODELS if m["model_id"] == clean_id), None)
 
 client = OpenAI(
-    api_key=os.getenv("NVIDIA_API_KEY"),
-    base_url="https://integrate.api.nvidia.com/v1"
+    api_key=os.getenv("GROQ_API_KEY"),
+    base_url="https://api.groq.com/openai/v1"
 )
 
 #For frontend
@@ -139,15 +139,20 @@ class ComparisonCreateRequest(BaseModel):
     is_public: bool
 
 # MODEL RUNNER
+# MODEL RUNNER
 async def run_model(model_id: str, request: ChatRequest, start_time: float):
 
+    print(f"[run_model] Starting model: {model_id}")
+
     model_info = get_model_info(model_id)
+    print(f"[run_model] Model info: {model_info}")
 
     override_temp = None
     override_max_tokens = None
     override_top_p = None
 
     if not model_info:
+        print(f"[run_model] INVALID MODEL: {model_id}")
         return {
             "model_id": model_id,
             "text": None,
@@ -159,12 +164,17 @@ async def run_model(model_id: str, request: ChatRequest, start_time: float):
         }
 
     try:
-        if (request.per_model_overrides != None):
+        print("[run_model] Checking overrides...")
+
+        if request.per_model_overrides is not None:
             overrides = request.per_model_overrides.get(model_id, {})
             override_temp = overrides.get("temperature")
             override_max_tokens = overrides.get("max_tokens")
             override_top_p = overrides.get("top_p")
-        
+
+        print("[run_model] About to call NVIDIA API...")
+        print(f"[run_model] Model: {model_info['model_id']}")
+        print(f"[run_model] Prompt: {request.prompt}")
 
         response = client.chat.completions.create(
             model=model_info["model_id"],
@@ -172,25 +182,49 @@ async def run_model(model_id: str, request: ChatRequest, start_time: float):
                 {"role": "system", "content": request.system_prompt or ""},
                 {"role": "user", "content": request.prompt}
             ],
-            temperature=(override_temp if override_temp is not None 
-                         else request.params.temperature),
-            max_tokens=(override_max_tokens if override_max_tokens is not None 
-                        else request.params.max_tokens),
-            top_p=(override_top_p if override_top_p is not None
-                   else request.params.top_p)
+            temperature=(
+                override_temp
+                if override_temp is not None
+                else request.params.temperature
+            ),
+            max_tokens=(
+                override_max_tokens
+                if override_max_tokens is not None
+                else request.params.max_tokens
+            ),
+            top_p=(
+                override_top_p
+                if override_top_p is not None
+                else request.params.top_p
+            )
         )
 
+        print("[run_model] NVIDIA API returned successfully!")
+
         text = response.choices[0].message.content
+
+        print("[run_model] Extracted response text")
 
         tokens_in = response.usage.prompt_tokens
         tokens_out = response.usage.completion_tokens
         latency_ms = int((time.time() - start_time) * 1000)
 
-        model_info["input_cost_per_million_tokens_cents"] = model_info.get("input_cost_per_million_tokens_cents", 0)
-        model_info["output_cost_per_million_tokens_cents"] = model_info.get("output_cost_per_million_tokens_cents", 0)
+        model_info["input_cost_per_million_tokens_cents"] = model_info.get(
+            "input_cost_per_million_tokens_cents", 0
+        )
+        model_info["output_cost_per_million_tokens_cents"] = model_info.get(
+            "output_cost_per_million_tokens_cents", 0
+        )
 
-        cost_in = (tokens_in / 1_000_000) * model_info["input_cost_per_million_tokens_cents"]
-        cost_out = (tokens_out / 1_000_000) * model_info["output_cost_per_million_tokens_cents"]
+        cost_in = (
+            tokens_in / 1_000_000
+        ) * model_info["input_cost_per_million_tokens_cents"]
+
+        cost_out = (
+            tokens_out / 1_000_000
+        ) * model_info["output_cost_per_million_tokens_cents"]
+
+        print("[run_model] Returning successful response")
 
         return {
             "model_id": model_info["model_id"],
@@ -203,6 +237,10 @@ async def run_model(model_id: str, request: ChatRequest, start_time: float):
         }
 
     except Exception as e:
+        print("[run_model] EXCEPTION!")
+        print(type(e).__name__)
+        print(str(e))
+
         return {
             "model_id": model_id,
             "text": None,
@@ -217,21 +255,38 @@ async def run_model(model_id: str, request: ChatRequest, start_time: float):
         }
 
 # CHAT ENDPOINT
+# CHAT ENDPOINT
 @app.post("/api/chat")
 async def chat(request: ChatRequest):
+
+    print("\n==============================")
+    print("[chat] Entered /api/chat")
 
     request_id = str(uuid.uuid4())
     comparison_id = request_id
     created_at = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
 
+    print(f"[chat] request_id: {request_id}")
+    print(f"[chat] comparison_id: {comparison_id}")
+    print(f"[chat] model_ids: {request.model_ids}")
+
     start_time = time.time()
+
+    print("[chat] Creating tasks...")
 
     tasks = [
         run_model(model_id, request, start_time)
         for model_id in request.model_ids
     ]
 
+    print(f"[chat] Created {len(tasks)} task(s)")
+
+    print("[chat] Waiting for asyncio.gather...")
+
     responses = await asyncio.gather(*tasks)
+
+    print("[chat] Gather finished!")
+    print("[chat] Writing to database...")
 
     with sqlite3.connect("comparisons.db") as conn:
         cursor = conn.cursor()
@@ -271,6 +326,8 @@ async def chat(request: ChatRequest):
         ))
 
         for r in responses:
+            print(f"[chat] Saving response for {r['model_id']}")
+
             cursor.execute("""
                 INSERT OR REPLACE INTO chat_responses (
                     request_id, model_id, text,
@@ -290,6 +347,10 @@ async def chat(request: ChatRequest):
             ))
 
         conn.commit()
+
+    print("[chat] Database commit complete")
+    print("[chat] Returning response")
+    print("==============================\n")
 
     return {
         "request_id": request_id,
@@ -324,7 +385,7 @@ def create_comparison(request: ComparisonCreateRequest):
 
     return {
         "comparison_id": comparison_id,
-        "share_url": f"https://your-app.com/c/{comparison_id}",
+        "share_url": f"http://127.0.0.1:8000/api/comparisons/{comparison_id}",
         "created_at": created_at,
     }
 
