@@ -3,6 +3,26 @@
   "models": [
     {
       "provider": "groq",
+      "model_id": "deepseek-r1-distill-llama-70b",
+      "display_name": "DeepSeek R1 Distill 70B",
+      "context_window": 131072,
+      "input_cost_per_million_tokens_cents": 99,
+      "output_cost_per_million_tokens_cents": 199,
+      "supports_streaming": true,
+      "supports_tools": false
+    },
+    {
+      "provider": "groq",
+      "model_id": "moonshotai/kimi-k2-instruct",
+      "display_name": "Kimi K2 Instruct",
+      "context_window": 262144,
+      "input_cost_per_million_tokens_cents": 120,
+      "output_cost_per_million_tokens_cents": 220,
+      "supports_streaming": true,
+      "supports_tools": true
+    },
+    {
+      "provider": "groq",
       "model_id": "llama-3.3-70b-versatile",
       "display_name": "Llama 3.3 70B Versatile",
       "context_window": 131072,
@@ -13,31 +33,11 @@
     },
     {
       "provider": "groq",
-      "model_id": "llama-3.1-8b-instant",
-      "display_name": "Llama 3.1 8B Instant",
+      "model_id": "qwen/qwen3-32b",
+      "display_name": "Qwen 3 32B",
       "context_window": 131072,
-      "input_cost_per_million_tokens_cents": 5,
-      "output_cost_per_million_tokens_cents": 8,
-      "supports_streaming": true,
-      "supports_tools": true
-    },
-    {
-      "provider": "groq",
-      "model_id": "openai/gpt-oss-120b",
-      "display_name": "GPT OSS 120B",
-      "context_window": 131072,
-      "input_cost_per_million_tokens_cents": 15,
-      "output_cost_per_million_tokens_cents": 60,
-      "supports_streaming": true,
-      "supports_tools": true
-    },
-    {
-      "provider": "groq",
-      "model_id": "openai/gpt-oss-20b",
-      "display_name": "GPT OSS 20B",
-      "context_window": 131072,
-      "input_cost_per_million_tokens_cents": 7,
-      "output_cost_per_million_tokens_cents": 30,
+      "input_cost_per_million_tokens_cents": 35,
+      "output_cost_per_million_tokens_cents": 65,
       "supports_streaming": true,
       "supports_tools": true
     },
@@ -46,30 +46,31 @@
       "model_id": "meta-llama/llama-4-scout-17b-16e-instruct",
       "display_name": "Llama 4 Scout 17B",
       "context_window": 131072,
-      "input_cost_per_million_tokens_cents": 0,
-      "output_cost_per_million_tokens_cents": 0,
-      "supports_streaming": true,
-      "supports_tools": true
-    },
-    {
-      "provider": "groq",
-      "model_id": "qwen/qwen3-32b",
-      "display_name": "Qwen 3 32B",
-      "context_window": 131072,
-      "input_cost_per_million_tokens_cents": 0,
-      "output_cost_per_million_tokens_cents": 0,
+      "input_cost_per_million_tokens_cents": 45,
+      "output_cost_per_million_tokens_cents": 70,
       "supports_streaming": true,
       "supports_tools": true
     },
     {
       "provider": "groq",
       "model_id": "gemma2-9b-it",
-      "display_name": "Gemma 2 9B Instruct",
+      "display_name": "Gemma 2 9B",
       "context_window": 8192,
-      "input_cost_per_million_tokens_cents": 0,
-      "output_cost_per_million_tokens_cents": 0,
+      "input_cost_per_million_tokens_cents": 8,
+      "output_cost_per_million_tokens_cents": 12,
       "supports_streaming": true,
       "supports_tools": false
+    },
+    {
+      "provider": "groq",
+      "model_id": "llama-3.1-8b-instant",
+      "display_name": "Llama 3.1 8B Instant",
+      "context_window": 131072,
+      "input_cost_per_million_tokens_cents": 5,
+      "output_cost_per_million_tokens_cents": 8,
+      "supports_streaming": true,
+      "supports_tools": true
     }
   ]
 }
+
