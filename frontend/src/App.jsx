@@ -13,11 +13,18 @@ export default function App() {
   const [comparsionTxt, setComparisonTxt] = useState("");
   const [comparsionURL, setComparisonURL] = useState("");
   const [errorTxt, setError] = useState("");
+  const [compErrorTxt, setCompError] = useState("");
   const [costTxt, setCostTxt] = useState("");
   const [requestID, setRequestId] = useState("");
+  const [key, setKey] = useState("");
+  const [allComparisons, setAllComparisons] = useState("");
+  const [customEndpoint, setCustomEndpoint] = useState("");
+  const [userModelTxt, setUserModelTxt] = useState("");
   const [prompts, setPrompts] = useState([]);
   const [responses, setResponse] = useState([]);
   const [allResponses, setAllResponses] = useState([]);
+  const [usedIndexs, setUsedIndexs] = useState([]);
+  const [newCosts, setNewCosts] = useState([]);
   const [displayTxt, setDisplayTxt] = useState("");
   const [isPublic, setIsPublic] = useState(false); 
   const [loading, setLoading] = useState(false);
@@ -25,15 +32,19 @@ export default function App() {
   const [viewModels, setViewModels] = useState(false);
   const [viewCompare, setViewCompare] = useState(false);
   const [viewResponse, setViewResponse] = useState(false);
-  const [viewComparison, setviewComparison] = useState(false);
+  const [viewAllComparison, setViewAllComparison] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [generateURL, setGenerateURL] = useState(false);
   const [showInfo, editInfo] = useState(false);
+  const [viewPrevComparisons, setViewPrevComparisons] = useState(false);
+  const [viewCustomEndpoint, SetViewCustomEndpoint] = useState(false);
   const [models, setModels] = useState([]);
+  const [customModels, setCustomModels] = useState([])
   const [costs, setCosts] = useState([]);
   const [modelNames, setModelNames] = useState([]);
   const [requestIDs, setRequestIDs] = useState([]);
-
+  const [prevComparisons, setPrevComparisons] = useState([]);
+  const [customEndpointNum, setCustomNum] = useState(0);
   const controllerRef = useRef(null);
 
   let modelResponses = "";
@@ -265,7 +276,6 @@ backgroundColor: "#ffffffdd",
 
   const addModel = (modelId) => {
     if (models.includes(modelId)) {
-      console.log("duplicate id");
       return;
     }
     setModels([...models, modelId]);
@@ -277,7 +287,6 @@ backgroundColor: "#ffffffdd",
     }
 
     setModelNames([...modelNames, modelName]);
-    console.log(modelNames);
   };
 
   const clearModels = () => {
@@ -285,33 +294,74 @@ backgroundColor: "#ffffffdd",
     setModelNames([]);
   };
 
-  const showResponse = (buttonIndex) => {
-    const newCosts = [...costs, responses[buttonIndex].cost_cents];
-    setCosts(newCosts);
 
+  const showResponse = (buttonIndex, responseList) => {
+    let updatedCosts = costs;
+    let updatedUsedIndexes = usedIndexs;
+
+    // Only add the cost the first time this model is selected
+    if (!usedIndexs.includes(buttonIndex)) {
+      updatedCosts = [...costs, responseList[buttonIndex].cost_cents];
+      updatedUsedIndexes = [...usedIndexs, buttonIndex];
+
+      setCosts(updatedCosts);
+      setNewCosts(updatedCosts);
+      setUsedIndexs(updatedUsedIndexes);
+    }
+
+    // Display the selected model's response
     setDisplayTxt(
-      responses[buttonIndex].text +
-      "\n\ncost: $" + String(responses[buttonIndex].cost_cents).slice(0, 8) +
-      "\ntokens out: " + String(responses[buttonIndex].tokens_out).slice(0, 8) +
-      "\nlatency ms: " + String(responses[buttonIndex].latency_ms).slice(0, 8)
+      responseList[buttonIndex].text +
+        "\n\ncost: $" +
+        String(responseList[buttonIndex].cost_cents).slice(0, 8) +
+        "\ntokens out: " +
+        String(responseList[buttonIndex].tokens_out).slice(0, 8) +
+        "\nlatency ms: " +
+        String(responseList[buttonIndex].latency_ms).slice(0, 8)
     );
-    if (newCosts.length != 0) {
-      const minCost = Math.min(...newCosts);
-      const cheapestIndex = newCosts.indexOf(minCost);
+
+    // Find the cheapest model selected so far
+    if (updatedCosts.length > 0) {
+      const minCost = Math.min(...updatedCosts);
+      const cheapestIndex = updatedCosts.indexOf(minCost);
+
       setCostTxt(
-      "Of selected models, " + 
-      responses[cheapestIndex].model_id +
-      " is the cheapest ($" +
-      String(minCost).slice(0, 8) +
-      ")"
-    );
+        "Of selected models, " +
+          responseList[cheapestIndex].model_id +
+          " is the cheapest ($" +
+          String(minCost).slice(0, 8) +
+          ")"
+      );
+    } else {
+      setCostTxt("");
     }
   };
 
+  const listComparisons = async () => {
+      const listComp = await fetch("http://localhost:8000/api/prevcompare", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json"
+        },
+      });
+      const prevCompData = await listComp.json();
+      setAllComparisons(prevCompData);
+  }
+
   const saveComparison = async () => {
+        if (Boolean(isPublic) == false) {
+          if ((key.trim()).length == 0) {
+              setCompError("Enter a valid key");
+              return
+          }
+          else if (key.trim().length < 5) {
+            setCompError("Enter a key with 5 or more characters")
+            return
+          }
+        }
+        setCompError("");
         toggleURL();
         setComparisonURL("");
-        console.log("id: " + requestID)
         const comp = await fetch("http://localhost:8000/api/comparisons", {
         method: "POST",
         headers: {
@@ -321,13 +371,16 @@ backgroundColor: "#ffffffdd",
           request_id : String(requestID),
           title : String(compTitle),
           notes : String(compNotes),
-          is_public : Boolean(isPublic)
+          is_public : Boolean(isPublic),
+          key: key
         }),
       });
-
+      
+      setKey("");
       const compData = await comp.json();
-      setComparisonURL(compData.share_url)
-      console.log(compData.created_at);
+      setComparisonURL(compData.share_url + "/key-here")
+      setPrevComparisons([...prevComparisons, compData.share_url + "/key-here"]);
+      //setAllComparisons(prevComparisons);
   
 
     modelComparsion = {
@@ -376,7 +429,6 @@ backgroundColor: "#ffffffdd",
 
     setLoading(true);
     setResponse([]);
-
     const controller = new AbortController();
     controllerRef.current = controller;
 
@@ -417,14 +469,16 @@ backgroundColor: "#ffffffdd",
     }
 
     setError("");
-
+    setDisplayTxt("");
+    setCostTxt("");
     try {
+      // Pass the milliseconds directly into AbortSignal.timeout()
       const res = await fetch("http://localhost:8000/api/chat", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
         },
-        signal: controller.signal,
+        signal: AbortSignal.timeout(60000), // 60-second timeout
         body: JSON.stringify({
           prompt,
           system_prompt: prompt,
@@ -437,22 +491,31 @@ backgroundColor: "#ffffffdd",
           per_model_overrides: per_model_overrides
             ? JSON.parse(per_model_overrides)
             : {},
-        }),
-      });
-
+          }),
+        });
       const data = await res.json();
 
       setRequestIDs([...requestIDs, data.request_id]);
 
       const responses = data.responses ?? [];
-      console.log(responses);
       setCosts([]);
+      setNewCosts([]);
+      setUsedIndexs([]);
       setAllResponses([...allResponses, data]);
       setPrompts([...prompts, prompt]);
       setResponse(responses);
+      showResponse(0, responses);
 
     } catch (error) {
-      if (error.name !== "AbortError") {
+      if (error.name === 'AbortError') 
+        {
+        console.error("The requested timed out.");
+        setResponse((prev) => [
+          ...prev,
+          `Error: ${"The request timed out."}`
+        ]);
+      }
+      else if (error.name !== "AbortError") {
         setResponse((prev) => [
           ...prev,
           `Error: ${error.message}`
@@ -463,6 +526,27 @@ backgroundColor: "#ffffffdd",
       setViewResponse(true);
     }
   };
+
+  const createCustomEndpoint = (customId) => {
+    if (customEndpointNum < 5) {
+    setModels([...models, customId])
+    setCustomModels([...customModels, customId])
+    setUserModelTxt([...userModelTxt, "\n" + customId + "\n"])
+    setCustomNum(customEndpointNum + 1)
+
+    }
+    else {
+      setError("5 custom endpoints max")
+    }
+  };
+
+  const clearCustomEndpoints = () => {
+    setModels(models.filter((modelId) => !customModels.includes(modelId)));
+    setUserModelTxt("")
+    setCustomModels([]);
+    setCustomNum(0);
+
+  }
   const cancelRequest = () => {
     controllerRef.current?.abort();
   };
@@ -493,7 +577,14 @@ backgroundColor: "#ffffffdd",
 
   const toggleURL = () => {
     setGenerateURL((v) => !v);
-    console.log("ran");
+  }
+
+  const toggleEndpoint = () => {
+    SetViewCustomEndpoint ((v) => !v);
+  }
+
+  const toggleViewComparisons = () => {
+    prevComparisons.length > 0 ?? setViewPrevComparisons((v) => !v);
   }
 
   /* =====================
@@ -590,13 +681,84 @@ backgroundColor: "#ffffffdd",
             updateNames={addModelName}
           />
 
+          <button style={styles.button} onClick={() => toggleEndpoint()}>
+            Specify endpoint
+          </button>
+          
+          {viewCustomEndpoint && (
+          <>
+            <div
+              style={{
+                position: "fixed",
+                top: 0,
+                left: 0,
+                width: "100%",
+                height: "100%",
+                background: "#0d0d0d",
+                opacity: 0.5,
+                zIndex: 1000,
+              }}
+            />
+
+            <div
+              style={{
+                position: "fixed",
+                top: "50%",
+                left: "50%",
+                transform: "translate(-50%, -50%)",
+                width: "40%",
+                height: "60%",
+                background: "#2e2e2e",
+                borderRadius: "8px",
+                textAlign: "center",
+                zIndex: 1001,   // higher than overlay
+              }}
+            >
+              <input
+                style={styles.paramArea}
+                placeholder="Endpoint"
+                value={customEndpoint}
+                onChange={(e) => setCustomEndpoint(e.target.value)}
+              />
+
+              <button
+                style={styles.button}
+                onClick={() => createCustomEndpoint(customEndpoint)}
+              >
+                Create
+              </button>
+
+              <button
+                style={styles.button}
+                onClick={() => clearCustomEndpoints()}
+              >
+                Clear
+              </button>
+
+              <button
+                style={styles.button}
+                onClick={() => toggleEndpoint()}
+              >
+                Close
+              </button>
+
+              <label>
+                {userModelTxt}
+              </label>
+
+              <label style={styles.error}>
+                {errorTxt}
+              </label>
+
+            </div>
+          </>
+          )}
+
         </div>
       )}
 
-
       {viewCompare && (
         <div style={styles.mainColumn}>
-
           <h2 align="center">Comparison</h2>
 
           <button onClick={toggleSaving} style={styles.viewCompareBtn}>
@@ -650,11 +812,26 @@ backgroundColor: "#ffffffdd",
             onChange={(e) => setTitle(e.target.value)}
             placeholder="Title"
           />
+
+          <input
+            style={styles.compareArea}
+            value={compTitle}
+            onChange={(e) => setTitle(e.target.value)}
+            placeholder="Title"
+          />
+
           <textarea
             style={styles.compareNotes}
             value={compNotes}
             onChange={(e) => setNotes(e.target.value)}
             placeholder="Notes"
+          />
+
+            <textarea
+            style={styles.compareArea}
+            value={key}
+            onChange={(e) => setKey(e.target.value)}
+            placeholder="Key"
           />
 
           <label
@@ -670,6 +847,9 @@ backgroundColor: "#ffffffdd",
             />
             {" "}Public
           </label>
+        <h3 style={styles.error}>
+          {compErrorTxt}
+        </h3>
         <button onClick={() => saveComparison()} style={styles.createCompareButton}> Create 
         </button>         
         <button  onClick={() => toggleURL()} style={styles.createCompareButton}> Close 
@@ -677,6 +857,20 @@ backgroundColor: "#ffffffdd",
           </div>
         </>
         )}
+            <button
+              style={styles.button}
+              onClick={() => {
+                listComparisons();
+              }}
+            >
+              Prev compare
+            </button>
+
+          {viewPrevComparisons && (
+            <h3>
+              {allComparisons}
+            </h3>
+          )}
           {isSaving && (
             <div>
               {requestIDs.length != 0 && (
@@ -719,7 +913,7 @@ backgroundColor: "#ffffffdd",
                 <button
                   style={styles.responseButton}
                   key={model.model_id}
-                  onClick={() => showResponse(index)}
+                  onClick={() => showResponse(index, responses)}
                 >
                   {model.model_id}
                 </button>
@@ -816,7 +1010,9 @@ backgroundColor: "#ffffffdd",
 
             <button
               style={styles.button}
-              onClick={toggleCompare}
+              onClick={() => {
+                toggleCompare();
+              }}
             >
               Comparison
             </button>

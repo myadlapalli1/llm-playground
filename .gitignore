@@ -26,4 +26,5 @@ Thumbs.db
 .vscode/
 
 # Optional
-*.log
+*.log__pycache__/
+*.pyc

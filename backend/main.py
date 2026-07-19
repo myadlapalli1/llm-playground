@@ -10,11 +10,13 @@ import asyncio
 from dotenv import load_dotenv
 from pydantic import BaseModel
 from openai import OpenAI
+from sync_models import sync_models
 from typing import List, Optional, Dict, Any
 
 load_dotenv()
 
 app = FastAPI()
+sync_models()
 
 
 def load_models():
@@ -27,10 +29,26 @@ def get_model_info(model_id: str):
     clean_id = model_id.split(":", 1)[-1]
     return next((m for m in MODELS if m["model_id"] == clean_id), None)
 
-client = OpenAI(
-    api_key=os.getenv("GROQ_API_KEY"),
-    base_url="https://api.groq.com/openai/v1"
-)
+def get_client(provider: str):
+    if provider == "openai":
+        return OpenAI(
+            api_key=os.getenv("OPENAI_API_KEY"),
+            base_url="https://api.openai.com/v1"
+        )
+
+    if provider == "nvidia":
+        return OpenAI(
+            api_key=os.getenv("NVIDIA_API_KEY"),
+            base_url="https://integrate.api.nvidia.com/v1"
+        )
+
+    if provider == "groq":
+        return OpenAI(
+            api_key=os.getenv("GROQ_API_KEY"),
+            base_url="https://api.groq.com/openai/v1"
+        )
+
+    raise Exception(f"Unknown provider: {provider}")
 
 #For frontend
 origins = [
@@ -93,6 +111,13 @@ def init_db():
         )
         """)
 
+        cursor.execute("""
+        CREATE TABLE IF NOT EXISTS privateKey (
+            comparison_id TEXT PRIMARY KEY,
+            key TEXT
+        )
+        """)
+
         conn.commit()
 
 
@@ -137,6 +162,7 @@ class ComparisonCreateRequest(BaseModel):
     title: str
     notes: str
     is_public: bool
+    key: str
 
 # MODEL RUNNER
 # MODEL RUNNER
@@ -144,6 +170,7 @@ async def run_model(model_id: str, request: ChatRequest, start_time: float):
 
     print(f"[run_model] Starting model: {model_id}")
 
+    # Look up the model in models.json
     model_info = get_model_info(model_id)
     print(f"[run_model] Model info: {model_info}")
 
@@ -151,8 +178,7 @@ async def run_model(model_id: str, request: ChatRequest, start_time: float):
     override_max_tokens = None
     override_top_p = None
 
-    if not model_info:
-        print(f"[run_model] INVALID MODEL: {model_id}")
+    if model_info is None:
         return {
             "model_id": model_id,
             "text": None,
@@ -160,27 +186,44 @@ async def run_model(model_id: str, request: ChatRequest, start_time: float):
             "tokens_out": 0,
             "latency_ms": 0,
             "cost_cents": 0,
-            "error": "INVALID_MODEL_ID"
+            "error": {
+                "type": "MODEL_NOT_FOUND",
+                "message": f"Unknown model: {model_id}"
+            }
         }
+
+    # Create the correct client based on the provider
+    client = get_client(model_info["provider"])
+
+    override_system_prompt = None
+    override_temp = None
+    override_max_tokens = None
+    override_top_p = None
 
     try:
         print("[run_model] Checking overrides...")
 
-        if request.per_model_overrides is not None:
+        if request.per_model_overrides:
             overrides = request.per_model_overrides.get(model_id, {})
+            override_system_prompt = overrides.get("system_prompt")
             override_temp = overrides.get("temperature")
             override_max_tokens = overrides.get("max_tokens")
             override_top_p = overrides.get("top_p")
 
-        print("[run_model] About to call NVIDIA API...")
+        print(f"[run_model] Provider: {model_info['provider']}")
         print(f"[run_model] Model: {model_info['model_id']}")
-        print(f"[run_model] Prompt: {request.prompt}")
 
         response = client.chat.completions.create(
             model=model_info["model_id"],
             messages=[
-                {"role": "system", "content": request.system_prompt or ""},
-                {"role": "user", "content": request.prompt}
+                {
+                    "role": "system",
+                    "content": override_system_prompt or request.system_prompt or ""
+                },
+                {
+                    "role": "user",
+                    "content": request.prompt
+                }
             ],
             temperature=(
                 override_temp
@@ -242,7 +285,7 @@ async def run_model(model_id: str, request: ChatRequest, start_time: float):
         print(str(e))
 
         return {
-            "model_id": model_id,
+            "model_id": model_info["model_id"],
             "text": None,
             "tokens_in": 0,
             "tokens_out": 0,
@@ -255,20 +298,13 @@ async def run_model(model_id: str, request: ChatRequest, start_time: float):
         }
 
 # CHAT ENDPOINT
-# CHAT ENDPOINT
 @app.post("/api/chat")
 async def chat(request: ChatRequest):
-
-    print("\n==============================")
-    print("[chat] Entered /api/chat")
 
     request_id = str(uuid.uuid4())
     comparison_id = request_id
     created_at = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
 
-    print(f"[chat] request_id: {request_id}")
-    print(f"[chat] comparison_id: {comparison_id}")
-    print(f"[chat] model_ids: {request.model_ids}")
 
     start_time = time.time()
 
@@ -279,7 +315,6 @@ async def chat(request: ChatRequest):
         for model_id in request.model_ids
     ]
 
-    print(f"[chat] Created {len(tasks)} task(s)")
 
     print("[chat] Waiting for asyncio.gather...")
 
@@ -292,7 +327,7 @@ async def chat(request: ChatRequest):
         cursor = conn.cursor()
 
         cursor.execute("""
-            INSERT OR IGNORE INTO comparisons (
+            INSERT OR REPLACE INTO comparisons (
                 comparison_id, title, notes, is_public, created_at
             )
             VALUES (?, ?, ?, ?, ?)
@@ -349,8 +384,6 @@ async def chat(request: ChatRequest):
         conn.commit()
 
     print("[chat] Database commit complete")
-    print("[chat] Returning response")
-    print("==============================\n")
 
     return {
         "request_id": request_id,
@@ -381,6 +414,17 @@ def create_comparison(request: ComparisonCreateRequest):
             created_at
         ))
 
+        cursor.execute("""
+            INSERT OR REPLACE INTO privateKey (
+                comparison_id, key
+            )
+            VALUES (?, ?)
+        """,
+        (
+            comparison_id,
+            request.key,
+        ))
+
         conn.commit()
 
     return {
@@ -390,8 +434,8 @@ def create_comparison(request: ComparisonCreateRequest):
     }
 
 # COMPARISON FROM ID
-@app.get("/api/comparisons/{comparison_id}")
-def get_comparison(comparison_id: str):
+@app.get("/api/comparisons/{comparison_id}/{key}")
+def get_comparison(comparison_id: str, key: str = None):
 
     with sqlite3.connect("comparisons.db") as conn:
         cursor = conn.cursor()
@@ -403,6 +447,7 @@ def get_comparison(comparison_id: str):
         """, (comparison_id,))
 
         comp = cursor.fetchone()
+
 
         if not comp:
             return api_error(404, "NOT_FOUND", "Comparison not found")
@@ -459,17 +504,38 @@ def get_comparison(comparison_id: str):
                 for row in responses
             ])
 
-    return {
-        "comparison_id": comparison_id,
-        "title": title,
-        "notes": notes,
-        "request": request,
-        "responses": response,
-        "created_at": created_at,
-    }
+    if (is_public == 1):
+        return {
+            "comparison_id": comparison_id,
+            "title": title,
+            "notes": notes,
+            "request": request,
+            "responses": response,
+            "created_at": created_at,
+        }
+    else:
+        cursor.execute("""
+            SELECT key
+            FROM privateKey
+            WHERE comparison_id = ?
+        """, (comparison_id,))
+
+        currentKey = cursor.fetchone()
+
+        if (key == currentKey[0]):
+            return {
+                "comparison_id": comparison_id,
+                "title": title,
+                "notes": notes,
+                "request": request,
+                "responses": response,
+                "created_at": created_at,
+            }
+        else:
+            return api_error(403, "FORBIDDEN", "Invalid key, comparsion is private")
 
 # LIST COMPARISONS
-@app.get("/api/comparisons")
+@app.get("/api/prevcompare")
 def list_comparisons():
 
     with sqlite3.connect("comparisons.db") as conn:
@@ -499,14 +565,22 @@ def list_comparisons():
             ids = json.loads(row[0]) if row else []
             model_count = len(ids)
             prompt = row[1] if row else ""
-
-            result.append({
-                "comparison_id": comparison_id,
-                "title": title,
-                "created_at": created_at,
-                "model_count": model_count,
-                "prompt_preview": prompt[:30]
-            })
+            if (len(prompt) > 80):
+                result.append({
+                    "comparison_id": comparison_id,
+                    "title": title,
+                    "created_at": created_at,
+                    "model_count": model_count,
+                    "prompt_preview": prompt[:80] + "..."
+                })
+            else:
+                result.append({
+                    "comparison_id": comparison_id,
+                    "title": title,
+                    "created_at": created_at,
+                    "model_count": model_count,
+                    "prompt_preview": prompt
+                })
 
     return {
         "comparisons": result,
