@@ -109,6 +109,8 @@ if (runRandom === false) {
     width: "100%",
     padding: "32px 20px",
     paddingLeft: sidebarOpen ? "260px" : "84px",
+    maxWidth: "100vw",
+    overflowX: "hidden",
     minHeight: "100vh",
     backgroundColor: darkMode ? "#16171d" : "#f4f4f5",
     color: darkMode ? "#ffffff" : "#18181b",
@@ -120,6 +122,8 @@ if (runRandom === false) {
 
     boxSizing: "border-box",
     width: "min(100%, 900px)",
+    maxWidth: "100%",
+    minWidth: 0,
 
     display: "flex",
     flexDirection: "column",
@@ -178,6 +182,8 @@ if (runRandom === false) {
   mainColumn: {
     boxSizing: "border-box",
     width: "min(100%, 800px)",
+    maxWidth: "100%",
+    minWidth: 0,
     display: "flex",
     flexDirection: "column",
     alignItems: "stretch",
@@ -193,6 +199,7 @@ if (runRandom === false) {
 
     top: "24px",
     left: sidebarOpen ? "280px" : "104px",
+    maxWidth: "calc(100vw - 24px)",
 
     minWidth: "44px",
     width: "44px",
@@ -910,17 +917,163 @@ return (
           transform: translateY(0);
         }
       }
+
+      html,
+      body,
+      #root {
+        width: 100%;
+        min-width: 0;
+        min-height: 100%;
+        margin: 0;
+        overflow-x: hidden;
+      }
+
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+
+      img,
+      video,
+      canvas,
+      svg {
+        max-width: 100%;
+      }
+
+      button,
+      input,
+      textarea,
+      select {
+        max-width: 100%;
+      }
+
+      .app-container,
+      .page-shell,
+      .main-column {
+        min-width: 0;
+        max-width: 100%;
+      }
+
+      @media (max-width: 900px) {
+        .app-container {
+          padding-top: 24px !important;
+          padding-right: 16px !important;
+          padding-bottom: 28px !important;
+          padding-left: 76px !important;
+        }
+
+        .page-back-button {
+          left: 76px !important;
+          top: 16px !important;
+        }
+      }
+
+      @media (max-width: 640px) {
+        .app-container {
+          gap: 12px !important;
+          padding-top: 72px !important;
+          padding-right: 12px !important;
+          padding-bottom: 24px !important;
+          padding-left: 12px !important;
+        }
+
+        .page-shell {
+          width: 100% !important;
+          padding-top: 0 !important;
+        }
+
+        .main-column {
+          width: 100% !important;
+          gap: 12px !important;
+        }
+
+        .page-back-button {
+          top: 14px !important;
+          left: 68px !important;
+          width: 40px !important;
+          height: 40px !important;
+          min-width: 40px !important;
+        }
+
+        h1 {
+          font-size: clamp(38px, 13vw, 52px) !important;
+          line-height: 1.05 !important;
+          overflow-wrap: anywhere;
+        }
+
+        h2 {
+          font-size: clamp(28px, 9vw, 40px) !important;
+          line-height: 1.1 !important;
+          overflow-wrap: anywhere;
+        }
+
+        h3 {
+          overflow-wrap: anywhere;
+        }
+
+        [role="dialog"] {
+          width: calc(100vw - 20px) !important;
+          max-width: calc(100vw - 20px) !important;
+          max-height: calc(100dvh - 20px) !important;
+          padding: 16px !important;
+          border-radius: 14px !important;
+        }
+
+        [role="dialog"] > div:first-child {
+          min-width: 0;
+        }
+
+        textarea,
+        input,
+        select {
+          width: 100% !important;
+          min-width: 0 !important;
+          font-size: 16px !important;
+        }
+
+        svg {
+          width: 100% !important;
+          min-width: 0 !important;
+          height: auto !important;
+        }
+      }
+
+      @media (max-width: 380px) {
+        .app-container {
+          padding-right: 8px !important;
+          padding-left: 8px !important;
+        }
+
+        [role="dialog"] {
+          width: calc(100vw - 12px) !important;
+          max-width: calc(100vw - 12px) !important;
+          padding: 12px !important;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+          animation-duration: 0.01ms !important;
+          animation-iteration-count: 1 !important;
+          scroll-behavior: auto !important;
+          transition-duration: 0.01ms !important;
+        }
+      }
     `}</style>
 
-    <div style={styles.container}>
+    <div className="app-container" style={styles.container}>
 
 
   {viewParam && !viewModels && !viewCompare && !viewResponse && (
-    <div style={styles.pageShell}>
+    <div className="page-shell" style={styles.pageShell}>
       <Button
         darkMode={darkMode}
         size="sqr"
         onClick={() => setPageBool(4)}
+        className="page-back-button"
         style={styles.pageBackButton}
         aria-label="Go back"
       >
@@ -929,7 +1082,7 @@ return (
         </span>
       </Button>
 
-      <div style={styles.mainColumn}>
+      <div className="main-column" style={styles.mainColumn}>
         <div
           style={{
             width: "100%",
@@ -1063,7 +1216,7 @@ return (
             style={{
               display: "grid",
               gridTemplateColumns:
-                "repeat(auto-fit, minmax(210px, 1fr))",
+                "repeat(auto-fit, minmax(min(210px, 100%), 1fr))",
               gap: "16px",
             }}
           >
@@ -1298,11 +1451,12 @@ return (
   )}
 
   {viewModels && !viewParam && !viewCompare && !viewResponse && (
-    <div style={styles.pageShell}>
+    <div className="page-shell" style={styles.pageShell}>
       <Button
         darkMode={darkMode}
         size="sqr"
         onClick={() => setPageBool(4)}
+        className="page-back-button"
         style={styles.pageBackButton}
         aria-label="Go back"
         disabled={viewCustomEndpoint}
@@ -1312,7 +1466,7 @@ return (
         </span>
       </Button>
 
-      <div style={styles.mainColumn}>
+      <div className="main-column" style={styles.mainColumn}>
         <h2 align="center" style={styles.pageTitle}>
           Models
         </h2>
@@ -1694,8 +1848,7 @@ return (
                 background: overlayBg,
                 backdropFilter: "blur(4px)",
                 opacity: "0.5",
-                scale: "1000%",
-                zIndex: 1000,
+                                zIndex: 1000,
               }}
             />
 
@@ -1705,7 +1858,7 @@ return (
               aria-label="Custom endpoint"
               style={{
                 position: "fixed",
-                top: "75%",
+                top: "50%",
                 left: "50%",
                 transform: "translate(-50%, -50%)",
 
@@ -1713,7 +1866,7 @@ return (
                 maxHeight: "calc(100vh - 40px)",
 
                 boxSizing: "border-box",
-                padding: "5%",
+                padding: "clamp(16px, 4vw, 24px)",
 
                 display: "flex",
                 flexDirection: "column",
@@ -1876,12 +2029,13 @@ return (
   )}
 
   {viewCompare && !viewModels && !viewParam && !viewResponse && (
-    <div style={styles.pageShell}>
+    <div className="page-shell" style={styles.pageShell}>
       {/* Back button */}
       <Button
         darkMode={darkMode}
         size="sqr"
         onClick={() => setPageBool(4)}
+        className="page-back-button"
         style={styles.pageBackButton}
         aria-label="Go back"
       >
@@ -1890,7 +2044,7 @@ return (
         </span>
       </Button>
 
-      <div style={styles.mainColumn}>
+      <div className="main-column" style={styles.mainColumn}>
         {/* Page heading */}
         <div
           style={{
@@ -2311,14 +2465,14 @@ return (
               aria-label="Create comparison"
               style={{
                 position: "fixed",
-                top: "120%",
+                top: "50%",
                 left: "50%",
                 transform: "translate(-50%, -50%)",
 
                 width: "min(540px, calc(100vw - 32px))",
                 maxHeight: "calc(100vh - 40px)",
                 boxSizing: "border-box",
-                padding: "24px",
+                padding: "clamp(16px, 4vw, 24px)",
 
                 overflowY: "auto",
 
@@ -2705,7 +2859,8 @@ return (
           darkMode={darkMode}
           size="sqr"
           onClick={() => setPageBool(4)}
-          style={styles.pageBackButton}
+          className="page-back-button"
+        style={styles.pageBackButton}
           aria-label="Go back"
         >
           <span style={styles.pageBackButtonText}>
@@ -3293,7 +3448,7 @@ return (
             width: "min(940px, calc(100vw - 32px))",
             maxHeight: "calc(100vh - 40px)",
             boxSizing: "border-box",
-            padding: "24px",
+            padding: "clamp(16px, 4vw, 24px)",
 
             overflowY: "auto",
 
@@ -3494,7 +3649,7 @@ return (
                   style={{
                     display: "grid",
                     gridTemplateColumns:
-                      "repeat(auto-fit, minmax(210px, 1fr))",
+                      "repeat(auto-fit, minmax(min(210px, 100%), 1fr))",
                     gap: "12px",
                     marginBottom: "18px",
                   }}
@@ -3800,7 +3955,7 @@ return (
                     style={{
                       display: "block",
                       width: "100%",
-                      minWidth: "680px",
+                      minWidth: 0,
                       height: "auto",
                     }}
                   >
@@ -4223,7 +4378,7 @@ Output tokens: ${Number(model.tokens_out).toLocaleString()}`;
 
       <>
 
-        <div style={styles.mainColumn}>
+        <div className="main-column" style={styles.mainColumn}>
           <h1 align="center" style={styles.titleTxt}>Swift Compare</h1>
           <h2 align="center" style={styles.secondaryTxt}>{secondTxt}</h2>
 
