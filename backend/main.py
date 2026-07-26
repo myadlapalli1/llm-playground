@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
+from fastapi.responses import Response
 import os
 import time
 import uuid
@@ -142,7 +143,17 @@ def api_error(status_code: int, code: str, message: str, details=None):
 # MODELS ENDPOINT
 @app.get("/api/models")
 def get_models():
-    return {"models": MODELS}
+
+    formatted_json = json.dumps(
+        MODELS,
+        indent=4,
+        ensure_ascii=False
+    )
+
+    return Response(
+        content=formatted_json,
+        media_type="application/json"
+    )
 
 # SCHEMAS
 class ChatParams(BaseModel):
@@ -166,13 +177,14 @@ class ComparisonCreateRequest(BaseModel):
 
 # MODEL RUNNER
 # MODEL RUNNER
-async def run_model(model_id: str, request: ChatRequest, start_time: float):
+async def run_model(model_id: str, request: ChatRequest):
+
+    start_time = time.time()
 
     print(f"[run_model] Starting model: {model_id}")
 
     # Look up the model in models.json
     model_info = get_model_info(model_id)
-    print(f"[run_model] Model info: {model_info}")
 
     override_temp = None
     override_max_tokens = None
@@ -201,7 +213,6 @@ async def run_model(model_id: str, request: ChatRequest, start_time: float):
     override_top_p = None
 
     try:
-        print("[run_model] Checking overrides...")
 
         if request.per_model_overrides:
             overrides = request.per_model_overrides.get(model_id, {})
@@ -210,15 +221,12 @@ async def run_model(model_id: str, request: ChatRequest, start_time: float):
             override_max_tokens = overrides.get("max_tokens")
             override_top_p = overrides.get("top_p")
 
-        print(f"[run_model] Provider: {model_info['provider']}")
-        print(f"[run_model] Model: {model_info['model_id']}")
-
         response = client.chat.completions.create(
             model=model_info["model_id"],
             messages=[
                 {
                     "role": "system",
-                    "content": override_system_prompt or request.system_prompt or ""
+                    "content": override_system_prompt or request.system_prompt or "You are a helpful assistant. Answer clearly and concisely"
                 },
                 {
                     "role": "user",
@@ -287,7 +295,7 @@ async def run_model(model_id: str, request: ChatRequest, start_time: float):
         return {
             "model_id": model_info["model_id"],
             "text": None,
-            "tokens_in": 0,
+            "tokens_in": 0, 
             "tokens_out": 0,
             "latency_ms": int((time.time() - start_time) * 1000),
             "cost_cents": 0,
@@ -305,13 +313,10 @@ async def chat(request: ChatRequest):
     comparison_id = request_id
     created_at = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
 
-
-    start_time = time.time()
-
     print("[chat] Creating tasks...")
 
     tasks = [
-        run_model(model_id, request, start_time)
+        run_model(model_id, request)
         for model_id in request.model_ids
     ]
 
@@ -534,7 +539,7 @@ def get_comparison(comparison_id: str, key: str = None):
         else:
             return api_error(403, "FORBIDDEN", "Invalid key, comparsion is private")
 
-# LIST COMPARISONS
+
 @app.get("/api/prevcompare")
 def list_comparisons():
 
@@ -550,7 +555,6 @@ def list_comparisons():
 
         rows = cursor.fetchall()
 
-
         result = []
 
         for comparison_id, title, created_at in rows:
@@ -562,27 +566,38 @@ def list_comparisons():
             """, (comparison_id,))
 
             row = cursor.fetchone()
-            ids = json.loads(row[0]) if row else []
-            model_count = len(ids)
-            prompt = row[1] if row else ""
-            if (len(prompt) > 80):
-                result.append({
-                    "comparison_id": comparison_id,
-                    "title": title,
-                    "created_at": created_at,
-                    "model_count": model_count,
-                    "prompt_preview": prompt[:80] + "..."
-                })
-            else:
-                result.append({
-                    "comparison_id": comparison_id,
-                    "title": title,
-                    "created_at": created_at,
-                    "model_count": model_count,
-                    "prompt_preview": prompt
-                })
 
-    return {
+            ids = json.loads(row[0]) if row else []
+            prompt = row[1] if row else ""
+
+            # Create a shorter prompt preview
+            if len(prompt) > 80:
+                prompt_preview = prompt[:80] + "..."
+            else:
+                prompt_preview = prompt
+
+            result.append({
+                "comparison_id": comparison_id,
+                "title": title,
+                "created_at": created_at,
+                "model_count": len(ids),
+                "model_ids": ids,
+                "prompt_preview": prompt_preview
+            })
+
+    output = {
         "comparisons": result,
         "next_cursor": None
     }
+
+    # Convert the Python dictionary into formatted JSON
+    formatted_json = json.dumps(
+        output,
+        indent=4,
+        ensure_ascii=False
+    )
+
+    return Response(
+        content=formatted_json,
+        media_type="application/json"
+    )

@@ -2,23 +2,16 @@
   "models": [
     {
       "provider": "groq",
-      "model_id": "openai/gpt-oss-safeguard-20b",
-      "display_name": "openai/gpt-oss-safeguard-20b",
+      "model_id": "allam-2-7b",
+      "display_name": "allam-2-7b",
       "context_window": 0,
       "input_cost_per_million_tokens_cents": 0,
       "output_cost_per_million_tokens_cents": 0,
       "supports_streaming": true,
-      "supports_tools": false
-    },
-    {
-      "provider": "groq",
-      "model_id": "qwen/qwen3.6-27b",
-      "display_name": "qwen/qwen3.6-27b",
-      "context_window": 0,
-      "input_cost_per_million_tokens_cents": 0,
-      "output_cost_per_million_tokens_cents": 0,
-      "supports_streaming": true,
-      "supports_tools": false
+      "supports_tools": false,
+      "input_type": "text",
+      "output_type": "text",
+      "filter_method": "known_model_name"
     },
     {
       "provider": "groq",
@@ -28,101 +21,10 @@
       "input_cost_per_million_tokens_cents": 0,
       "output_cost_per_million_tokens_cents": 0,
       "supports_streaming": true,
-      "supports_tools": false
-    },
-    {
-      "provider": "groq",
-      "model_id": "openai/gpt-oss-120b",
-      "display_name": "openai/gpt-oss-120b",
-      "context_window": 0,
-      "input_cost_per_million_tokens_cents": 0,
-      "output_cost_per_million_tokens_cents": 0,
-      "supports_streaming": true,
-      "supports_tools": false
-    },
-    {
-      "provider": "groq",
-      "model_id": "meta-llama/llama-prompt-guard-2-86m",
-      "display_name": "meta-llama/llama-prompt-guard-2-86m",
-      "context_window": 0,
-      "input_cost_per_million_tokens_cents": 0,
-      "output_cost_per_million_tokens_cents": 0,
-      "supports_streaming": true,
-      "supports_tools": false
-    },
-    {
-      "provider": "groq",
-      "model_id": "canopylabs/orpheus-arabic-saudi",
-      "display_name": "canopylabs/orpheus-arabic-saudi",
-      "context_window": 0,
-      "input_cost_per_million_tokens_cents": 0,
-      "output_cost_per_million_tokens_cents": 0,
-      "supports_streaming": true,
-      "supports_tools": false
-    },
-    {
-      "provider": "groq",
-      "model_id": "groq/compound",
-      "display_name": "groq/compound",
-      "context_window": 0,
-      "input_cost_per_million_tokens_cents": 0,
-      "output_cost_per_million_tokens_cents": 0,
-      "supports_streaming": true,
-      "supports_tools": false
-    },
-    {
-      "provider": "groq",
-      "model_id": "meta-llama/llama-prompt-guard-2-22m",
-      "display_name": "meta-llama/llama-prompt-guard-2-22m",
-      "context_window": 0,
-      "input_cost_per_million_tokens_cents": 0,
-      "output_cost_per_million_tokens_cents": 0,
-      "supports_streaming": true,
-      "supports_tools": false
-    },
-    {
-      "provider": "groq",
-      "model_id": "llama-3.1-8b-instant",
-      "display_name": "llama-3.1-8b-instant",
-      "context_window": 0,
-      "input_cost_per_million_tokens_cents": 0,
-      "output_cost_per_million_tokens_cents": 0,
-      "supports_streaming": true,
-      "supports_tools": false
-    },
-    {
-      "provider": "groq",
-      "model_id": "canopylabs/orpheus-v1-english",
-      "display_name": "canopylabs/orpheus-v1-english",
-      "model_id": "canopylabs/orpheus-v1-english",
-      "display_name": "canopylabs/orpheus-v1-english",
-      "context_window": 0,
-      "input_cost_per_million_tokens_cents": 0,
-      "output_cost_per_million_tokens_cents": 0,
-      "supports_streaming": true,
-      "supports_tools": false
-    },
-    {
-      "provider": "groq",
-      "model_id": "allam-2-7b",
-      "display_name": "allam-2-7b",
-      "model_id": "allam-2-7b",
-      "display_name": "allam-2-7b",
-      "context_window": 0,
-      "input_cost_per_million_tokens_cents": 0,
-      "output_cost_per_million_tokens_cents": 0,
-      "supports_streaming": true,
-      "supports_tools": false
-    },
-    {
-      "provider": "groq",
-      "model_id": "whisper-large-v3-turbo",
-      "display_name": "whisper-large-v3-turbo",
-      "context_window": 0,
-      "input_cost_per_million_tokens_cents": 0,
-      "output_cost_per_million_tokens_cents": 0,
-      "supports_streaming": true,
-      "supports_tools": false
+      "supports_tools": false,
+      "input_type": "text",
+      "output_type": "text",
+      "filter_method": "known_model_name"
     },
     {
       "provider": "groq",
@@ -132,7 +34,10 @@
       "input_cost_per_million_tokens_cents": 0,
       "output_cost_per_million_tokens_cents": 0,
       "supports_streaming": true,
-      "supports_tools": false
+      "supports_tools": false,
+      "input_type": "text",
+      "output_type": "text",
+      "filter_method": "known_model_name"
     },
     {
       "provider": "groq",
@@ -142,17 +47,62 @@
       "input_cost_per_million_tokens_cents": 0,
       "output_cost_per_million_tokens_cents": 0,
       "supports_streaming": true,
-      "supports_tools": false
+      "supports_tools": false,
+      "input_type": "text",
+      "output_type": "text",
+      "filter_method": "known_model_name"
     },
     {
       "provider": "groq",
-      "model_id": "whisper-large-v3",
-      "display_name": "whisper-large-v3",
+      "model_id": "llama-3.3-70b-versatile",
+      "display_name": "llama-3.3-70b-versatile",
       "context_window": 0,
       "input_cost_per_million_tokens_cents": 0,
       "output_cost_per_million_tokens_cents": 0,
       "supports_streaming": true,
-      "supports_tools": false
+      "supports_tools": false,
+      "input_type": "text",
+      "output_type": "text",
+      "filter_method": "known_model_name"
+    },
+    {
+      "provider": "groq",
+      "model_id": "openai/gpt-oss-120b",
+      "display_name": "openai/gpt-oss-120b",
+      "context_window": 0,
+      "input_cost_per_million_tokens_cents": 0,
+      "output_cost_per_million_tokens_cents": 0,
+      "supports_streaming": true,
+      "supports_tools": false,
+      "input_type": "text",
+      "output_type": "text",
+      "filter_method": "known_model_name"
+    },
+    {
+      "provider": "groq",
+      "model_id": "openai/gpt-oss-20b",
+      "display_name": "openai/gpt-oss-20b",
+      "context_window": 0,
+      "input_cost_per_million_tokens_cents": 0,
+      "output_cost_per_million_tokens_cents": 0,
+      "supports_streaming": true,
+      "supports_tools": false,
+      "input_type": "text",
+      "output_type": "text",
+      "filter_method": "known_model_name"
+    },
+    {
+      "provider": "groq",
+      "model_id": "qwen/qwen3.6-27b",
+      "display_name": "qwen/qwen3.6-27b",
+      "context_window": 0,
+      "input_cost_per_million_tokens_cents": 0,
+      "output_cost_per_million_tokens_cents": 0,
+      "supports_streaming": true,
+      "supports_tools": false,
+      "input_type": "text",
+      "output_type": "text",
+      "filter_method": "known_model_name"
     },
     {
       "provider": "nvidia",
@@ -162,7 +112,10 @@
       "input_cost_per_million_tokens_cents": 0,
       "output_cost_per_million_tokens_cents": 0,
       "supports_streaming": true,
-      "supports_tools": false
+      "supports_tools": false,
+      "input_type": "text",
+      "output_type": "text",
+      "filter_method": "known_model_name"
     },
     {
       "provider": "nvidia",
@@ -172,17 +125,10 @@
       "input_cost_per_million_tokens_cents": 0,
       "output_cost_per_million_tokens_cents": 0,
       "supports_streaming": true,
-      "supports_tools": false
-    },
-    {
-      "provider": "nvidia",
-      "model_id": "adept/fuyu-8b",
-      "display_name": "adept/fuyu-8b",
-      "context_window": 0,
-      "input_cost_per_million_tokens_cents": 0,
-      "output_cost_per_million_tokens_cents": 0,
-      "supports_streaming": true,
-      "supports_tools": false
+      "supports_tools": false,
+      "input_type": "text",
+      "output_type": "text",
+      "filter_method": "known_model_name"
     },
     {
       "provider": "nvidia",
@@ -192,27 +138,10 @@
       "input_cost_per_million_tokens_cents": 0,
       "output_cost_per_million_tokens_cents": 0,
       "supports_streaming": true,
-      "supports_tools": false
-    },
-    {
-      "provider": "nvidia",
-      "model_id": "aisingapore/sea-lion-7b-instruct",
-      "display_name": "aisingapore/sea-lion-7b-instruct",
-      "context_window": 0,
-      "input_cost_per_million_tokens_cents": 0,
-      "output_cost_per_million_tokens_cents": 0,
-      "supports_streaming": true,
-      "supports_tools": false
-    },
-    {
-      "provider": "nvidia",
-      "model_id": "baai/bge-m3",
-      "display_name": "baai/bge-m3",
-      "context_window": 0,
-      "input_cost_per_million_tokens_cents": 0,
-      "output_cost_per_million_tokens_cents": 0,
-      "supports_streaming": true,
-      "supports_tools": false
+      "supports_tools": false,
+      "input_type": "text",
+      "output_type": "text",
+      "filter_method": "known_model_name"
     },
     {
       "provider": "nvidia",
@@ -222,7 +151,10 @@
       "input_cost_per_million_tokens_cents": 0,
       "output_cost_per_million_tokens_cents": 0,
       "supports_streaming": true,
-      "supports_tools": false
+      "supports_tools": false,
+      "input_type": "text",
+      "output_type": "text",
+      "filter_method": "known_model_name"
     },
     {
       "provider": "nvidia",
@@ -232,7 +164,10 @@
       "input_cost_per_million_tokens_cents": 0,
       "output_cost_per_million_tokens_cents": 0,
       "supports_streaming": true,
-      "supports_tools": false
+      "supports_tools": false,
+      "input_type": "text",
+      "output_type": "text",
+      "filter_method": "known_model_name"
     },
     {
       "provider": "nvidia",
@@ -242,7 +177,10 @@
       "input_cost_per_million_tokens_cents": 0,
       "output_cost_per_million_tokens_cents": 0,
       "supports_streaming": true,
-      "supports_tools": false
+      "supports_tools": false,
+      "input_type": "text",
+      "output_type": "text",
+      "filter_method": "known_model_name"
     },
     {
       "provider": "nvidia",
@@ -252,7 +190,10 @@
       "input_cost_per_million_tokens_cents": 0,
       "output_cost_per_million_tokens_cents": 0,
       "supports_streaming": true,
-      "supports_tools": false
+      "supports_tools": false,
+      "input_type": "text",
+      "output_type": "text",
+      "filter_method": "known_model_name"
     },
     {
       "provider": "nvidia",
@@ -262,7 +203,10 @@
       "input_cost_per_million_tokens_cents": 0,
       "output_cost_per_million_tokens_cents": 0,
       "supports_streaming": true,
-      "supports_tools": false
+      "supports_tools": false,
+      "input_type": "text",
+      "output_type": "text",
+      "filter_method": "known_model_name"
     },
     {
       "provider": "nvidia",
@@ -272,7 +216,10 @@
       "input_cost_per_million_tokens_cents": 0,
       "output_cost_per_million_tokens_cents": 0,
       "supports_streaming": true,
-      "supports_tools": false
+      "supports_tools": false,
+      "input_type": "text",
+      "output_type": "text",
+      "filter_method": "known_model_name"
     },
     {
       "provider": "nvidia",
@@ -282,7 +229,10 @@
       "input_cost_per_million_tokens_cents": 0,
       "output_cost_per_million_tokens_cents": 0,
       "supports_streaming": true,
-      "supports_tools": false
+      "supports_tools": false,
+      "input_type": "text",
+      "output_type": "text",
+      "filter_method": "known_model_name"
     },
     {
       "provider": "nvidia",
@@ -292,27 +242,10 @@
       "input_cost_per_million_tokens_cents": 0,
       "output_cost_per_million_tokens_cents": 0,
       "supports_streaming": true,
-      "supports_tools": false
-    },
-    {
-      "provider": "nvidia",
-      "model_id": "google/deplot",
-      "display_name": "google/deplot",
-      "context_window": 0,
-      "input_cost_per_million_tokens_cents": 0,
-      "output_cost_per_million_tokens_cents": 0,
-      "supports_streaming": true,
-      "supports_tools": false
-    },
-    {
-      "provider": "nvidia",
-      "model_id": "google/diffusiongemma-26b-a4b-it",
-      "display_name": "google/diffusiongemma-26b-a4b-it",
-      "context_window": 0,
-      "input_cost_per_million_tokens_cents": 0,
-      "output_cost_per_million_tokens_cents": 0,
-      "supports_streaming": true,
-      "supports_tools": false
+      "supports_tools": false,
+      "input_type": "text",
+      "output_type": "text",
+      "filter_method": "known_model_name"
     },
     {
       "provider": "nvidia",
@@ -322,7 +255,10 @@
       "input_cost_per_million_tokens_cents": 0,
       "output_cost_per_million_tokens_cents": 0,
       "supports_streaming": true,
-      "supports_tools": false
+      "supports_tools": false,
+      "input_type": "text",
+      "output_type": "text",
+      "filter_method": "known_model_name"
     },
     {
       "provider": "nvidia",
@@ -332,7 +268,10 @@
       "input_cost_per_million_tokens_cents": 0,
       "output_cost_per_million_tokens_cents": 0,
       "supports_streaming": true,
-      "supports_tools": false
+      "supports_tools": false,
+      "input_type": "text",
+      "output_type": "text",
+      "filter_method": "known_model_name"
     },
     {
       "provider": "nvidia",
@@ -342,7 +281,10 @@
       "input_cost_per_million_tokens_cents": 0,
       "output_cost_per_million_tokens_cents": 0,
       "supports_streaming": true,
-      "supports_tools": false
+      "supports_tools": false,
+      "input_type": "text",
+      "output_type": "text",
+      "filter_method": "known_model_name"
     },
     {
       "provider": "nvidia",
@@ -352,7 +294,10 @@
       "input_cost_per_million_tokens_cents": 0,
       "output_cost_per_million_tokens_cents": 0,
       "supports_streaming": true,
-      "supports_tools": false
+      "supports_tools": false,
+      "input_type": "text",
+      "output_type": "text",
+      "filter_method": "known_model_name"
     },
     {
       "provider": "nvidia",
@@ -362,7 +307,10 @@
       "input_cost_per_million_tokens_cents": 0,
       "output_cost_per_million_tokens_cents": 0,
       "supports_streaming": true,
-      "supports_tools": false
+      "supports_tools": false,
+      "input_type": "text",
+      "output_type": "text",
+      "filter_method": "known_model_name"
     },
     {
       "provider": "nvidia",
@@ -372,7 +320,10 @@
       "input_cost_per_million_tokens_cents": 0,
       "output_cost_per_million_tokens_cents": 0,
       "supports_streaming": true,
-      "supports_tools": false
+      "supports_tools": false,
+      "input_type": "text",
+      "output_type": "text",
+      "filter_method": "known_model_name"
     },
     {
       "provider": "nvidia",
@@ -382,7 +333,10 @@
       "input_cost_per_million_tokens_cents": 0,
       "output_cost_per_million_tokens_cents": 0,
       "supports_streaming": true,
-      "supports_tools": false
+      "supports_tools": false,
+      "input_type": "text",
+      "output_type": "text",
+      "filter_method": "known_model_name"
     },
     {
       "provider": "nvidia",
@@ -392,7 +346,10 @@
       "input_cost_per_million_tokens_cents": 0,
       "output_cost_per_million_tokens_cents": 0,
       "supports_streaming": true,
-      "supports_tools": false
+      "supports_tools": false,
+      "input_type": "text",
+      "output_type": "text",
+      "filter_method": "known_model_name"
     },
     {
       "provider": "nvidia",
@@ -402,7 +359,10 @@
       "input_cost_per_million_tokens_cents": 0,
       "output_cost_per_million_tokens_cents": 0,
       "supports_streaming": true,
-      "supports_tools": false
+      "supports_tools": false,
+      "input_type": "text",
+      "output_type": "text",
+      "filter_method": "known_model_name"
     },
     {
       "provider": "nvidia",
@@ -412,7 +372,10 @@
       "input_cost_per_million_tokens_cents": 0,
       "output_cost_per_million_tokens_cents": 0,
       "supports_streaming": true,
-      "supports_tools": false
+      "supports_tools": false,
+      "input_type": "text",
+      "output_type": "text",
+      "filter_method": "known_model_name"
     },
     {
       "provider": "nvidia",
@@ -422,7 +385,10 @@
       "input_cost_per_million_tokens_cents": 0,
       "output_cost_per_million_tokens_cents": 0,
       "supports_streaming": true,
-      "supports_tools": false
+      "supports_tools": false,
+      "input_type": "text",
+      "output_type": "text",
+      "filter_method": "known_model_name"
     },
     {
       "provider": "nvidia",
@@ -432,7 +398,10 @@
       "input_cost_per_million_tokens_cents": 0,
       "output_cost_per_million_tokens_cents": 0,
       "supports_streaming": true,
-      "supports_tools": false
+      "supports_tools": false,
+      "input_type": "text",
+      "output_type": "text",
+      "filter_method": "known_model_name"
     },
     {
       "provider": "nvidia",
@@ -442,7 +411,10 @@
       "input_cost_per_million_tokens_cents": 0,
       "output_cost_per_million_tokens_cents": 0,
       "supports_streaming": true,
-      "supports_tools": false
+      "supports_tools": false,
+      "input_type": "text",
+      "output_type": "text",
+      "filter_method": "known_model_name"
     },
     {
       "provider": "nvidia",
@@ -452,7 +424,10 @@
       "input_cost_per_million_tokens_cents": 0,
       "output_cost_per_million_tokens_cents": 0,
       "supports_streaming": true,
-      "supports_tools": false
+      "supports_tools": false,
+      "input_type": "text",
+      "output_type": "text",
+      "filter_method": "known_model_name"
     },
     {
       "provider": "nvidia",
@@ -462,17 +437,10 @@
       "input_cost_per_million_tokens_cents": 0,
       "output_cost_per_million_tokens_cents": 0,
       "supports_streaming": true,
-      "supports_tools": false
-    },
-    {
-      "provider": "nvidia",
-      "model_id": "meta/llama-3.2-11b-vision-instruct",
-      "display_name": "meta/llama-3.2-11b-vision-instruct",
-      "context_window": 0,
-      "input_cost_per_million_tokens_cents": 0,
-      "output_cost_per_million_tokens_cents": 0,
-      "supports_streaming": true,
-      "supports_tools": false
+      "supports_tools": false,
+      "input_type": "text",
+      "output_type": "text",
+      "filter_method": "known_model_name"
     },
     {
       "provider": "nvidia",
@@ -482,7 +450,10 @@
       "input_cost_per_million_tokens_cents": 0,
       "output_cost_per_million_tokens_cents": 0,
       "supports_streaming": true,
-      "supports_tools": false
+      "supports_tools": false,
+      "input_type": "text",
+      "output_type": "text",
+      "filter_method": "known_model_name"
     },
     {
       "provider": "nvidia",
@@ -492,17 +463,10 @@
       "input_cost_per_million_tokens_cents": 0,
       "output_cost_per_million_tokens_cents": 0,
       "supports_streaming": true,
-      "supports_tools": false
-    },
-    {
-      "provider": "nvidia",
-      "model_id": "meta/llama-3.2-90b-vision-instruct",
-      "display_name": "meta/llama-3.2-90b-vision-instruct",
-      "context_window": 0,
-      "input_cost_per_million_tokens_cents": 0,
-      "output_cost_per_million_tokens_cents": 0,
-      "supports_streaming": true,
-      "supports_tools": false
+      "supports_tools": false,
+      "input_type": "text",
+      "output_type": "text",
+      "filter_method": "known_model_name"
     },
     {
       "provider": "nvidia",
@@ -512,7 +476,10 @@
       "input_cost_per_million_tokens_cents": 0,
       "output_cost_per_million_tokens_cents": 0,
       "supports_streaming": true,
-      "supports_tools": false
+      "supports_tools": false,
+      "input_type": "text",
+      "output_type": "text",
+      "filter_method": "known_model_name"
     },
     {
       "provider": "nvidia",
@@ -522,17 +489,10 @@
       "input_cost_per_million_tokens_cents": 0,
       "output_cost_per_million_tokens_cents": 0,
       "supports_streaming": true,
-      "supports_tools": false
-    },
-    {
-      "provider": "nvidia",
-      "model_id": "meta/llama-guard-4-12b",
-      "display_name": "meta/llama-guard-4-12b",
-      "context_window": 0,
-      "input_cost_per_million_tokens_cents": 0,
-      "output_cost_per_million_tokens_cents": 0,
-      "supports_streaming": true,
-      "supports_tools": false
+      "supports_tools": false,
+      "input_type": "text",
+      "output_type": "text",
+      "filter_method": "known_model_name"
     },
     {
       "provider": "nvidia",
@@ -542,27 +502,10 @@
       "input_cost_per_million_tokens_cents": 0,
       "output_cost_per_million_tokens_cents": 0,
       "supports_streaming": true,
-      "supports_tools": false
-    },
-    {
-      "provider": "nvidia",
-      "model_id": "microsoft/kosmos-2",
-      "display_name": "microsoft/kosmos-2",
-      "context_window": 0,
-      "input_cost_per_million_tokens_cents": 0,
-      "output_cost_per_million_tokens_cents": 0,
-      "supports_streaming": true,
-      "supports_tools": false
-    },
-    {
-      "provider": "nvidia",
-      "model_id": "microsoft/phi-3-vision-128k-instruct",
-      "display_name": "microsoft/phi-3-vision-128k-instruct",
-      "context_window": 0,
-      "input_cost_per_million_tokens_cents": 0,
-      "output_cost_per_million_tokens_cents": 0,
-      "supports_streaming": true,
-      "supports_tools": false
+      "supports_tools": false,
+      "input_type": "text",
+      "output_type": "text",
+      "filter_method": "known_model_name"
     },
     {
       "provider": "nvidia",
@@ -572,7 +515,10 @@
       "input_cost_per_million_tokens_cents": 0,
       "output_cost_per_million_tokens_cents": 0,
       "supports_streaming": true,
-      "supports_tools": false
+      "supports_tools": false,
+      "input_type": "text",
+      "output_type": "text",
+      "filter_method": "known_model_name"
     },
     {
       "provider": "nvidia",
@@ -582,7 +528,10 @@
       "input_cost_per_million_tokens_cents": 0,
       "output_cost_per_million_tokens_cents": 0,
       "supports_streaming": true,
-      "supports_tools": false
+      "supports_tools": false,
+      "input_type": "text",
+      "output_type": "text",
+      "filter_method": "known_model_name"
     },
     {
       "provider": "nvidia",
@@ -592,7 +541,10 @@
       "input_cost_per_million_tokens_cents": 0,
       "output_cost_per_million_tokens_cents": 0,
       "supports_streaming": true,
-      "supports_tools": false
+      "supports_tools": false,
+      "input_type": "text",
+      "output_type": "text",
+      "filter_method": "known_model_name"
     },
     {
       "provider": "nvidia",
@@ -602,7 +554,10 @@
       "input_cost_per_million_tokens_cents": 0,
       "output_cost_per_million_tokens_cents": 0,
       "supports_streaming": true,
-      "supports_tools": false
+      "supports_tools": false,
+      "input_type": "text",
+      "output_type": "text",
+      "filter_method": "known_model_name"
     },
     {
       "provider": "nvidia",
@@ -612,7 +567,10 @@
       "input_cost_per_million_tokens_cents": 0,
       "output_cost_per_million_tokens_cents": 0,
       "supports_streaming": true,
-      "supports_tools": false
+      "supports_tools": false,
+      "input_type": "text",
+      "output_type": "text",
+      "filter_method": "known_model_name"
     },
     {
       "provider": "nvidia",
@@ -622,7 +580,10 @@
       "input_cost_per_million_tokens_cents": 0,
       "output_cost_per_million_tokens_cents": 0,
       "supports_streaming": true,
-      "supports_tools": false
+      "supports_tools": false,
+      "input_type": "text",
+      "output_type": "text",
+      "filter_method": "known_model_name"
     },
     {
       "provider": "nvidia",
@@ -632,7 +593,10 @@
       "input_cost_per_million_tokens_cents": 0,
       "output_cost_per_million_tokens_cents": 0,
       "supports_streaming": true,
-      "supports_tools": false
+      "supports_tools": false,
+      "input_type": "text",
+      "output_type": "text",
+      "filter_method": "known_model_name"
     },
     {
       "provider": "nvidia",
@@ -642,17 +606,10 @@
       "input_cost_per_million_tokens_cents": 0,
       "output_cost_per_million_tokens_cents": 0,
       "supports_streaming": true,
-      "supports_tools": false
-    },
-    {
-      "provider": "nvidia",
-      "model_id": "mistralai/mistral-large-3-675b-instruct-2512",
-      "display_name": "mistralai/mistral-large-3-675b-instruct-2512",
-      "context_window": 0,
-      "input_cost_per_million_tokens_cents": 0,
-      "output_cost_per_million_tokens_cents": 0,
-      "supports_streaming": true,
-      "supports_tools": false
+      "supports_tools": false,
+      "input_type": "text",
+      "output_type": "text",
+      "filter_method": "known_model_name"
     },
     {
       "provider": "nvidia",
@@ -662,7 +619,10 @@
       "input_cost_per_million_tokens_cents": 0,
       "output_cost_per_million_tokens_cents": 0,
       "supports_streaming": true,
-      "supports_tools": false
+      "supports_tools": false,
+      "input_type": "text",
+      "output_type": "text",
+      "filter_method": "known_model_name"
     },
     {
       "provider": "nvidia",
@@ -672,7 +632,10 @@
       "input_cost_per_million_tokens_cents": 0,
       "output_cost_per_million_tokens_cents": 0,
       "supports_streaming": true,
-      "supports_tools": false
+      "supports_tools": false,
+      "input_type": "text",
+      "output_type": "text",
+      "filter_method": "known_model_name"
     },
     {
       "provider": "nvidia",
@@ -682,7 +645,10 @@
       "input_cost_per_million_tokens_cents": 0,
       "output_cost_per_million_tokens_cents": 0,
       "supports_streaming": true,
-      "supports_tools": false
+      "supports_tools": false,
+      "input_type": "text",
+      "output_type": "text",
+      "filter_method": "known_model_name"
     },
     {
       "provider": "nvidia",
@@ -692,7 +658,10 @@
       "input_cost_per_million_tokens_cents": 0,
       "output_cost_per_million_tokens_cents": 0,
       "supports_streaming": true,
-      "supports_tools": false
+      "supports_tools": false,
+      "input_type": "text",
+      "output_type": "text",
+      "filter_method": "known_model_name"
     },
     {
       "provider": "nvidia",
@@ -702,7 +671,10 @@
       "input_cost_per_million_tokens_cents": 0,
       "output_cost_per_million_tokens_cents": 0,
       "supports_streaming": true,
-      "supports_tools": false
+      "supports_tools": false,
+      "input_type": "text",
+      "output_type": "text",
+      "filter_method": "known_model_name"
     },
     {
       "provider": "nvidia",
@@ -712,7 +684,10 @@
       "input_cost_per_million_tokens_cents": 0,
       "output_cost_per_million_tokens_cents": 0,
       "supports_streaming": true,
-      "supports_tools": false
+      "supports_tools": false,
+      "input_type": "text",
+      "output_type": "text",
+      "filter_method": "known_model_name"
     },
     {
       "provider": "nvidia",
@@ -722,77 +697,10 @@
       "input_cost_per_million_tokens_cents": 0,
       "output_cost_per_million_tokens_cents": 0,
       "supports_streaming": true,
-      "supports_tools": false
-    },
-    {
-      "provider": "nvidia",
-      "model_id": "nvidia/ai-synthetic-video-detector",
-      "display_name": "nvidia/ai-synthetic-video-detector",
-      "context_window": 0,
-      "input_cost_per_million_tokens_cents": 0,
-      "output_cost_per_million_tokens_cents": 0,
-      "supports_streaming": true,
-      "supports_tools": false
-    },
-    {
-      "provider": "nvidia",
-      "model_id": "nvidia/cosmos-reason2-8b",
-      "display_name": "nvidia/cosmos-reason2-8b",
-      "context_window": 0,
-      "input_cost_per_million_tokens_cents": 0,
-      "output_cost_per_million_tokens_cents": 0,
-      "supports_streaming": true,
-      "supports_tools": false
-    },
-    {
-      "provider": "nvidia",
-      "model_id": "nvidia/embed-qa-4",
-      "display_name": "nvidia/embed-qa-4",
-      "context_window": 0,
-      "input_cost_per_million_tokens_cents": 0,
-      "output_cost_per_million_tokens_cents": 0,
-      "supports_streaming": true,
-      "supports_tools": false
-    },
-    {
-      "provider": "nvidia",
-      "model_id": "nvidia/gliner-pii",
-      "display_name": "nvidia/gliner-pii",
-      "context_window": 0,
-      "input_cost_per_million_tokens_cents": 0,
-      "output_cost_per_million_tokens_cents": 0,
-      "supports_streaming": true,
-      "supports_tools": false
-    },
-    {
-      "provider": "nvidia",
-      "model_id": "nvidia/ising-calibration-1-35b-a3b",
-      "display_name": "nvidia/ising-calibration-1-35b-a3b",
-      "context_window": 0,
-      "input_cost_per_million_tokens_cents": 0,
-      "output_cost_per_million_tokens_cents": 0,
-      "supports_streaming": true,
-      "supports_tools": false
-    },
-    {
-      "provider": "nvidia",
-      "model_id": "nvidia/llama-3.1-nemoguard-8b-content-safety",
-      "display_name": "nvidia/llama-3.1-nemoguard-8b-content-safety",
-      "context_window": 0,
-      "input_cost_per_million_tokens_cents": 0,
-      "output_cost_per_million_tokens_cents": 0,
-      "supports_streaming": true,
-      "supports_tools": false
-    },
-    {
-      "provider": "nvidia",
-      "model_id": "nvidia/llama-3.1-nemoguard-8b-topic-control",
-      "display_name": "nvidia/llama-3.1-nemoguard-8b-topic-control",
-      "context_window": 0,
-      "input_cost_per_million_tokens_cents": 0,
-      "output_cost_per_million_tokens_cents": 0,
-      "supports_streaming": true,
-      "supports_tools": false
+      "supports_tools": false,
+      "input_type": "text",
+      "output_type": "text",
+      "filter_method": "known_model_name"
     },
     {
       "provider": "nvidia",
@@ -802,7 +710,10 @@
       "input_cost_per_million_tokens_cents": 0,
       "output_cost_per_million_tokens_cents": 0,
       "supports_streaming": true,
-      "supports_tools": false
+      "supports_tools": false,
+      "input_type": "text",
+      "output_type": "text",
+      "filter_method": "known_model_name"
     },
     {
       "provider": "nvidia",
@@ -812,7 +723,10 @@
       "input_cost_per_million_tokens_cents": 0,
       "output_cost_per_million_tokens_cents": 0,
       "supports_streaming": true,
-      "supports_tools": false
+      "supports_tools": false,
+      "input_type": "text",
+      "output_type": "text",
+      "filter_method": "known_model_name"
     },
     {
       "provider": "nvidia",
@@ -822,27 +736,10 @@
       "input_cost_per_million_tokens_cents": 0,
       "output_cost_per_million_tokens_cents": 0,
       "supports_streaming": true,
-      "supports_tools": false
-    },
-    {
-      "provider": "nvidia",
-      "model_id": "nvidia/llama-3.1-nemotron-nano-vl-8b-v1",
-      "display_name": "nvidia/llama-3.1-nemotron-nano-vl-8b-v1",
-      "context_window": 0,
-      "input_cost_per_million_tokens_cents": 0,
-      "output_cost_per_million_tokens_cents": 0,
-      "supports_streaming": true,
-      "supports_tools": false
-    },
-    {
-      "provider": "nvidia",
-      "model_id": "nvidia/llama-3.1-nemotron-safety-guard-8b-v3",
-      "display_name": "nvidia/llama-3.1-nemotron-safety-guard-8b-v3",
-      "context_window": 0,
-      "input_cost_per_million_tokens_cents": 0,
-      "output_cost_per_million_tokens_cents": 0,
-      "supports_streaming": true,
-      "supports_tools": false
+      "supports_tools": false,
+      "input_type": "text",
+      "output_type": "text",
+      "filter_method": "known_model_name"
     },
     {
       "provider": "nvidia",
@@ -852,27 +749,10 @@
       "input_cost_per_million_tokens_cents": 0,
       "output_cost_per_million_tokens_cents": 0,
       "supports_streaming": true,
-      "supports_tools": false
-    },
-    {
-      "provider": "nvidia",
-      "model_id": "nvidia/llama-3.2-nemoretriever-1b-vlm-embed-v1",
-      "display_name": "nvidia/llama-3.2-nemoretriever-1b-vlm-embed-v1",
-      "context_window": 0,
-      "input_cost_per_million_tokens_cents": 0,
-      "output_cost_per_million_tokens_cents": 0,
-      "supports_streaming": true,
-      "supports_tools": false
-    },
-    {
-      "provider": "nvidia",
-      "model_id": "nvidia/llama-3.2-nv-embedqa-1b-v1",
-      "display_name": "nvidia/llama-3.2-nv-embedqa-1b-v1",
-      "context_window": 0,
-      "input_cost_per_million_tokens_cents": 0,
-      "output_cost_per_million_tokens_cents": 0,
-      "supports_streaming": true,
-      "supports_tools": false
+      "supports_tools": false,
+      "input_type": "text",
+      "output_type": "text",
+      "filter_method": "known_model_name"
     },
     {
       "provider": "nvidia",
@@ -882,7 +762,10 @@
       "input_cost_per_million_tokens_cents": 0,
       "output_cost_per_million_tokens_cents": 0,
       "supports_streaming": true,
-      "supports_tools": false
+      "supports_tools": false,
+      "input_type": "text",
+      "output_type": "text",
+      "filter_method": "known_model_name"
     },
     {
       "provider": "nvidia",
@@ -892,27 +775,10 @@
       "input_cost_per_million_tokens_cents": 0,
       "output_cost_per_million_tokens_cents": 0,
       "supports_streaming": true,
-      "supports_tools": false
-    },
-    {
-      "provider": "nvidia",
-      "model_id": "nvidia/llama-nemotron-embed-1b-v2",
-      "display_name": "nvidia/llama-nemotron-embed-1b-v2",
-      "context_window": 0,
-      "input_cost_per_million_tokens_cents": 0,
-      "output_cost_per_million_tokens_cents": 0,
-      "supports_streaming": true,
-      "supports_tools": false
-    },
-    {
-      "provider": "nvidia",
-      "model_id": "nvidia/llama-nemotron-embed-vl-1b-v2",
-      "display_name": "nvidia/llama-nemotron-embed-vl-1b-v2",
-      "context_window": 0,
-      "input_cost_per_million_tokens_cents": 0,
-      "output_cost_per_million_tokens_cents": 0,
-      "supports_streaming": true,
-      "supports_tools": false
+      "supports_tools": false,
+      "input_type": "text",
+      "output_type": "text",
+      "filter_method": "known_model_name"
     },
     {
       "provider": "nvidia",
@@ -922,7 +788,10 @@
       "input_cost_per_million_tokens_cents": 0,
       "output_cost_per_million_tokens_cents": 0,
       "supports_streaming": true,
-      "supports_tools": false
+      "supports_tools": false,
+      "input_type": "text",
+      "output_type": "text",
+      "filter_method": "known_model_name"
     },
     {
       "provider": "nvidia",
@@ -932,27 +801,10 @@
       "input_cost_per_million_tokens_cents": 0,
       "output_cost_per_million_tokens_cents": 0,
       "supports_streaming": true,
-      "supports_tools": false
-    },
-    {
-      "provider": "nvidia",
-      "model_id": "nvidia/nemoretriever-parse",
-      "display_name": "nvidia/nemoretriever-parse",
-      "context_window": 0,
-      "input_cost_per_million_tokens_cents": 0,
-      "output_cost_per_million_tokens_cents": 0,
-      "supports_streaming": true,
-      "supports_tools": false
-    },
-    {
-      "provider": "nvidia",
-      "model_id": "nvidia/nemotron-3-embed-1b",
-      "display_name": "nvidia/nemotron-3-embed-1b",
-      "context_window": 0,
-      "input_cost_per_million_tokens_cents": 0,
-      "output_cost_per_million_tokens_cents": 0,
-      "supports_streaming": true,
-      "supports_tools": false
+      "supports_tools": false,
+      "input_type": "text",
+      "output_type": "text",
+      "filter_method": "known_model_name"
     },
     {
       "provider": "nvidia",
@@ -962,7 +814,10 @@
       "input_cost_per_million_tokens_cents": 0,
       "output_cost_per_million_tokens_cents": 0,
       "supports_streaming": true,
-      "supports_tools": false
+      "supports_tools": false,
+      "input_type": "text",
+      "output_type": "text",
+      "filter_method": "known_model_name"
     },
     {
       "provider": "nvidia",
@@ -972,7 +827,10 @@
       "input_cost_per_million_tokens_cents": 0,
       "output_cost_per_million_tokens_cents": 0,
       "supports_streaming": true,
-      "supports_tools": false
+      "supports_tools": false,
+      "input_type": "text",
+      "output_type": "text",
+      "filter_method": "known_model_name"
     },
     {
       "provider": "nvidia",
@@ -982,7 +840,10 @@
       "input_cost_per_million_tokens_cents": 0,
       "output_cost_per_million_tokens_cents": 0,
       "supports_streaming": true,
-      "supports_tools": false
+      "supports_tools": false,
+      "input_type": "text",
+      "output_type": "text",
+      "filter_method": "known_model_name"
     },
     {
       "provider": "nvidia",
@@ -992,17 +853,10 @@
       "input_cost_per_million_tokens_cents": 0,
       "output_cost_per_million_tokens_cents": 0,
       "supports_streaming": true,
-      "supports_tools": false
-    },
-    {
-      "provider": "nvidia",
-      "model_id": "nvidia/nemotron-3.5-content-safety",
-      "display_name": "nvidia/nemotron-3.5-content-safety",
-      "context_window": 0,
-      "input_cost_per_million_tokens_cents": 0,
-      "output_cost_per_million_tokens_cents": 0,
-      "supports_streaming": true,
-      "supports_tools": false
+      "supports_tools": false,
+      "input_type": "text",
+      "output_type": "text",
+      "filter_method": "known_model_name"
     },
     {
       "provider": "nvidia",
@@ -1012,17 +866,10 @@
       "input_cost_per_million_tokens_cents": 0,
       "output_cost_per_million_tokens_cents": 0,
       "supports_streaming": true,
-      "supports_tools": false
-    },
-    {
-      "provider": "nvidia",
-      "model_id": "nvidia/nemotron-4-340b-reward",
-      "display_name": "nvidia/nemotron-4-340b-reward",
-      "context_window": 0,
-      "input_cost_per_million_tokens_cents": 0,
-      "output_cost_per_million_tokens_cents": 0,
-      "supports_streaming": true,
-      "supports_tools": false
+      "supports_tools": false,
+      "input_type": "text",
+      "output_type": "text",
+      "filter_method": "known_model_name"
     },
     {
       "provider": "nvidia",
@@ -1032,17 +879,10 @@
       "input_cost_per_million_tokens_cents": 0,
       "output_cost_per_million_tokens_cents": 0,
       "supports_streaming": true,
-      "supports_tools": false
-    },
-    {
-      "provider": "nvidia",
-      "model_id": "nvidia/nemotron-nano-12b-v2-vl",
-      "display_name": "nvidia/nemotron-nano-12b-v2-vl",
-      "context_window": 0,
-      "input_cost_per_million_tokens_cents": 0,
-      "output_cost_per_million_tokens_cents": 0,
-      "supports_streaming": true,
-      "supports_tools": false
+      "supports_tools": false,
+      "input_type": "text",
+      "output_type": "text",
+      "filter_method": "known_model_name"
     },
     {
       "provider": "nvidia",
@@ -1052,77 +892,10 @@
       "input_cost_per_million_tokens_cents": 0,
       "output_cost_per_million_tokens_cents": 0,
       "supports_streaming": true,
-      "supports_tools": false
-    },
-    {
-      "provider": "nvidia",
-      "model_id": "nvidia/nemotron-parse",
-      "display_name": "nvidia/nemotron-parse",
-      "context_window": 0,
-      "input_cost_per_million_tokens_cents": 0,
-      "output_cost_per_million_tokens_cents": 0,
-      "supports_streaming": true,
-      "supports_tools": false
-    },
-    {
-      "provider": "nvidia",
-      "model_id": "nvidia/neva-22b",
-      "display_name": "nvidia/neva-22b",
-      "context_window": 0,
-      "input_cost_per_million_tokens_cents": 0,
-      "output_cost_per_million_tokens_cents": 0,
-      "supports_streaming": true,
-      "supports_tools": false
-    },
-    {
-      "provider": "nvidia",
-      "model_id": "nvidia/nv-embed-v1",
-      "display_name": "nvidia/nv-embed-v1",
-      "context_window": 0,
-      "input_cost_per_million_tokens_cents": 0,
-      "output_cost_per_million_tokens_cents": 0,
-      "supports_streaming": true,
-      "supports_tools": false
-    },
-    {
-      "provider": "nvidia",
-      "model_id": "nvidia/nv-embedcode-7b-v1",
-      "display_name": "nvidia/nv-embedcode-7b-v1",
-      "context_window": 0,
-      "input_cost_per_million_tokens_cents": 0,
-      "output_cost_per_million_tokens_cents": 0,
-      "supports_streaming": true,
-      "supports_tools": false
-    },
-    {
-      "provider": "nvidia",
-      "model_id": "nvidia/nv-embedqa-e5-v5",
-      "display_name": "nvidia/nv-embedqa-e5-v5",
-      "context_window": 0,
-      "input_cost_per_million_tokens_cents": 0,
-      "output_cost_per_million_tokens_cents": 0,
-      "supports_streaming": true,
-      "supports_tools": false
-    },
-    {
-      "provider": "nvidia",
-      "model_id": "nvidia/nv-embedqa-mistral-7b-v2",
-      "display_name": "nvidia/nv-embedqa-mistral-7b-v2",
-      "context_window": 0,
-      "input_cost_per_million_tokens_cents": 0,
-      "output_cost_per_million_tokens_cents": 0,
-      "supports_streaming": true,
-      "supports_tools": false
-    },
-    {
-      "provider": "nvidia",
-      "model_id": "nvidia/nvclip",
-      "display_name": "nvidia/nvclip",
-      "context_window": 0,
-      "input_cost_per_million_tokens_cents": 0,
-      "output_cost_per_million_tokens_cents": 0,
-      "supports_streaming": true,
-      "supports_tools": false
+      "supports_tools": false,
+      "input_type": "text",
+      "output_type": "text",
+      "filter_method": "known_model_name"
     },
     {
       "provider": "nvidia",
@@ -1132,37 +905,10 @@
       "input_cost_per_million_tokens_cents": 0,
       "output_cost_per_million_tokens_cents": 0,
       "supports_streaming": true,
-      "supports_tools": false
-    },
-    {
-      "provider": "nvidia",
-      "model_id": "nvidia/riva-translate-4b-instruct",
-      "display_name": "nvidia/riva-translate-4b-instruct",
-      "context_window": 0,
-      "input_cost_per_million_tokens_cents": 0,
-      "output_cost_per_million_tokens_cents": 0,
-      "supports_streaming": true,
-      "supports_tools": false
-    },
-    {
-      "provider": "nvidia",
-      "model_id": "nvidia/riva-translate-4b-instruct-v1.1",
-      "display_name": "nvidia/riva-translate-4b-instruct-v1.1",
-      "context_window": 0,
-      "input_cost_per_million_tokens_cents": 0,
-      "output_cost_per_million_tokens_cents": 0,
-      "supports_streaming": true,
-      "supports_tools": false
-    },
-    {
-      "provider": "nvidia",
-      "model_id": "nvidia/vila",
-      "display_name": "nvidia/vila",
-      "context_window": 0,
-      "input_cost_per_million_tokens_cents": 0,
-      "output_cost_per_million_tokens_cents": 0,
-      "supports_streaming": true,
-      "supports_tools": false
+      "supports_tools": false,
+      "input_type": "text",
+      "output_type": "text",
+      "filter_method": "known_model_name"
     },
     {
       "provider": "nvidia",
@@ -1172,7 +918,10 @@
       "input_cost_per_million_tokens_cents": 0,
       "output_cost_per_million_tokens_cents": 0,
       "supports_streaming": true,
-      "supports_tools": false
+      "supports_tools": false,
+      "input_type": "text",
+      "output_type": "text",
+      "filter_method": "known_model_name"
     },
     {
       "provider": "nvidia",
@@ -1182,7 +931,10 @@
       "input_cost_per_million_tokens_cents": 0,
       "output_cost_per_million_tokens_cents": 0,
       "supports_streaming": true,
-      "supports_tools": false
+      "supports_tools": false,
+      "input_type": "text",
+      "output_type": "text",
+      "filter_method": "known_model_name"
     },
     {
       "provider": "nvidia",
@@ -1192,7 +944,10 @@
       "input_cost_per_million_tokens_cents": 0,
       "output_cost_per_million_tokens_cents": 0,
       "supports_streaming": true,
-      "supports_tools": false
+      "supports_tools": false,
+      "input_type": "text",
+      "output_type": "text",
+      "filter_method": "known_model_name"
     },
     {
       "provider": "nvidia",
@@ -1202,17 +957,10 @@
       "input_cost_per_million_tokens_cents": 0,
       "output_cost_per_million_tokens_cents": 0,
       "supports_streaming": true,
-      "supports_tools": false
-    },
-    {
-      "provider": "nvidia",
-      "model_id": "qwen/qwen3.5-122b-a10b",
-      "display_name": "qwen/qwen3.5-122b-a10b",
-      "context_window": 0,
-      "input_cost_per_million_tokens_cents": 0,
-      "output_cost_per_million_tokens_cents": 0,
-      "supports_streaming": true,
-      "supports_tools": false
+      "supports_tools": false,
+      "input_type": "text",
+      "output_type": "text",
+      "filter_method": "known_model_name"
     },
     {
       "provider": "nvidia",
@@ -1222,7 +970,10 @@
       "input_cost_per_million_tokens_cents": 0,
       "output_cost_per_million_tokens_cents": 0,
       "supports_streaming": true,
-      "supports_tools": false
+      "supports_tools": false,
+      "input_type": "text",
+      "output_type": "text",
+      "filter_method": "known_model_name"
     },
     {
       "provider": "nvidia",
@@ -1232,17 +983,10 @@
       "input_cost_per_million_tokens_cents": 0,
       "output_cost_per_million_tokens_cents": 0,
       "supports_streaming": true,
-      "supports_tools": false
-    },
-    {
-      "provider": "nvidia",
-      "model_id": "snowflake/arctic-embed-l",
-      "display_name": "snowflake/arctic-embed-l",
-      "context_window": 0,
-      "input_cost_per_million_tokens_cents": 0,
-      "output_cost_per_million_tokens_cents": 0,
-      "supports_streaming": true,
-      "supports_tools": false
+      "supports_tools": false,
+      "input_type": "text",
+      "output_type": "text",
+      "filter_method": "known_model_name"
     },
     {
       "provider": "nvidia",
@@ -1252,7 +996,10 @@
       "input_cost_per_million_tokens_cents": 0,
       "output_cost_per_million_tokens_cents": 0,
       "supports_streaming": true,
-      "supports_tools": false
+      "supports_tools": false,
+      "input_type": "text",
+      "output_type": "text",
+      "filter_method": "known_model_name"
     },
     {
       "provider": "nvidia",
@@ -1262,7 +1009,10 @@
       "input_cost_per_million_tokens_cents": 0,
       "output_cost_per_million_tokens_cents": 0,
       "supports_streaming": true,
-      "supports_tools": false
+      "supports_tools": false,
+      "input_type": "text",
+      "output_type": "text",
+      "filter_method": "known_model_name"
     },
     {
       "provider": "nvidia",
@@ -1272,7 +1022,10 @@
       "input_cost_per_million_tokens_cents": 0,
       "output_cost_per_million_tokens_cents": 0,
       "supports_streaming": true,
-      "supports_tools": false
+      "supports_tools": false,
+      "input_type": "text",
+      "output_type": "text",
+      "filter_method": "known_model_name"
     },
     {
       "provider": "nvidia",
@@ -1282,7 +1035,10 @@
       "input_cost_per_million_tokens_cents": 0,
       "output_cost_per_million_tokens_cents": 0,
       "supports_streaming": true,
-      "supports_tools": false
+      "supports_tools": false,
+      "input_type": "text",
+      "output_type": "text",
+      "filter_method": "known_model_name"
     },
     {
       "provider": "nvidia",
@@ -1292,7 +1048,10 @@
       "input_cost_per_million_tokens_cents": 0,
       "output_cost_per_million_tokens_cents": 0,
       "supports_streaming": true,
-      "supports_tools": false
+      "supports_tools": false,
+      "input_type": "text",
+      "output_type": "text",
+      "filter_method": "known_model_name"
     },
     {
       "provider": "nvidia",
@@ -1302,7 +1061,10 @@
       "input_cost_per_million_tokens_cents": 0,
       "output_cost_per_million_tokens_cents": 0,
       "supports_streaming": true,
-      "supports_tools": false
+      "supports_tools": false,
+      "input_type": "text",
+      "output_type": "text",
+      "filter_method": "known_model_name"
     },
     {
       "provider": "nvidia",
@@ -1312,7 +1074,10 @@
       "input_cost_per_million_tokens_cents": 0,
       "output_cost_per_million_tokens_cents": 0,
       "supports_streaming": true,
-      "supports_tools": false
+      "supports_tools": false,
+      "input_type": "text",
+      "output_type": "text",
+      "filter_method": "known_model_name"
     },
     {
       "provider": "nvidia",
@@ -1322,7 +1087,10 @@
       "input_cost_per_million_tokens_cents": 0,
       "output_cost_per_million_tokens_cents": 0,
       "supports_streaming": true,
-      "supports_tools": false
+      "supports_tools": false,
+      "input_type": "text",
+      "output_type": "text",
+      "filter_method": "known_model_name"
     },
     {
       "provider": "nvidia",
@@ -1332,37 +1100,10 @@
       "input_cost_per_million_tokens_cents": 0,
       "output_cost_per_million_tokens_cents": 0,
       "supports_streaming": true,
-      "supports_tools": false
-    },
-    {
-      "provider": "nvidia",
-      "model_id": "zyphra/zamba2-7b-instruct",
-      "display_name": "zyphra/zamba2-7b-instruct",
-      "context_window": 0,
-      "input_cost_per_million_tokens_cents": 0,
-      "output_cost_per_million_tokens_cents": 0,
-      "supports_streaming": true,
-      "supports_tools": false
-    },
-    {
-      "provider": "openai",
-      "model_id": "text-embedding-ada-002",
-      "display_name": "text-embedding-ada-002",
-      "context_window": 0,
-      "input_cost_per_million_tokens_cents": 0,
-      "output_cost_per_million_tokens_cents": 0,
-      "supports_streaming": true,
-      "supports_tools": false
-    },
-    {
-      "provider": "openai",
-      "model_id": "whisper-1",
-      "display_name": "whisper-1",
-      "context_window": 0,
-      "input_cost_per_million_tokens_cents": 0,
-      "output_cost_per_million_tokens_cents": 0,
-      "supports_streaming": true,
-      "supports_tools": false
+      "supports_tools": false,
+      "input_type": "text",
+      "output_type": "text",
+      "filter_method": "known_model_name"
     },
     {
       "provider": "openai",
@@ -1372,127 +1113,10 @@
       "input_cost_per_million_tokens_cents": 0,
       "output_cost_per_million_tokens_cents": 0,
       "supports_streaming": true,
-      "supports_tools": false
-    },
-    {
-      "provider": "openai",
-      "model_id": "tts-1",
-      "display_name": "tts-1",
-      "context_window": 0,
-      "input_cost_per_million_tokens_cents": 0,
-      "output_cost_per_million_tokens_cents": 0,
-      "supports_streaming": true,
-      "supports_tools": false
-    },
-    {
-      "provider": "openai",
-      "model_id": "gpt-3.5-turbo-16k",
-      "display_name": "gpt-3.5-turbo-16k",
-      "context_window": 0,
-      "input_cost_per_million_tokens_cents": 0,
-      "output_cost_per_million_tokens_cents": 0,
-      "supports_streaming": true,
-      "supports_tools": false
-    },
-    {
-      "provider": "openai",
-      "model_id": "davinci-002",
-      "display_name": "davinci-002",
-      "context_window": 0,
-      "input_cost_per_million_tokens_cents": 0,
-      "output_cost_per_million_tokens_cents": 0,
-      "supports_streaming": true,
-      "supports_tools": false
-    },
-    {
-      "provider": "openai",
-      "model_id": "babbage-002",
-      "display_name": "babbage-002",
-      "context_window": 0,
-      "input_cost_per_million_tokens_cents": 0,
-      "output_cost_per_million_tokens_cents": 0,
-      "supports_streaming": true,
-      "supports_tools": false
-    },
-    {
-      "provider": "openai",
-      "model_id": "gpt-3.5-turbo-instruct",
-      "display_name": "gpt-3.5-turbo-instruct",
-      "context_window": 0,
-      "input_cost_per_million_tokens_cents": 0,
-      "output_cost_per_million_tokens_cents": 0,
-      "supports_streaming": true,
-      "supports_tools": false
-    },
-    {
-      "provider": "openai",
-      "model_id": "gpt-3.5-turbo-instruct-0914",
-      "display_name": "gpt-3.5-turbo-instruct-0914",
-      "context_window": 0,
-      "input_cost_per_million_tokens_cents": 0,
-      "output_cost_per_million_tokens_cents": 0,
-      "supports_streaming": true,
-      "supports_tools": false
-    },
-    {
-      "provider": "openai",
-      "model_id": "gpt-3.5-turbo-1106",
-      "display_name": "gpt-3.5-turbo-1106",
-      "context_window": 0,
-      "input_cost_per_million_tokens_cents": 0,
-      "output_cost_per_million_tokens_cents": 0,
-      "supports_streaming": true,
-      "supports_tools": false
-    },
-    {
-      "provider": "openai",
-      "model_id": "tts-1-hd",
-      "display_name": "tts-1-hd",
-      "context_window": 0,
-      "input_cost_per_million_tokens_cents": 0,
-      "output_cost_per_million_tokens_cents": 0,
-      "supports_streaming": true,
-      "supports_tools": false
-    },
-    {
-      "provider": "openai",
-      "model_id": "tts-1-1106",
-      "display_name": "tts-1-1106",
-      "context_window": 0,
-      "input_cost_per_million_tokens_cents": 0,
-      "output_cost_per_million_tokens_cents": 0,
-      "supports_streaming": true,
-      "supports_tools": false
-    },
-    {
-      "provider": "openai",
-      "model_id": "tts-1-hd-1106",
-      "display_name": "tts-1-hd-1106",
-      "context_window": 0,
-      "input_cost_per_million_tokens_cents": 0,
-      "output_cost_per_million_tokens_cents": 0,
-      "supports_streaming": true,
-      "supports_tools": false
-    },
-    {
-      "provider": "openai",
-      "model_id": "text-embedding-3-small",
-      "display_name": "text-embedding-3-small",
-      "context_window": 0,
-      "input_cost_per_million_tokens_cents": 0,
-      "output_cost_per_million_tokens_cents": 0,
-      "supports_streaming": true,
-      "supports_tools": false
-    },
-    {
-      "provider": "openai",
-      "model_id": "text-embedding-3-large",
-      "display_name": "text-embedding-3-large",
-      "context_window": 0,
-      "input_cost_per_million_tokens_cents": 0,
-      "output_cost_per_million_tokens_cents": 0,
-      "supports_streaming": true,
-      "supports_tools": false
+      "supports_tools": false,
+      "input_type": "text",
+      "output_type": "text",
+      "filter_method": "known_model_name"
     },
     {
       "provider": "openai",
@@ -1502,227 +1126,62 @@
       "input_cost_per_million_tokens_cents": 0,
       "output_cost_per_million_tokens_cents": 0,
       "supports_streaming": true,
-      "supports_tools": false
+      "supports_tools": false,
+      "input_type": "text",
+      "output_type": "text",
+      "filter_method": "known_model_name"
     },
     {
       "provider": "openai",
-      "model_id": "gpt-4o",
-      "display_name": "gpt-4o",
+      "model_id": "gpt-3.5-turbo-1106",
+      "display_name": "gpt-3.5-turbo-1106",
       "context_window": 0,
       "input_cost_per_million_tokens_cents": 0,
       "output_cost_per_million_tokens_cents": 0,
       "supports_streaming": true,
-      "supports_tools": false
+      "supports_tools": false,
+      "input_type": "text",
+      "output_type": "text",
+      "filter_method": "known_model_name"
     },
     {
       "provider": "openai",
-      "model_id": "gpt-4o-2024-05-13",
-      "display_name": "gpt-4o-2024-05-13",
+      "model_id": "gpt-3.5-turbo-16k",
+      "display_name": "gpt-3.5-turbo-16k",
       "context_window": 0,
       "input_cost_per_million_tokens_cents": 0,
       "output_cost_per_million_tokens_cents": 0,
       "supports_streaming": true,
-      "supports_tools": false
+      "supports_tools": false,
+      "input_type": "text",
+      "output_type": "text",
+      "filter_method": "known_model_name"
     },
     {
       "provider": "openai",
-      "model_id": "gpt-4o-mini-2024-07-18",
-      "display_name": "gpt-4o-mini-2024-07-18",
+      "model_id": "gpt-3.5-turbo-instruct",
+      "display_name": "gpt-3.5-turbo-instruct",
       "context_window": 0,
       "input_cost_per_million_tokens_cents": 0,
       "output_cost_per_million_tokens_cents": 0,
       "supports_streaming": true,
-      "supports_tools": false
+      "supports_tools": false,
+      "input_type": "text",
+      "output_type": "text",
+      "filter_method": "known_model_name"
     },
     {
       "provider": "openai",
-      "model_id": "gpt-4o-mini",
-      "display_name": "gpt-4o-mini",
+      "model_id": "gpt-3.5-turbo-instruct-0914",
+      "display_name": "gpt-3.5-turbo-instruct-0914",
       "context_window": 0,
       "input_cost_per_million_tokens_cents": 0,
       "output_cost_per_million_tokens_cents": 0,
       "supports_streaming": true,
-      "supports_tools": false
-    },
-    {
-      "provider": "openai",
-      "model_id": "gpt-4o-2024-08-06",
-      "display_name": "gpt-4o-2024-08-06",
-      "context_window": 0,
-      "input_cost_per_million_tokens_cents": 0,
-      "output_cost_per_million_tokens_cents": 0,
-      "supports_streaming": true,
-      "supports_tools": false
-    },
-    {
-      "provider": "openai",
-      "model_id": "omni-moderation-latest",
-      "display_name": "omni-moderation-latest",
-      "context_window": 0,
-      "input_cost_per_million_tokens_cents": 0,
-      "output_cost_per_million_tokens_cents": 0,
-      "supports_streaming": true,
-      "supports_tools": false
-    },
-    {
-      "provider": "openai",
-      "model_id": "omni-moderation-2024-09-26",
-      "display_name": "omni-moderation-2024-09-26",
-      "context_window": 0,
-      "input_cost_per_million_tokens_cents": 0,
-      "output_cost_per_million_tokens_cents": 0,
-      "supports_streaming": true,
-      "supports_tools": false
-    },
-    {
-      "provider": "openai",
-      "model_id": "o1-2024-12-17",
-      "display_name": "o1-2024-12-17",
-      "context_window": 0,
-      "input_cost_per_million_tokens_cents": 0,
-      "output_cost_per_million_tokens_cents": 0,
-      "supports_streaming": true,
-      "supports_tools": false
-    },
-    {
-      "provider": "openai",
-      "model_id": "o1",
-      "display_name": "o1",
-      "context_window": 0,
-      "input_cost_per_million_tokens_cents": 0,
-      "output_cost_per_million_tokens_cents": 0,
-      "supports_streaming": true,
-      "supports_tools": false
-    },
-    {
-      "provider": "openai",
-      "model_id": "o3-mini",
-      "display_name": "o3-mini",
-      "context_window": 0,
-      "input_cost_per_million_tokens_cents": 0,
-      "output_cost_per_million_tokens_cents": 0,
-      "supports_streaming": true,
-      "supports_tools": false
-    },
-    {
-      "provider": "openai",
-      "model_id": "o3-mini-2025-01-31",
-      "display_name": "o3-mini-2025-01-31",
-      "context_window": 0,
-      "input_cost_per_million_tokens_cents": 0,
-      "output_cost_per_million_tokens_cents": 0,
-      "supports_streaming": true,
-      "supports_tools": false
-    },
-    {
-      "provider": "openai",
-      "model_id": "gpt-4o-2024-11-20",
-      "display_name": "gpt-4o-2024-11-20",
-      "context_window": 0,
-      "input_cost_per_million_tokens_cents": 0,
-      "output_cost_per_million_tokens_cents": 0,
-      "supports_streaming": true,
-      "supports_tools": false
-    },
-    {
-      "provider": "openai",
-      "model_id": "gpt-4o-mini-search-preview-2025-03-11",
-      "display_name": "gpt-4o-mini-search-preview-2025-03-11",
-      "context_window": 0,
-      "input_cost_per_million_tokens_cents": 0,
-      "output_cost_per_million_tokens_cents": 0,
-      "supports_streaming": true,
-      "supports_tools": false
-    },
-    {
-      "provider": "openai",
-      "model_id": "gpt-4o-mini-search-preview",
-      "display_name": "gpt-4o-mini-search-preview",
-      "context_window": 0,
-      "input_cost_per_million_tokens_cents": 0,
-      "output_cost_per_million_tokens_cents": 0,
-      "supports_streaming": true,
-      "supports_tools": false
-    },
-    {
-      "provider": "openai",
-      "model_id": "gpt-4o-transcribe",
-      "display_name": "gpt-4o-transcribe",
-      "context_window": 0,
-      "input_cost_per_million_tokens_cents": 0,
-      "output_cost_per_million_tokens_cents": 0,
-      "supports_streaming": true,
-      "supports_tools": false
-    },
-    {
-      "provider": "openai",
-      "model_id": "gpt-4o-mini-transcribe",
-      "display_name": "gpt-4o-mini-transcribe",
-      "context_window": 0,
-      "input_cost_per_million_tokens_cents": 0,
-      "output_cost_per_million_tokens_cents": 0,
-      "supports_streaming": true,
-      "supports_tools": false
-    },
-    {
-      "provider": "openai",
-      "model_id": "gpt-4o-mini-tts",
-      "display_name": "gpt-4o-mini-tts",
-      "context_window": 0,
-      "input_cost_per_million_tokens_cents": 0,
-      "output_cost_per_million_tokens_cents": 0,
-      "supports_streaming": true,
-      "supports_tools": false
-    },
-    {
-      "provider": "openai",
-      "model_id": "o3-2025-04-16",
-      "display_name": "o3-2025-04-16",
-      "context_window": 0,
-      "input_cost_per_million_tokens_cents": 0,
-      "output_cost_per_million_tokens_cents": 0,
-      "supports_streaming": true,
-      "supports_tools": false
-    },
-    {
-      "provider": "openai",
-      "model_id": "o4-mini-2025-04-16",
-      "display_name": "o4-mini-2025-04-16",
-      "context_window": 0,
-      "input_cost_per_million_tokens_cents": 0,
-      "output_cost_per_million_tokens_cents": 0,
-      "supports_streaming": true,
-      "supports_tools": false
-    },
-    {
-      "provider": "openai",
-      "model_id": "o3",
-      "display_name": "o3",
-      "context_window": 0,
-      "input_cost_per_million_tokens_cents": 0,
-      "output_cost_per_million_tokens_cents": 0,
-      "supports_streaming": true,
-      "supports_tools": false
-    },
-    {
-      "provider": "openai",
-      "model_id": "o4-mini",
-      "display_name": "o4-mini",
-      "context_window": 0,
-      "input_cost_per_million_tokens_cents": 0,
-      "output_cost_per_million_tokens_cents": 0,
-      "supports_streaming": true,
-      "supports_tools": false
-    },
-    {
-      "provider": "openai",
-      "model_id": "gpt-4.1-2025-04-14",
-      "display_name": "gpt-4.1-2025-04-14",
-      "context_window": 0,
-      "input_cost_per_million_tokens_cents": 0,
-      "output_cost_per_million_tokens_cents": 0,
-      "supports_streaming": true,
-      "supports_tools": false
+      "supports_tools": false,
+      "input_type": "text",
+      "output_type": "text",
+      "filter_method": "known_model_name"
     },
     {
       "provider": "openai",
@@ -1732,17 +1191,23 @@
       "input_cost_per_million_tokens_cents": 0,
       "output_cost_per_million_tokens_cents": 0,
       "supports_streaming": true,
-      "supports_tools": false
+      "supports_tools": false,
+      "input_type": "text",
+      "output_type": "text",
+      "filter_method": "known_model_name"
     },
     {
       "provider": "openai",
-      "model_id": "gpt-4.1-mini-2025-04-14",
-      "display_name": "gpt-4.1-mini-2025-04-14",
+      "model_id": "gpt-4.1-2025-04-14",
+      "display_name": "gpt-4.1-2025-04-14",
       "context_window": 0,
       "input_cost_per_million_tokens_cents": 0,
       "output_cost_per_million_tokens_cents": 0,
       "supports_streaming": true,
-      "supports_tools": false
+      "supports_tools": false,
+      "input_type": "text",
+      "output_type": "text",
+      "filter_method": "known_model_name"
     },
     {
       "provider": "openai",
@@ -1752,17 +1217,23 @@
       "input_cost_per_million_tokens_cents": 0,
       "output_cost_per_million_tokens_cents": 0,
       "supports_streaming": true,
-      "supports_tools": false
+      "supports_tools": false,
+      "input_type": "text",
+      "output_type": "text",
+      "filter_method": "known_model_name"
     },
     {
       "provider": "openai",
-      "model_id": "gpt-4.1-nano-2025-04-14",
-      "display_name": "gpt-4.1-nano-2025-04-14",
+      "model_id": "gpt-4.1-mini-2025-04-14",
+      "display_name": "gpt-4.1-mini-2025-04-14",
       "context_window": 0,
       "input_cost_per_million_tokens_cents": 0,
       "output_cost_per_million_tokens_cents": 0,
       "supports_streaming": true,
-      "supports_tools": false
+      "supports_tools": false,
+      "input_type": "text",
+      "output_type": "text",
+      "filter_method": "known_model_name"
     },
     {
       "provider": "openai",
@@ -1772,47 +1243,101 @@
       "input_cost_per_million_tokens_cents": 0,
       "output_cost_per_million_tokens_cents": 0,
       "supports_streaming": true,
-      "supports_tools": false
+      "supports_tools": false,
+      "input_type": "text",
+      "output_type": "text",
+      "filter_method": "known_model_name"
     },
     {
       "provider": "openai",
-      "model_id": "gpt-image-1",
-      "display_name": "gpt-image-1",
+      "model_id": "gpt-4.1-nano-2025-04-14",
+      "display_name": "gpt-4.1-nano-2025-04-14",
       "context_window": 0,
       "input_cost_per_million_tokens_cents": 0,
       "output_cost_per_million_tokens_cents": 0,
       "supports_streaming": true,
-      "supports_tools": false
+      "supports_tools": false,
+      "input_type": "text",
+      "output_type": "text",
+      "filter_method": "known_model_name"
     },
     {
       "provider": "openai",
-      "model_id": "gpt-4o-transcribe-diarize",
-      "display_name": "gpt-4o-transcribe-diarize",
+      "model_id": "gpt-4o",
+      "display_name": "gpt-4o",
       "context_window": 0,
       "input_cost_per_million_tokens_cents": 0,
       "output_cost_per_million_tokens_cents": 0,
       "supports_streaming": true,
-      "supports_tools": false
+      "supports_tools": false,
+      "input_type": "text",
+      "output_type": "text",
+      "filter_method": "known_model_name"
     },
     {
       "provider": "openai",
-      "model_id": "gpt-5-chat-latest",
-      "display_name": "gpt-5-chat-latest",
+      "model_id": "gpt-4o-2024-05-13",
+      "display_name": "gpt-4o-2024-05-13",
       "context_window": 0,
       "input_cost_per_million_tokens_cents": 0,
       "output_cost_per_million_tokens_cents": 0,
       "supports_streaming": true,
-      "supports_tools": false
+      "supports_tools": false,
+      "input_type": "text",
+      "output_type": "text",
+      "filter_method": "known_model_name"
     },
     {
       "provider": "openai",
-      "model_id": "gpt-5-2025-08-07",
-      "display_name": "gpt-5-2025-08-07",
+      "model_id": "gpt-4o-2024-08-06",
+      "display_name": "gpt-4o-2024-08-06",
       "context_window": 0,
       "input_cost_per_million_tokens_cents": 0,
       "output_cost_per_million_tokens_cents": 0,
       "supports_streaming": true,
-      "supports_tools": false
+      "supports_tools": false,
+      "input_type": "text",
+      "output_type": "text",
+      "filter_method": "known_model_name"
+    },
+    {
+      "provider": "openai",
+      "model_id": "gpt-4o-2024-11-20",
+      "display_name": "gpt-4o-2024-11-20",
+      "context_window": 0,
+      "input_cost_per_million_tokens_cents": 0,
+      "output_cost_per_million_tokens_cents": 0,
+      "supports_streaming": true,
+      "supports_tools": false,
+      "input_type": "text",
+      "output_type": "text",
+      "filter_method": "known_model_name"
+    },
+    {
+      "provider": "openai",
+      "model_id": "gpt-4o-mini",
+      "display_name": "gpt-4o-mini",
+      "context_window": 0,
+      "input_cost_per_million_tokens_cents": 0,
+      "output_cost_per_million_tokens_cents": 0,
+      "supports_streaming": true,
+      "supports_tools": false,
+      "input_type": "text",
+      "output_type": "text",
+      "filter_method": "known_model_name"
+    },
+    {
+      "provider": "openai",
+      "model_id": "gpt-4o-mini-2024-07-18",
+      "display_name": "gpt-4o-mini-2024-07-18",
+      "context_window": 0,
+      "input_cost_per_million_tokens_cents": 0,
+      "output_cost_per_million_tokens_cents": 0,
+      "supports_streaming": true,
+      "supports_tools": false,
+      "input_type": "text",
+      "output_type": "text",
+      "filter_method": "known_model_name"
     },
     {
       "provider": "openai",
@@ -1822,87 +1347,36 @@
       "input_cost_per_million_tokens_cents": 0,
       "output_cost_per_million_tokens_cents": 0,
       "supports_streaming": true,
-      "supports_tools": false
+      "supports_tools": false,
+      "input_type": "text",
+      "output_type": "text",
+      "filter_method": "known_model_name"
     },
     {
       "provider": "openai",
-      "model_id": "gpt-5-mini-2025-08-07",
-      "display_name": "gpt-5-mini-2025-08-07",
+      "model_id": "gpt-5-2025-08-07",
+      "display_name": "gpt-5-2025-08-07",
       "context_window": 0,
       "input_cost_per_million_tokens_cents": 0,
       "output_cost_per_million_tokens_cents": 0,
       "supports_streaming": true,
-      "supports_tools": false
+      "supports_tools": false,
+      "input_type": "text",
+      "output_type": "text",
+      "filter_method": "known_model_name"
     },
     {
       "provider": "openai",
-      "model_id": "gpt-5-mini",
-      "display_name": "gpt-5-mini",
+      "model_id": "gpt-5-chat-latest",
+      "display_name": "gpt-5-chat-latest",
       "context_window": 0,
       "input_cost_per_million_tokens_cents": 0,
       "output_cost_per_million_tokens_cents": 0,
       "supports_streaming": true,
-      "supports_tools": false
-    },
-    {
-      "provider": "openai",
-      "model_id": "gpt-5-nano-2025-08-07",
-      "display_name": "gpt-5-nano-2025-08-07",
-      "context_window": 0,
-      "input_cost_per_million_tokens_cents": 0,
-      "output_cost_per_million_tokens_cents": 0,
-      "supports_streaming": true,
-      "supports_tools": false
-    },
-    {
-      "provider": "openai",
-      "model_id": "gpt-5-nano",
-      "display_name": "gpt-5-nano",
-      "context_window": 0,
-      "input_cost_per_million_tokens_cents": 0,
-      "output_cost_per_million_tokens_cents": 0,
-      "supports_streaming": true,
-      "supports_tools": false
-    },
-    {
-      "provider": "openai",
-      "model_id": "gpt-audio-2025-08-28",
-      "display_name": "gpt-audio-2025-08-28",
-      "context_window": 0,
-      "input_cost_per_million_tokens_cents": 0,
-      "output_cost_per_million_tokens_cents": 0,
-      "supports_streaming": true,
-      "supports_tools": false
-    },
-    {
-      "provider": "openai",
-      "model_id": "gpt-realtime",
-      "display_name": "gpt-realtime",
-      "context_window": 0,
-      "input_cost_per_million_tokens_cents": 0,
-      "output_cost_per_million_tokens_cents": 0,
-      "supports_streaming": true,
-      "supports_tools": false
-    },
-    {
-      "provider": "openai",
-      "model_id": "gpt-realtime-2025-08-28",
-      "display_name": "gpt-realtime-2025-08-28",
-      "context_window": 0,
-      "input_cost_per_million_tokens_cents": 0,
-      "output_cost_per_million_tokens_cents": 0,
-      "supports_streaming": true,
-      "supports_tools": false
-    },
-    {
-      "provider": "openai",
-      "model_id": "gpt-audio",
-      "display_name": "gpt-audio",
-      "context_window": 0,
-      "input_cost_per_million_tokens_cents": 0,
-      "output_cost_per_million_tokens_cents": 0,
-      "supports_streaming": true,
-      "supports_tools": false
+      "supports_tools": false,
+      "input_type": "text",
+      "output_type": "text",
+      "filter_method": "known_model_name"
     },
     {
       "provider": "openai",
@@ -1912,27 +1386,62 @@
       "input_cost_per_million_tokens_cents": 0,
       "output_cost_per_million_tokens_cents": 0,
       "supports_streaming": true,
-      "supports_tools": false
+      "supports_tools": false,
+      "input_type": "text",
+      "output_type": "text",
+      "filter_method": "known_model_name"
     },
     {
       "provider": "openai",
-      "model_id": "gpt-image-1-mini",
-      "display_name": "gpt-image-1-mini",
+      "model_id": "gpt-5-mini",
+      "display_name": "gpt-5-mini",
       "context_window": 0,
       "input_cost_per_million_tokens_cents": 0,
       "output_cost_per_million_tokens_cents": 0,
       "supports_streaming": true,
-      "supports_tools": false
+      "supports_tools": false,
+      "input_type": "text",
+      "output_type": "text",
+      "filter_method": "known_model_name"
     },
     {
       "provider": "openai",
-      "model_id": "gpt-5-pro-2025-10-06",
-      "display_name": "gpt-5-pro-2025-10-06",
+      "model_id": "gpt-5-mini-2025-08-07",
+      "display_name": "gpt-5-mini-2025-08-07",
       "context_window": 0,
       "input_cost_per_million_tokens_cents": 0,
       "output_cost_per_million_tokens_cents": 0,
       "supports_streaming": true,
-      "supports_tools": false
+      "supports_tools": false,
+      "input_type": "text",
+      "output_type": "text",
+      "filter_method": "known_model_name"
+    },
+    {
+      "provider": "openai",
+      "model_id": "gpt-5-nano",
+      "display_name": "gpt-5-nano",
+      "context_window": 0,
+      "input_cost_per_million_tokens_cents": 0,
+      "output_cost_per_million_tokens_cents": 0,
+      "supports_streaming": true,
+      "supports_tools": false,
+      "input_type": "text",
+      "output_type": "text",
+      "filter_method": "known_model_name"
+    },
+    {
+      "provider": "openai",
+      "model_id": "gpt-5-nano-2025-08-07",
+      "display_name": "gpt-5-nano-2025-08-07",
+      "context_window": 0,
+      "input_cost_per_million_tokens_cents": 0,
+      "output_cost_per_million_tokens_cents": 0,
+      "supports_streaming": true,
+      "supports_tools": false,
+      "input_type": "text",
+      "output_type": "text",
+      "filter_method": "known_model_name"
     },
     {
       "provider": "openai",
@@ -1942,107 +1451,23 @@
       "input_cost_per_million_tokens_cents": 0,
       "output_cost_per_million_tokens_cents": 0,
       "supports_streaming": true,
-      "supports_tools": false
+      "supports_tools": false,
+      "input_type": "text",
+      "output_type": "text",
+      "filter_method": "known_model_name"
     },
     {
       "provider": "openai",
-      "model_id": "gpt-audio-mini",
-      "display_name": "gpt-audio-mini",
+      "model_id": "gpt-5-pro-2025-10-06",
+      "display_name": "gpt-5-pro-2025-10-06",
       "context_window": 0,
       "input_cost_per_million_tokens_cents": 0,
       "output_cost_per_million_tokens_cents": 0,
       "supports_streaming": true,
-      "supports_tools": false
-    },
-    {
-      "provider": "openai",
-      "model_id": "gpt-audio-mini-2025-10-06",
-      "display_name": "gpt-audio-mini-2025-10-06",
-      "context_window": 0,
-      "input_cost_per_million_tokens_cents": 0,
-      "output_cost_per_million_tokens_cents": 0,
-      "supports_streaming": true,
-      "supports_tools": false
-    },
-    {
-      "provider": "openai",
-      "model_id": "gpt-5-search-api",
-      "display_name": "gpt-5-search-api",
-      "context_window": 0,
-      "input_cost_per_million_tokens_cents": 0,
-      "output_cost_per_million_tokens_cents": 0,
-      "supports_streaming": true,
-      "supports_tools": false
-    },
-    {
-      "provider": "openai",
-      "model_id": "gpt-realtime-mini",
-      "display_name": "gpt-realtime-mini",
-      "context_window": 0,
-      "input_cost_per_million_tokens_cents": 0,
-      "output_cost_per_million_tokens_cents": 0,
-      "supports_streaming": true,
-      "supports_tools": false
-    },
-    {
-      "provider": "openai",
-      "model_id": "gpt-realtime-mini-2025-10-06",
-      "display_name": "gpt-realtime-mini-2025-10-06",
-      "context_window": 0,
-      "input_cost_per_million_tokens_cents": 0,
-      "output_cost_per_million_tokens_cents": 0,
-      "supports_streaming": true,
-      "supports_tools": false
-    },
-    {
-      "provider": "openai",
-      "model_id": "sora-2",
-      "display_name": "sora-2",
-      "context_window": 0,
-      "input_cost_per_million_tokens_cents": 0,
-      "output_cost_per_million_tokens_cents": 0,
-      "supports_streaming": true,
-      "supports_tools": false
-    },
-    {
-      "provider": "openai",
-      "model_id": "sora-2-pro",
-      "display_name": "sora-2-pro",
-      "context_window": 0,
-      "input_cost_per_million_tokens_cents": 0,
-      "output_cost_per_million_tokens_cents": 0,
-      "supports_streaming": true,
-      "supports_tools": false
-    },
-    {
-      "provider": "openai",
-      "model_id": "gpt-5-search-api-2025-10-14",
-      "display_name": "gpt-5-search-api-2025-10-14",
-      "context_window": 0,
-      "input_cost_per_million_tokens_cents": 0,
-      "output_cost_per_million_tokens_cents": 0,
-      "supports_streaming": true,
-      "supports_tools": false
-    },
-    {
-      "provider": "openai",
-      "model_id": "gpt-5.1-chat-latest",
-      "display_name": "gpt-5.1-chat-latest",
-      "context_window": 0,
-      "input_cost_per_million_tokens_cents": 0,
-      "output_cost_per_million_tokens_cents": 0,
-      "supports_streaming": true,
-      "supports_tools": false
-    },
-    {
-      "provider": "openai",
-      "model_id": "gpt-5.1-2025-11-13",
-      "display_name": "gpt-5.1-2025-11-13",
-      "context_window": 0,
-      "input_cost_per_million_tokens_cents": 0,
-      "output_cost_per_million_tokens_cents": 0,
-      "supports_streaming": true,
-      "supports_tools": false
+      "supports_tools": false,
+      "input_type": "text",
+      "output_type": "text",
+      "filter_method": "known_model_name"
     },
     {
       "provider": "openai",
@@ -2052,7 +1477,36 @@
       "input_cost_per_million_tokens_cents": 0,
       "output_cost_per_million_tokens_cents": 0,
       "supports_streaming": true,
-      "supports_tools": false
+      "supports_tools": false,
+      "input_type": "text",
+      "output_type": "text",
+      "filter_method": "known_model_name"
+    },
+    {
+      "provider": "openai",
+      "model_id": "gpt-5.1-2025-11-13",
+      "display_name": "gpt-5.1-2025-11-13",
+      "context_window": 0,
+      "input_cost_per_million_tokens_cents": 0,
+      "output_cost_per_million_tokens_cents": 0,
+      "supports_streaming": true,
+      "supports_tools": false,
+      "input_type": "text",
+      "output_type": "text",
+      "filter_method": "known_model_name"
+    },
+    {
+      "provider": "openai",
+      "model_id": "gpt-5.1-chat-latest",
+      "display_name": "gpt-5.1-chat-latest",
+      "context_window": 0,
+      "input_cost_per_million_tokens_cents": 0,
+      "output_cost_per_million_tokens_cents": 0,
+      "supports_streaming": true,
+      "supports_tools": false,
+      "input_type": "text",
+      "output_type": "text",
+      "filter_method": "known_model_name"
     },
     {
       "provider": "openai",
@@ -2062,17 +1516,10 @@
       "input_cost_per_million_tokens_cents": 0,
       "output_cost_per_million_tokens_cents": 0,
       "supports_streaming": true,
-      "supports_tools": false
-    },
-    {
-      "provider": "openai",
-      "model_id": "gpt-5.1-codex-mini",
-      "display_name": "gpt-5.1-codex-mini",
-      "context_window": 0,
-      "input_cost_per_million_tokens_cents": 0,
-      "output_cost_per_million_tokens_cents": 0,
-      "supports_streaming": true,
-      "supports_tools": false
+      "supports_tools": false,
+      "input_type": "text",
+      "output_type": "text",
+      "filter_method": "known_model_name"
     },
     {
       "provider": "openai",
@@ -2082,27 +1529,23 @@
       "input_cost_per_million_tokens_cents": 0,
       "output_cost_per_million_tokens_cents": 0,
       "supports_streaming": true,
-      "supports_tools": false
+      "supports_tools": false,
+      "input_type": "text",
+      "output_type": "text",
+      "filter_method": "known_model_name"
     },
     {
       "provider": "openai",
-      "model_id": "gpt-image-1.5",
-      "display_name": "gpt-image-1.5",
+      "model_id": "gpt-5.1-codex-mini",
+      "display_name": "gpt-5.1-codex-mini",
       "context_window": 0,
       "input_cost_per_million_tokens_cents": 0,
       "output_cost_per_million_tokens_cents": 0,
       "supports_streaming": true,
-      "supports_tools": false
-    },
-    {
-      "provider": "openai",
-      "model_id": "gpt-5.2-2025-12-11",
-      "display_name": "gpt-5.2-2025-12-11",
-      "context_window": 0,
-      "input_cost_per_million_tokens_cents": 0,
-      "output_cost_per_million_tokens_cents": 0,
-      "supports_streaming": true,
-      "supports_tools": false
+      "supports_tools": false,
+      "input_type": "text",
+      "output_type": "text",
+      "filter_method": "known_model_name"
     },
     {
       "provider": "openai",
@@ -2112,27 +1555,23 @@
       "input_cost_per_million_tokens_cents": 0,
       "output_cost_per_million_tokens_cents": 0,
       "supports_streaming": true,
-      "supports_tools": false
+      "supports_tools": false,
+      "input_type": "text",
+      "output_type": "text",
+      "filter_method": "known_model_name"
     },
     {
       "provider": "openai",
-      "model_id": "gpt-5.2-pro-2025-12-11",
-      "display_name": "gpt-5.2-pro-2025-12-11",
+      "model_id": "gpt-5.2-2025-12-11",
+      "display_name": "gpt-5.2-2025-12-11",
       "context_window": 0,
       "input_cost_per_million_tokens_cents": 0,
       "output_cost_per_million_tokens_cents": 0,
       "supports_streaming": true,
-      "supports_tools": false
-    },
-    {
-      "provider": "openai",
-      "model_id": "gpt-5.2-pro",
-      "display_name": "gpt-5.2-pro",
-      "context_window": 0,
-      "input_cost_per_million_tokens_cents": 0,
-      "output_cost_per_million_tokens_cents": 0,
-      "supports_streaming": true,
-      "supports_tools": false
+      "supports_tools": false,
+      "input_type": "text",
+      "output_type": "text",
+      "filter_method": "known_model_name"
     },
     {
       "provider": "openai",
@@ -2142,77 +1581,10 @@
       "input_cost_per_million_tokens_cents": 0,
       "output_cost_per_million_tokens_cents": 0,
       "supports_streaming": true,
-      "supports_tools": false
-    },
-    {
-      "provider": "openai",
-      "model_id": "gpt-4o-mini-transcribe-2025-12-15",
-      "display_name": "gpt-4o-mini-transcribe-2025-12-15",
-      "context_window": 0,
-      "input_cost_per_million_tokens_cents": 0,
-      "output_cost_per_million_tokens_cents": 0,
-      "supports_streaming": true,
-      "supports_tools": false
-    },
-    {
-      "provider": "openai",
-      "model_id": "gpt-4o-mini-transcribe-2025-03-20",
-      "display_name": "gpt-4o-mini-transcribe-2025-03-20",
-      "context_window": 0,
-      "input_cost_per_million_tokens_cents": 0,
-      "output_cost_per_million_tokens_cents": 0,
-      "supports_streaming": true,
-      "supports_tools": false
-    },
-    {
-      "provider": "openai",
-      "model_id": "gpt-4o-mini-tts-2025-03-20",
-      "display_name": "gpt-4o-mini-tts-2025-03-20",
-      "context_window": 0,
-      "input_cost_per_million_tokens_cents": 0,
-      "output_cost_per_million_tokens_cents": 0,
-      "supports_streaming": true,
-      "supports_tools": false
-    },
-    {
-      "provider": "openai",
-      "model_id": "gpt-4o-mini-tts-2025-12-15",
-      "display_name": "gpt-4o-mini-tts-2025-12-15",
-      "context_window": 0,
-      "input_cost_per_million_tokens_cents": 0,
-      "output_cost_per_million_tokens_cents": 0,
-      "supports_streaming": true,
-      "supports_tools": false
-    },
-    {
-      "provider": "openai",
-      "model_id": "gpt-realtime-mini-2025-12-15",
-      "display_name": "gpt-realtime-mini-2025-12-15",
-      "context_window": 0,
-      "input_cost_per_million_tokens_cents": 0,
-      "output_cost_per_million_tokens_cents": 0,
-      "supports_streaming": true,
-      "supports_tools": false
-    },
-    {
-      "provider": "openai",
-      "model_id": "gpt-audio-mini-2025-12-15",
-      "display_name": "gpt-audio-mini-2025-12-15",
-      "context_window": 0,
-      "input_cost_per_million_tokens_cents": 0,
-      "output_cost_per_million_tokens_cents": 0,
-      "supports_streaming": true,
-      "supports_tools": false
-    },
-    {
-      "provider": "openai",
-      "model_id": "chatgpt-image-latest",
-      "display_name": "chatgpt-image-latest",
-      "context_window": 0,
-      "input_cost_per_million_tokens_cents": 0,
-      "output_cost_per_million_tokens_cents": 0,
-      "supports_streaming": true,
-      "supports_tools": false
+      "supports_tools": false,
+      "input_type": "text",
+      "output_type": "text",
+      "filter_method": "known_model_name"
     },
     {
       "provider": "openai",
@@ -2222,57 +1594,36 @@
       "input_cost_per_million_tokens_cents": 0,
       "output_cost_per_million_tokens_cents": 0,
       "supports_streaming": true,
-      "supports_tools": false
+      "supports_tools": false,
+      "input_type": "text",
+      "output_type": "text",
+      "filter_method": "known_model_name"
     },
     {
       "provider": "openai",
-      "model_id": "gpt-5.3-codex",
-      "display_name": "gpt-5.3-codex",
+      "model_id": "gpt-5.2-pro",
+      "display_name": "gpt-5.2-pro",
       "context_window": 0,
       "input_cost_per_million_tokens_cents": 0,
       "output_cost_per_million_tokens_cents": 0,
       "supports_streaming": true,
-      "supports_tools": false
+      "supports_tools": false,
+      "input_type": "text",
+      "output_type": "text",
+      "filter_method": "known_model_name"
     },
     {
       "provider": "openai",
-      "model_id": "gpt-realtime-1.5",
-      "display_name": "gpt-realtime-1.5",
+      "model_id": "gpt-5.2-pro-2025-12-11",
+      "display_name": "gpt-5.2-pro-2025-12-11",
       "context_window": 0,
       "input_cost_per_million_tokens_cents": 0,
       "output_cost_per_million_tokens_cents": 0,
       "supports_streaming": true,
-      "supports_tools": false
-    },
-    {
-      "provider": "openai",
-      "model_id": "gpt-audio-1.5",
-      "display_name": "gpt-audio-1.5",
-      "context_window": 0,
-      "input_cost_per_million_tokens_cents": 0,
-      "output_cost_per_million_tokens_cents": 0,
-      "supports_streaming": true,
-      "supports_tools": false
-    },
-    {
-      "provider": "openai",
-      "model_id": "gpt-4o-search-preview",
-      "display_name": "gpt-4o-search-preview",
-      "context_window": 0,
-      "input_cost_per_million_tokens_cents": 0,
-      "output_cost_per_million_tokens_cents": 0,
-      "supports_streaming": true,
-      "supports_tools": false
-    },
-    {
-      "provider": "openai",
-      "model_id": "gpt-4o-search-preview-2025-03-11",
-      "display_name": "gpt-4o-search-preview-2025-03-11",
-      "context_window": 0,
-      "input_cost_per_million_tokens_cents": 0,
-      "output_cost_per_million_tokens_cents": 0,
-      "supports_streaming": true,
-      "supports_tools": false
+      "supports_tools": false,
+      "input_type": "text",
+      "output_type": "text",
+      "filter_method": "known_model_name"
     },
     {
       "provider": "openai",
@@ -2282,37 +1633,23 @@
       "input_cost_per_million_tokens_cents": 0,
       "output_cost_per_million_tokens_cents": 0,
       "supports_streaming": true,
-      "supports_tools": false
+      "supports_tools": false,
+      "input_type": "text",
+      "output_type": "text",
+      "filter_method": "known_model_name"
     },
     {
       "provider": "openai",
-      "model_id": "gpt-5.4-2026-03-05",
-      "display_name": "gpt-5.4-2026-03-05",
+      "model_id": "gpt-5.3-codex",
+      "display_name": "gpt-5.3-codex",
       "context_window": 0,
       "input_cost_per_million_tokens_cents": 0,
       "output_cost_per_million_tokens_cents": 0,
       "supports_streaming": true,
-      "supports_tools": false
-    },
-    {
-      "provider": "openai",
-      "model_id": "gpt-5.4-pro",
-      "display_name": "gpt-5.4-pro",
-      "context_window": 0,
-      "input_cost_per_million_tokens_cents": 0,
-      "output_cost_per_million_tokens_cents": 0,
-      "supports_streaming": true,
-      "supports_tools": false
-    },
-    {
-      "provider": "openai",
-      "model_id": "gpt-5.4-pro-2026-03-05",
-      "display_name": "gpt-5.4-pro-2026-03-05",
-      "context_window": 0,
-      "input_cost_per_million_tokens_cents": 0,
-      "output_cost_per_million_tokens_cents": 0,
-      "supports_streaming": true,
-      "supports_tools": false
+      "supports_tools": false,
+      "input_type": "text",
+      "output_type": "text",
+      "filter_method": "known_model_name"
     },
     {
       "provider": "openai",
@@ -2322,37 +1659,23 @@
       "input_cost_per_million_tokens_cents": 0,
       "output_cost_per_million_tokens_cents": 0,
       "supports_streaming": true,
-      "supports_tools": false
+      "supports_tools": false,
+      "input_type": "text",
+      "output_type": "text",
+      "filter_method": "known_model_name"
     },
     {
       "provider": "openai",
-      "model_id": "gpt-5.4-nano-2026-03-17",
-      "display_name": "gpt-5.4-nano-2026-03-17",
+      "model_id": "gpt-5.4-2026-03-05",
+      "display_name": "gpt-5.4-2026-03-05",
       "context_window": 0,
       "input_cost_per_million_tokens_cents": 0,
       "output_cost_per_million_tokens_cents": 0,
       "supports_streaming": true,
-      "supports_tools": false
-    },
-    {
-      "provider": "openai",
-      "model_id": "gpt-5.4-nano",
-      "display_name": "gpt-5.4-nano",
-      "context_window": 0,
-      "input_cost_per_million_tokens_cents": 0,
-      "output_cost_per_million_tokens_cents": 0,
-      "supports_streaming": true,
-      "supports_tools": false
-    },
-    {
-      "provider": "openai",
-      "model_id": "gpt-5.4-mini-2026-03-17",
-      "display_name": "gpt-5.4-mini-2026-03-17",
-      "context_window": 0,
-      "input_cost_per_million_tokens_cents": 0,
-      "output_cost_per_million_tokens_cents": 0,
-      "supports_streaming": true,
-      "supports_tools": false
+      "supports_tools": false,
+      "input_type": "text",
+      "output_type": "text",
+      "filter_method": "known_model_name"
     },
     {
       "provider": "openai",
@@ -2362,27 +1685,75 @@
       "input_cost_per_million_tokens_cents": 0,
       "output_cost_per_million_tokens_cents": 0,
       "supports_streaming": true,
-      "supports_tools": false
+      "supports_tools": false,
+      "input_type": "text",
+      "output_type": "text",
+      "filter_method": "known_model_name"
     },
     {
       "provider": "openai",
-      "model_id": "gpt-image-2",
-      "display_name": "gpt-image-2",
+      "model_id": "gpt-5.4-mini-2026-03-17",
+      "display_name": "gpt-5.4-mini-2026-03-17",
       "context_window": 0,
       "input_cost_per_million_tokens_cents": 0,
       "output_cost_per_million_tokens_cents": 0,
       "supports_streaming": true,
-      "supports_tools": false
+      "supports_tools": false,
+      "input_type": "text",
+      "output_type": "text",
+      "filter_method": "known_model_name"
     },
     {
       "provider": "openai",
-      "model_id": "gpt-image-2-2026-04-21",
-      "display_name": "gpt-image-2-2026-04-21",
+      "model_id": "gpt-5.4-nano",
+      "display_name": "gpt-5.4-nano",
       "context_window": 0,
       "input_cost_per_million_tokens_cents": 0,
       "output_cost_per_million_tokens_cents": 0,
       "supports_streaming": true,
-      "supports_tools": false
+      "supports_tools": false,
+      "input_type": "text",
+      "output_type": "text",
+      "filter_method": "known_model_name"
+    },
+    {
+      "provider": "openai",
+      "model_id": "gpt-5.4-nano-2026-03-17",
+      "display_name": "gpt-5.4-nano-2026-03-17",
+      "context_window": 0,
+      "input_cost_per_million_tokens_cents": 0,
+      "output_cost_per_million_tokens_cents": 0,
+      "supports_streaming": true,
+      "supports_tools": false,
+      "input_type": "text",
+      "output_type": "text",
+      "filter_method": "known_model_name"
+    },
+    {
+      "provider": "openai",
+      "model_id": "gpt-5.4-pro",
+      "display_name": "gpt-5.4-pro",
+      "context_window": 0,
+      "input_cost_per_million_tokens_cents": 0,
+      "output_cost_per_million_tokens_cents": 0,
+      "supports_streaming": true,
+      "supports_tools": false,
+      "input_type": "text",
+      "output_type": "text",
+      "filter_method": "known_model_name"
+    },
+    {
+      "provider": "openai",
+      "model_id": "gpt-5.4-pro-2026-03-05",
+      "display_name": "gpt-5.4-pro-2026-03-05",
+      "context_window": 0,
+      "input_cost_per_million_tokens_cents": 0,
+      "output_cost_per_million_tokens_cents": 0,
+      "supports_streaming": true,
+      "supports_tools": false,
+      "input_type": "text",
+      "output_type": "text",
+      "filter_method": "known_model_name"
     },
     {
       "provider": "openai",
@@ -2392,7 +1763,10 @@
       "input_cost_per_million_tokens_cents": 0,
       "output_cost_per_million_tokens_cents": 0,
       "supports_streaming": true,
-      "supports_tools": false
+      "supports_tools": false,
+      "input_type": "text",
+      "output_type": "text",
+      "filter_method": "known_model_name"
     },
     {
       "provider": "openai",
@@ -2402,7 +1776,10 @@
       "input_cost_per_million_tokens_cents": 0,
       "output_cost_per_million_tokens_cents": 0,
       "supports_streaming": true,
-      "supports_tools": false
+      "supports_tools": false,
+      "input_type": "text",
+      "output_type": "text",
+      "filter_method": "known_model_name"
     },
     {
       "provider": "openai",
@@ -2412,7 +1789,10 @@
       "input_cost_per_million_tokens_cents": 0,
       "output_cost_per_million_tokens_cents": 0,
       "supports_streaming": true,
-      "supports_tools": false
+      "supports_tools": false,
+      "input_type": "text",
+      "output_type": "text",
+      "filter_method": "known_model_name"
     },
     {
       "provider": "openai",
@@ -2422,67 +1802,10 @@
       "input_cost_per_million_tokens_cents": 0,
       "output_cost_per_million_tokens_cents": 0,
       "supports_streaming": true,
-      "supports_tools": false
-    },
-    {
-      "provider": "openai",
-      "model_id": "chat-latest",
-      "display_name": "chat-latest",
-      "context_window": 0,
-      "input_cost_per_million_tokens_cents": 0,
-      "output_cost_per_million_tokens_cents": 0,
-      "supports_streaming": true,
-      "supports_tools": false
-    },
-    {
-      "provider": "openai",
-      "model_id": "gpt-realtime-translate",
-      "display_name": "gpt-realtime-translate",
-      "context_window": 0,
-      "input_cost_per_million_tokens_cents": 0,
-      "output_cost_per_million_tokens_cents": 0,
-      "supports_streaming": true,
-      "supports_tools": false
-    },
-    {
-      "provider": "openai",
-      "model_id": "gpt-realtime-2",
-      "display_name": "gpt-realtime-2",
-      "context_window": 0,
-      "input_cost_per_million_tokens_cents": 0,
-      "output_cost_per_million_tokens_cents": 0,
-      "supports_streaming": true,
-      "supports_tools": false
-    },
-    {
-      "provider": "openai",
-      "model_id": "gpt-realtime-whisper",
-      "display_name": "gpt-realtime-whisper",
-      "context_window": 0,
-      "input_cost_per_million_tokens_cents": 0,
-      "output_cost_per_million_tokens_cents": 0,
-      "supports_streaming": true,
-      "supports_tools": false
-    },
-    {
-      "provider": "openai",
-      "model_id": "gpt-5.6-sol",
-      "display_name": "gpt-5.6-sol",
-      "context_window": 0,
-      "input_cost_per_million_tokens_cents": 0,
-      "output_cost_per_million_tokens_cents": 0,
-      "supports_streaming": true,
-      "supports_tools": false
-    },
-    {
-      "provider": "openai",
-      "model_id": "gpt-5.6-terra",
-      "display_name": "gpt-5.6-terra",
-      "context_window": 0,
-      "input_cost_per_million_tokens_cents": 0,
-      "output_cost_per_million_tokens_cents": 0,
-      "supports_streaming": true,
-      "supports_tools": false
+      "supports_tools": false,
+      "input_type": "text",
+      "output_type": "text",
+      "filter_method": "known_model_name"
     },
     {
       "provider": "openai",
@@ -2492,27 +1815,140 @@
       "input_cost_per_million_tokens_cents": 0,
       "output_cost_per_million_tokens_cents": 0,
       "supports_streaming": true,
-      "supports_tools": false
+      "supports_tools": false,
+      "input_type": "text",
+      "output_type": "text",
+      "filter_method": "known_model_name"
     },
     {
       "provider": "openai",
-      "model_id": "gpt-realtime-2.1",
-      "display_name": "gpt-realtime-2.1",
+      "model_id": "gpt-5.6-sol",
+      "display_name": "gpt-5.6-sol",
       "context_window": 0,
       "input_cost_per_million_tokens_cents": 0,
       "output_cost_per_million_tokens_cents": 0,
       "supports_streaming": true,
-      "supports_tools": false
+      "supports_tools": false,
+      "input_type": "text",
+      "output_type": "text",
+      "filter_method": "known_model_name"
     },
     {
       "provider": "openai",
-      "model_id": "gpt-realtime-2.1-mini",
-      "display_name": "gpt-realtime-2.1-mini",
+      "model_id": "gpt-5.6-terra",
+      "display_name": "gpt-5.6-terra",
       "context_window": 0,
       "input_cost_per_million_tokens_cents": 0,
       "output_cost_per_million_tokens_cents": 0,
       "supports_streaming": true,
-      "supports_tools": false
+      "supports_tools": false,
+      "input_type": "text",
+      "output_type": "text",
+      "filter_method": "known_model_name"
+    },
+    {
+      "provider": "openai",
+      "model_id": "o1",
+      "display_name": "o1",
+      "context_window": 0,
+      "input_cost_per_million_tokens_cents": 0,
+      "output_cost_per_million_tokens_cents": 0,
+      "supports_streaming": true,
+      "supports_tools": false,
+      "input_type": "text",
+      "output_type": "text",
+      "filter_method": "known_model_name"
+    },
+    {
+      "provider": "openai",
+      "model_id": "o1-2024-12-17",
+      "display_name": "o1-2024-12-17",
+      "context_window": 0,
+      "input_cost_per_million_tokens_cents": 0,
+      "output_cost_per_million_tokens_cents": 0,
+      "supports_streaming": true,
+      "supports_tools": false,
+      "input_type": "text",
+      "output_type": "text",
+      "filter_method": "known_model_name"
+    },
+    {
+      "provider": "openai",
+      "model_id": "o3",
+      "display_name": "o3",
+      "context_window": 0,
+      "input_cost_per_million_tokens_cents": 0,
+      "output_cost_per_million_tokens_cents": 0,
+      "supports_streaming": true,
+      "supports_tools": false,
+      "input_type": "text",
+      "output_type": "text",
+      "filter_method": "known_model_name"
+    },
+    {
+      "provider": "openai",
+      "model_id": "o3-2025-04-16",
+      "display_name": "o3-2025-04-16",
+      "context_window": 0,
+      "input_cost_per_million_tokens_cents": 0,
+      "output_cost_per_million_tokens_cents": 0,
+      "supports_streaming": true,
+      "supports_tools": false,
+      "input_type": "text",
+      "output_type": "text",
+      "filter_method": "known_model_name"
+    },
+    {
+      "provider": "openai",
+      "model_id": "o3-mini",
+      "display_name": "o3-mini",
+      "context_window": 0,
+      "input_cost_per_million_tokens_cents": 0,
+      "output_cost_per_million_tokens_cents": 0,
+      "supports_streaming": true,
+      "supports_tools": false,
+      "input_type": "text",
+      "output_type": "text",
+      "filter_method": "known_model_name"
+    },
+    {
+      "provider": "openai",
+      "model_id": "o3-mini-2025-01-31",
+      "display_name": "o3-mini-2025-01-31",
+      "context_window": 0,
+      "input_cost_per_million_tokens_cents": 0,
+      "output_cost_per_million_tokens_cents": 0,
+      "supports_streaming": true,
+      "supports_tools": false,
+      "input_type": "text",
+      "output_type": "text",
+      "filter_method": "known_model_name"
+    },
+    {
+      "provider": "openai",
+      "model_id": "o4-mini",
+      "display_name": "o4-mini",
+      "context_window": 0,
+      "input_cost_per_million_tokens_cents": 0,
+      "output_cost_per_million_tokens_cents": 0,
+      "supports_streaming": true,
+      "supports_tools": false,
+      "input_type": "text",
+      "output_type": "text",
+      "filter_method": "known_model_name"
+    },
+    {
+      "provider": "openai",
+      "model_id": "o4-mini-2025-04-16",
+      "display_name": "o4-mini-2025-04-16",
+      "context_window": 0,
+      "input_cost_per_million_tokens_cents": 0,
+      "output_cost_per_million_tokens_cents": 0,
+      "supports_streaming": true,
+      "supports_tools": false,
+      "input_type": "text",
+      "output_type": "text",
+      "filter_method": "known_model_name"
     }
   ]
 }

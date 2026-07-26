@@ -1,126 +1,139 @@
-import "./dropdown.css";
-import data from "../../../../backend/data/models.json";
-import { useState, useEffect, useRef} from "react";
+import "./dropdown.css"
+import data from "../../../../backend/data/models.json"
+import { useEffect, useRef, useState } from "react"
 
+const Dropdown = ({
+  setModel,
+  updateId,
+  updateNames,
+  darkMode = true,
+}) => {
+  const [dropdownToggled, setDropdownToggled] = useState(false)
+  const [selectedOption, setSelectedOption] = useState(null)
 
-const Dropdown = ({setModel, updateId, updateNames}) => {
-    const [dropdownToggled, setDropdownToggled] = useState(false)
-    const [selectedOption, setSelectedOption] = useState(null)
-    const dropdownRef = useRef(null);
+  const dropdownRef = useRef(null)
+  
+  // Close the dropdown when the user clicks outside it
+  useEffect(() => {
+    function handleOutsideClick(event) {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target)
+      ) {
+        setDropdownToggled(false)
+      }
+    }
 
+    document.addEventListener("mousedown", handleOutsideClick)
 
-    useEffect(() => {
-        function handler(e) {
-            if (dropdownRef.current) {
-                if (!dropdownRef.current.contains(e.target)) {
-                    setDropdownToggled(false)
-                }
-            }
-        }
+    return () => {
+      document.removeEventListener("mousedown", handleOutsideClick)
+    }
+  }, [])
 
-        document.addEventListener('click', handler)
+  // Create options from the first 10 models
+  const modelOptions = data.models.slice(0, 10).map((model, index) => ({
+    id: model.model_id || index,
+    label: model.display_name,
+    value: model.model_id,
+  }))
 
-        return () => {
-            document.removeEventListener('click', handler)
-        }
-    });
+  function selectModel(option) {
+    setSelectedOption(option)
+    setModel(option.value)
+    updateId(option.value)
+    updateNames(option.label)
+    setDropdownToggled(false)
+  }
 
-   const modelOptions = [];
+  return (
+    <div
+      ref={dropdownRef}
+      className={`dropdown ${
+        darkMode ? "dropdown-dark" : "dropdown-light"
+      }`}
+    >
+      <button
+        type="button"
+        className={`dropdown-toggle ${
+          dropdownToggled ? "dropdown-toggle-open" : ""
+        }`}
+        onClick={() => {
+          setDropdownToggled((currentValue) => !currentValue)
+        }}
+        aria-expanded={dropdownToggled}
+        aria-haspopup="listbox"
+      >
+        <span className="dropdown-toggle-content">
+          <span className="dropdown-label">
+            {selectedOption
+              ? selectedOption.label
+              : "Select a model"}
+          </span>
 
-if (data.models[0]) {
-    modelOptions.push({
-        id: 1,
-        label: data.models[0].display_name,
-        value: data.models[0].model_id,
-    });
-}
-if (data.models[1]) {
-    modelOptions.push({
-        id: 2,
-        label: data.models[1].display_name,
-        value: data.models[1].model_id,
-    });
-}
-if (data.models[2]) {
-    modelOptions.push({
-        id: 3,
-        label: data.models[2].display_name,
-        value: data.models[2].model_id,
-    });
-}
-if (data.models[3]) {
-    modelOptions.push({
-        id: 4,
-        label: data.models[3].display_name,
-        value: data.models[3].model_id,
-    });
-}
-if (data.models[4]) {
-    modelOptions.push({
-        id: 5,
-        label: data.models[4].display_name,
-        value: data.models[4].model_id,
-    });
-}
-if (data.models[5]) {
-    modelOptions.push({
-        id: 6,
-        label: data.models[5].display_name,
-        value: data.models[5].model_id,
-    });
-}
-if (data.models[6]) {
-    modelOptions.push({
-        id: 7,
-        label: data.models[6].display_name,
-        value: data.models[6].model_id,
-    });
-}
-if (data.models[7]) {
-    modelOptions.push({
-        id: 8,
-        label: data.models[7].display_name,
-        value: data.models[7].model_id,
-    });
-}
-if (data.models[8]) {
-    modelOptions.push({
-        id: 9,
-        label: data.models[8].display_name,
-        value: data.models[8].model_id,
-    });
-}
-if (data.models[9]) {
-    modelOptions.push({
-        id: 10,
-        label: data.models[9].display_name,
-        value: data.models[9].model_id,
-    });
-}
+          {selectedOption && (
+            <span className="dropdown-model-id">
+              {selectedOption.value}
+            </span>
+          )}
+        </span>
 
-    return (
-        <div className="dropdown" ref={dropdownRef}>
-            <button 
-            className="toggle" 
-            onClick={() => {
-                setDropdownToggled(!dropdownToggled);
-            }}
-            >
-                <span>{selectedOption ? selectedOption.label : "Select models"}</span>
-                <span>{dropdownToggled ? " -": " +"}</span>
-            </button>
-            <div className={`options ${dropdownToggled ? "visible" : ""}`}>
-                {modelOptions.map((option, index) => {
-                    return <button key={index} onClick={() => {
-                        setSelectedOption(option);
-                        setModel(option.value);
-                        setDropdownToggled(false);
-                        updateId(option.value);
-                        updateNames(option.label)
-                    }}>{option.label}</button>;
-                })}
-            </div>
+        <span
+          aria-hidden="true"
+          className={`dropdown-chevron ${
+            dropdownToggled ? "dropdown-chevron-open" : ""
+          }`}
+        >
+          ▾
+        </span>
+      </button>
+
+      <div
+        className={`dropdown-options ${
+          dropdownToggled ? "dropdown-options-visible" : ""
+        }`}
+        role="listbox"
+      >
+        <div className="dropdown-options-header">
+          Available models
         </div>
-    );
-};
+
+        <div className="dropdown-options-scroll">
+          {modelOptions.map((option, index) => {
+            const selected =
+              selectedOption?.value === option.value
+
+            return (
+              <button
+                type="button"
+                role="option"
+                aria-selected={selected}
+                key={`${option.id}-${index}`}
+                className={`dropdown-option ${
+                  selected ? "dropdown-option-selected" : ""
+                }`}
+                onClick={() => {
+                  selectModel(option)
+                }}
+              >
+                <span className="dropdown-option-text">
+                  <span className="dropdown-option-label">
+                    {option.label}
+                  </span>
+
+                  <span className="dropdown-option-id">
+                    {option.value}
+                  </span>
+                </span>
+
+
+              </button>
+            )
+          })}
+        </div>
+      </div>
+    </div>
+  )
+}
+
 export default Dropdown
