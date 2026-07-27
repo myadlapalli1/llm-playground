@@ -9,7 +9,7 @@ import { SideMenu } from "@/components/ui/sidemenu"
 
 export default function App() {
 
-  # Define render backend url
+  // Define render backend url
   const API_URL = import.meta.env.VITE_API_URL || "http://127.0.0.1:8000";
   
   const [prompt, setPrompt] = useState("");
