@@ -55,12 +55,15 @@ def get_client(provider: str):
 origins = [
     "http://localhost:5173",
     "http://localhost:3000",
-    "https://llm-comparison-963abf6eg-buttery-ai-internship.vercel.app"
 ]
 
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
+
+    # Allow your Vercel production and preview deployments
+    allow_origin_regex=r"https://llm-comparison-[a-zA-Z0-9-]+-buttery-ai-internship\.vercel\.app",
+
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
