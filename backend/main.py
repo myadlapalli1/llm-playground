@@ -601,3 +601,105 @@ def list_comparisons():
         content=formatted_json,
         media_type="application/json"
     )
+
+@app.post("/api/deletecompare") # Delete comparison by ID
+def delete_comparison(comparison_id: str):
+    try:
+        with sqlite3.connect("comparisons.db") as conn:
+            cursor = conn.cursor()
+
+            # Find related request IDs first because responses use request_id
+            cursor.execute(
+                """
+                SELECT request_id
+                FROM chat_requests
+                WHERE comparison_id = ?
+                """,
+                (comparison_id,)
+            )
+
+            request_ids = cursor.fetchall()
+
+            for request_row in request_ids:
+                cursor.execute(
+                    """
+                    DELETE FROM chat_responses
+                    WHERE request_id = ?
+                    """,
+                    (request_row[0],)
+                )
+
+            cursor.execute(
+                """
+                DELETE FROM chat_requests
+                WHERE comparison_id = ?
+                """,
+                (comparison_id,)
+            )
+
+            cursor.execute(
+                """
+                DELETE FROM privateKey
+                WHERE comparison_id = ?
+                """,
+                (comparison_id,)
+            )
+
+            cursor.execute(
+                """
+                DELETE FROM comparisons
+                WHERE comparison_id = ?
+                """,
+                (comparison_id,)
+            )
+
+            deleted_rows = cursor.rowcount
+
+            if deleted_rows == 0:
+                return api_error(
+                    404,
+                    "NOT_FOUND",
+                    "Comparison not found"
+                )
+
+            conn.commit()
+
+        return {
+            "success": True,
+            "comparison_id": comparison_id,
+            "message": "Comparison deleted"
+        }
+
+    except sqlite3.Error as error:
+        return api_error(
+            500,
+            "DATABASE_ERROR",
+            "Unable to delete comparison",
+            {"message": str(error)}
+        )
+
+@app.delete("/api/comparisons")
+def delete_all_comparisons():
+    try:
+        with sqlite3.connect("comparisons.db") as conn:
+            cursor = conn.cursor()
+
+            cursor.execute("DELETE FROM chat_responses")
+            cursor.execute("DELETE FROM chat_requests")
+            cursor.execute("DELETE FROM privateKey")
+            cursor.execute("DELETE FROM comparisons")
+
+            conn.commit()
+
+        return {
+            "success": True,
+            "message": "All comparisons deleted"
+        }
+
+    except sqlite3.Error as error:
+        return api_error(
+            500,
+            "DATABASE_ERROR",
+            "Unable to delete all comparisons",
+            {"message": str(error)}
+        )
