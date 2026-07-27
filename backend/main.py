@@ -54,7 +54,8 @@ def get_client(provider: str):
 #For frontend
 origins = [
     "http://localhost:5173",
-    "http://localhost:3000"
+    "http://localhost:3000",
+    "https://llm-comparison-963abf6eg-buttery-ai-internship.vercel.app"
 ]
 
 app.add_middleware(
