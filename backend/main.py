@@ -16,6 +16,9 @@ from typing import List, Optional, Dict, Any
 
 load_dotenv()
 
+FRONTEND_URL = os.getenv("FRONTEND_URL", "https://llm-comparison-963abf6eg-buttery-ai-internship.vercel.app").rstrip("/")
+BACKEND_URL = os.getenv("BACKEND_URL", "http://127.0.0.1:8000").rstrip("/")
+
 app = FastAPI()
 sync_models()
 
@@ -55,12 +58,13 @@ def get_client(provider: str):
 origins = [
     "http://localhost:5173",
     "http://localhost:3000",
-    "https://llm-comparison-963abf6eg-buttery-ai-internship.vercel.app"
+    FRONTEND_URL
 ]
 
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
+    allow_origin_regex=r"https://.*\.vercel\.app",
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -440,7 +444,7 @@ def create_comparison(request: ComparisonCreateRequest):
 
     return {
         "comparison_id": comparison_id,
-        "share_url": f"http://127.0.0.1:8000/api/comparisons/{comparison_id}",
+        "share_url": f"{BACKEND_URL}/api/comparisons/{comparison_id}/{request.key}",
         "created_at": created_at,
     }
 
