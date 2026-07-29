@@ -67,6 +67,7 @@ export default function App() {
   const [randomNum, setRandomNum] = useState(0);
   const [activeResponseIndex, setActiveResponseIndex] = useState(0);
   const controllerRef = useRef(null);
+  const [lastRequestPayload, setLastRequestPayload] = useState(null);
 
 let modelResponses = "";
 let modelComparsion = "";
@@ -161,7 +162,7 @@ if (runRandom === false) {
     fontWeight: 1000,
     color: darkMode ? "#efeeee" : "#111827",
     animation: "fadeIn 0.6s ease-out forwards",
-    margin: 0,
+    marginTop: "30%"
   },
 
   pageTitle: {
@@ -171,7 +172,7 @@ if (runRandom === false) {
     fontWeight: 1000,
     color: darkMode ? "#efeeee" : "#111827",
     animation: "fadeIn 0.6s ease-out forwards",
-    marginTop: 0,
+    marginTop: "0%"
   },
 
   secondaryTxt: {
@@ -182,7 +183,7 @@ if (runRandom === false) {
     fontWeight: 700,
     color: darkMode ? "#efeeee" : "#111827",
     animation: "fadeIn 1s ease-out forwards",
-    margin: 0,
+    bottom: "20px"
   },
 
   mainColumn: {
@@ -198,14 +199,6 @@ if (runRandom === false) {
     transform: transitioningToResponse ? "translateY(-24px)" : "translateY(0)",
     transition: "opacity 0.35s ease, transform 0.35s ease",
     pointerEvents: transitioningToResponse ? "none" : "auto",
-  },
-
-  homeColumn: {
-    minHeight: "calc(100dvh - 64px)",
-    justifyContent: "center",
-    gap: "12px",
-    paddingTop: "24px",
-    paddingBottom: "72px",
   },
 
   pageBackButton: {
@@ -290,7 +283,7 @@ if (runRandom === false) {
     width: "min(100%, 520px)",
     height: "140px",
     padding: "5px",
-    marginTop: "20px",
+    marginTop: "5%",
     fontSize: "16px",
     backgroundColor: fieldBg,
     border: fieldBorder,
@@ -307,7 +300,7 @@ if (runRandom === false) {
   },
 
   clearModels: {
-    margin: "0 auto",
+    margin: "0px 50% 0px 25%",
     padding: "8px",
     fontSize: "14px",
     borderRadius: "4px",
@@ -367,7 +360,7 @@ if (runRandom === false) {
     display: "block",
     padding: "10px 15px",
     fontSize: "16px",
-    margin: "0 auto 20px",
+    margin: "0 auto 5%",
     borderRadius: "5px",
     backgroundColor: fieldBg,
     border: fieldBorder,
@@ -390,9 +383,9 @@ if (runRandom === false) {
   },
 
   viewCompareBtn: {
-    padding: "8px",
+    padding: "1%",
     fontSize: "16px",
-    margin: "0 auto",
+    margin: "0 40%",
     marginTop: "10px",
     borderRadius: "5px",
     backgroundColor: fieldBg,
@@ -402,20 +395,19 @@ if (runRandom === false) {
   },
 
   createCompareButton: {
-    width: "100%", 
-    maxWidth: "420px",
-    height: "40px", 
+    width: "80%", 
+    height: "8%", 
     fontSize: "16px", 
     minHeight: "30px", 
     borderRadius: "5px", 
-    marginTop: "12px",    
+    marginTop: "3%",    
     backgroundColor: fieldBg,
     border: fieldBorder,
     color: panelText,
   },
 
   error: {
-    marginTop: "20px",
+    marginTop: "5%",
     fontSize: "30px",
     fontFamily: '"Cormorant Garamond", serif',
     color: "#ff8e8e",
@@ -643,6 +635,29 @@ const removeModel = (index) => {
     setError("");
     setDisplayTxt("");
     setCostTxt("");
+
+    const requestPayload = {
+      prompt,
+      system_prompt: systemPrompt,
+      model_ids: [...models],
+      params: {
+        temperature: Number.isNaN(temperatureValue)
+          ? 0.5
+          : temperatureValue,
+        max_tokens: Number.isNaN(maxTokensValue)
+          ? 1000
+          : maxTokensValue,
+        top_p: Number.isNaN(topPValue)
+          ? 1
+          : topPValue,
+      },
+      per_model_overrides: per_model_overrides
+        ? JSON.parse(per_model_overrides)
+        : {},
+    };
+
+    setLastRequestPayload(requestPayload);
+
     let requestSucceeded = false;
     try {
       // Pass the milliseconds directly into AbortSignal.timeout()
@@ -652,27 +667,7 @@ const removeModel = (index) => {
           "Content-Type": "application/json"
         },
         signal: AbortSignal.timeout(60000), // 60-second timeout
-        body: JSON.stringify({
-          prompt,
-          system_prompt: systemPrompt,
-          model_ids: models,
-          params: {
-            temperature: Number.isNaN(temperatureValue)
-              ? 0.5
-              : temperatureValue,
-
-            max_tokens: Number.isNaN(maxTokensValue)
-              ? 1000
-              : maxTokensValue,
-
-            top_p: Number.isNaN(topPValue)
-              ? 1
-              : topPValue,
-          },
-          per_model_overrides: per_model_overrides
-            ? JSON.parse(per_model_overrides)
-            : {},
-          }),
+        body: JSON.stringify(requestPayload),
         });
       const data = await res.json();
 
@@ -719,6 +714,85 @@ const removeModel = (index) => {
         setViewResponse(true);
         setTransitioningToResponse(false);
       }
+    }
+  };
+
+  const retryPrompt = async () => {
+    if (!lastRequestPayload || loading) {
+      return;
+    }
+
+    setLoading(true);
+    setError("");
+    setDisplayTxt("");
+    setCostTxt("");
+    setResponse([]);
+    setCosts([]);
+    setNewCosts([]);
+    setUsedIndexs([]);
+    setActiveResponseIndex(0);
+    SetViewQuickCompare(false);
+
+    const controller = new AbortController();
+    controllerRef.current = controller;
+
+    try {
+      const res = await fetch(`${API_URL}/api/chat`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        signal: controller.signal,
+        body: JSON.stringify(lastRequestPayload),
+      });
+
+      if (!res.ok) {
+        let message = `Retry failed with status ${res.status}`;
+
+        try {
+          const errorData = await res.json();
+          message =
+            errorData?.error?.message ||
+            errorData?.detail ||
+            message;
+        } catch {
+          // Keep the status-based message when the response is not JSON.
+        }
+
+        throw new Error(message);
+      }
+
+      const data = await res.json();
+      const retriedResponses = data.responses ?? [];
+
+      setRequestId(data.request_id ?? "");
+      setRequestIDs((currentRequestIDs) => [
+        ...currentRequestIDs,
+        data.request_id,
+      ]);
+      setAllResponses((currentResponses) => [
+        ...currentResponses,
+        data,
+      ]);
+      setPrompts((currentPrompts) => [
+        ...currentPrompts,
+        lastRequestPayload.prompt,
+      ]);
+      setResponse(retriedResponses);
+
+      if (retriedResponses.length > 0) {
+        showResponse(0, retriedResponses);
+      } else {
+        setDisplayTxt("No model responses were returned.");
+      }
+    } catch (error) {
+      if (error.name === "AbortError") {
+        setError("The retry was cancelled.");
+      } else {
+        setError(`Retry failed: ${error.message}`);
+      }
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -1003,13 +1077,6 @@ return (
           gap: 12px !important;
         }
 
-        .home-main-column {
-          min-height: calc(100dvh - 72px) !important;
-          justify-content: center !important;
-          padding-top: 16px !important;
-          padding-bottom: 40px !important;
-        }
-
         .page-back-button {
           top: 14px !important;
           left: 68px !important;
@@ -1019,13 +1086,13 @@ return (
         }
 
         h1 {
-          font-size: 42px !important;
+          font-size: clamp(38px, 13vw, 52px) !important;
           line-height: 1.05 !important;
           overflow-wrap: anywhere;
         }
 
         h2 {
-          font-size: 32px !important;
+          font-size: clamp(28px, 9vw, 40px) !important;
           line-height: 1.1 !important;
           overflow-wrap: anywhere;
         }
@@ -1114,7 +1181,7 @@ return (
           <h2
             style={{
               ...styles.pageTitle,
-              marginBottom: "8px",
+              marginBottom: "1%",
             }}
           >
             Parameters
@@ -1519,7 +1586,7 @@ return (
               justifyContent: "center",
               alignItems: "center",
               width: "100%",
-              marginTop: "20px"
+              marginTop: "5%"
             }}
           >
             <Dropdown
@@ -1536,7 +1603,7 @@ return (
             width: "100%",
             boxSizing: "border-box",
             padding: "20px",
-            marginTop: "20px",
+            marginTop: "5%",
 
             backgroundColor: darkMode
               ? "rgba(255, 255, 255, 0.035)"
@@ -1886,7 +1953,7 @@ return (
                 maxHeight: "calc(100vh - 40px)",
 
                 boxSizing: "border-box",
-                padding: "20px",
+                padding: "clamp(16px, 4vw, 24px)",
 
                 display: "flex",
                 flexDirection: "column",
@@ -2075,7 +2142,7 @@ return (
           <h2
             style={{
               ...styles.pageTitle,
-              marginBottom: "8px",
+              marginBottom: "1%",
             }}
           >
             Comparison
@@ -2461,400 +2528,6 @@ return (
           )}
         </div>
 
-        {/* Create comparison modal */}
-        {generateURL && (
-          <>
-            {/* Modal background */}
-            <div
-              onClick={toggleURL}
-              style={{
-                position: "fixed",
-                inset: 0,
-
-                background: overlayBg,
-                backdropFilter: "blur(4px)",
-
-                zIndex: 1000,
-              }}
-            />
-
-            {/* Modal */}
-            <div
-              role="dialog"
-              aria-modal="true"
-              aria-label="Create comparison"
-              style={{
-                position: "fixed",
-                top: "50%",
-                left: "50%",
-                transform: "translate(-50%, -50%)",
-
-                width: "min(540px, calc(100vw - 32px))",
-                maxHeight: "calc(100vh - 40px)",
-                boxSizing: "border-box",
-                padding: "20px",
-
-                overflowY: "auto",
-
-                background: panelBg,
-                border: panelBorder,
-                borderRadius: "18px",
-
-                color: panelText,
-
-                boxShadow: "0 24px 70px rgba(0, 0, 0, 0.35)",
-
-                zIndex: 1001,
-              }}
-            >
-              {/* Modal header */}
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "flex-start",
-                  justifyContent: "space-between",
-                  gap: "160px",
-                  marginBottom: "22px",
-                }}
-              >
-                <div>
-                  <h2
-                    style={{
-                      margin: 0,
-                      fontFamily: '"Cormorant Garamond", serif',
-                      fontSize: "32px",
-                      fontWeight: 700,
-                    }}
-                  >
-                    Create
-                  </h2>
-
-                  <p
-                    style={{
-                      margin: "5px 0 0",
-                      color: mutedText,
-                      fontSize: "13px",
-                      lineHeight: 1.5,
-                    }}
-                  >
-                    Add a title, optional notes, and sharing settings.
-                  </p>
-                </div>
-
-                <Button
-                  darkMode={darkMode}
-                  size="sqr"
-                  onClick={() => {
-                    toggleURL();
-                    setCompError("");
-                  }}
-                  aria-label="Close comparison window"
-                  style={{
-                    minWidth: "38px",
-                    width: "38px",
-                    height: "38px",
-                    padding: 0,
-                    flexShrink: 0,
-                  }}
-                >
-                  x
-                </Button>
-              </div>
-
-              {/* Selected chat */}
-              <div
-                style={{
-                  marginBottom: "18px",
-                  padding: "12px 14px",
-
-                  backgroundColor: darkMode
-                    ? "rgba(255, 255, 255, 0.04)"
-                    : "#f8fafc",
-
-                  border: darkMode
-                    ? "1px solid rgba(255, 255, 255, 0.08)"
-                    : "1px solid #e2e8f0",
-
-                  borderRadius: "10px",
-                }}
-              >
-                <div
-                  style={{
-                    marginBottom: "4px",
-                    color: mutedText,
-                    fontSize: "11px",
-                    fontWeight: 700,
-                    textTransform: "uppercase",
-                    letterSpacing: "0.07em",
-                  }}
-                >
-                  Selected chat
-                </div>
-
-                <div
-                  style={{
-                    color: panelText,
-                    fontSize: "13px",
-                    overflow: "hidden",
-                    textOverflow: "ellipsis",
-                    whiteSpace: "nowrap",
-                  }}
-                >
-                  {requestID
-                    ? prompts[requestIDs.indexOf(requestID)] ||
-                      requestID
-                    : "No chat selected"}
-                </div>
-              </div>
-
-              {/* Title */}
-              <div
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: "8px",
-                  marginBottom: "0px",
-                }}
-              >
-                <label
-                  htmlFor="comparison-title"
-                  style={{
-                    color: panelText,
-                    fontSize: "14px",
-                    fontWeight: 650,
-                  }}
-                >
-                  Title
-                </label>
-
-                <input
-                  id="comparison-title"
-                  value={compTitle}
-                  onChange={(e) => setTitle(e.target.value)}
-                  placeholder="Enter a comparison title"
-                  style={{
-                    ...styles.paramArea,
-                    width: "100%",
-                    height: "46px",
-                    padding: "0 14px",
-                    borderRadius: "10px",
-                  }}
-                />
-              </div>
-
-              {/* Notes */}
-              <div
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: "8px",
-                  marginBottom: "16px",
-                }}
-              >
-                <label
-                  htmlFor="comparison-notes"
-                  style={{
-                    color: panelText,
-                    fontSize: "14px",
-                    fontWeight: 650,
-                  }}
-                >
-                  Notes
-                </label>
-
-                <Textarea
-                  id="comparison-notes"
-                  darkMode={darkMode}
-                  value={compNotes}
-                  onChange={(e) => setNotes(e.target.value)}
-                  placeholder="Add optional notes about this comparison"
-                  style={{
-                    ...styles.paramArea,
-                    width: "100%",
-                    minHeight: "130px",
-                    height: "130px",
-                    boxSizing: "border-box",
-                    padding: "14px",
-                    borderRadius: "12px",
-                    resize: "vertical",
-                    fontSize: "14px",
-                    lineHeight: 1.55,
-                  }}
-                />
-              </div>
-
-              {/* Public setting */}
-              <label
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                  gap: "16px",
-
-                  width: "100%",
-                  boxSizing: "border-box",
-                  marginBottom: "16px",
-                  padding: "13px 14px",
-
-                  backgroundColor: darkMode
-                    ? "rgba(255, 255, 255, 0.04)"
-                    : "#f8fafc",
-
-                  border: darkMode
-                    ? "1px solid rgba(255, 255, 255, 0.08)"
-                    : "1px solid #e2e8f0",
-
-                  borderRadius: "10px",
-                  cursor: "pointer",
-                }}
-              >
-                <div>
-                  <div
-                    style={{
-                      color: panelText,
-                      fontSize: "14px",
-                      fontWeight: 650,
-                    }}
-                  >
-                    Public comparison
-                  </div>
-
-                  <div
-                    style={{
-                      marginTop: "3px",
-                      color: mutedText,
-                      fontSize: "12px",
-                      lineHeight: 1.4,
-                    }}
-                  >
-                    Anyone with the URL can view it.
-                  </div>
-                </div>
-
-                <input
-                  type="checkbox"
-                  checked={isPublic}
-                  onChange={(e) => {
-                    setIsPublic(e.target.checked);
-
-                    if (e.target.checked) {
-                      setKey("");
-                    }
-                  }}
-                  style={{
-                    width: "18px",
-                    height: "18px",
-                    flexShrink: 0,
-                    cursor: "pointer",
-                  }}
-                />
-              </label>
-
-              {/* Private key */}
-              {!isPublic && (
-                <div
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    gap: "8px",
-                    marginBottom: "16px",
-                  }}
-                >
-                  <label
-                    htmlFor="comparison-key"
-                    style={{
-                      color: panelText,
-                      fontSize: "14px",
-                      fontWeight: 650,
-                    }}
-                  >
-                    Private key
-                  </label>
-
-                  <input
-                    id="comparison-key"
-                    type="password"
-                    value={key}
-                    onChange={(e) => setKey(e.target.value)}
-                    placeholder="Enter at least 5 characters"
-                    style={{
-                      ...styles.paramArea,
-                      width: "100%",
-                      height: "46px",
-                      padding: "0 14px",
-                      borderRadius: "10px",
-                    }}
-                  />
-
-                  <span
-                    style={{
-                      color: mutedText,
-                      fontSize: "12px",
-                      lineHeight: 1.45,
-                    }}
-                  >
-                    A key is required at the end of the URL when the comparison is private.
-                  </span>
-                </div>
-              )}
-
-              {/* Error */}
-              {compErrorTxt && (
-                <div
-                  style={{
-                    width: "100%",
-                    boxSizing: "border-box",
-                    marginBottom: "16px",
-                    padding: "11px 13px",
-
-                    color: "#ff8e8e",
-
-                    backgroundColor: darkMode
-                      ? "rgba(239, 68, 68, 0.08)"
-                      : "#fef2f2",
-
-                    border: darkMode
-                      ? "1px solid rgba(239, 68, 68, 0.2)"
-                      : "1px solid #fecaca",
-
-                    borderRadius: "10px",
-                    fontSize: "13px",
-                    fontWeight: 600,
-                  }}
-                >
-                  {compErrorTxt}
-                </div>
-              )}
-
-              {/* Modal buttons */}
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "flex-end",
-                  flexWrap: "wrap",
-                  gap: "10px",
-                }}
-              >
-                <Button
-                  darkMode={darkMode}
-                  onClick={() => {
-                    toggleURL();
-                    setCompError("");
-                  }}
-                >
-                  Cancel
-                </Button>
-
-                <Button
-                  darkMode={darkMode}
-                  onClick={saveComparison}
-                >
-                  Create
-                </Button>
-              </div>
-            </div>
-          </>
-        )}
       </div>
     </div>
   )}
@@ -2886,6 +2559,7 @@ return (
           <span style={styles.pageBackButtonText}>
             x
           </span>
+          
         </Button>
 
           <h2 align="center" style={styles.pageTitle}>Response</h2>
@@ -2898,7 +2572,7 @@ return (
               fontWeight: 700,
               color: darkMode ? "#efeeee" : "#111827",
               animation: "fadeIn 1s ease-out forwards",
-              marginTop: 0,
+              marginTop: "0%"
             }}
           >
             Tap a response button below to view the model output.
@@ -3221,27 +2895,6 @@ return (
             );
           })()}
 
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              width: "100%",
-              padding: "0 10px",
-            }}
-          >
-            <Button
-              darkMode={darkMode}
-              onClick={() => toggleQuickCompare()}
-              style={{
-                ...styles.responseButton,
-                minWidth: "180px",
-                maxWidth: "260px",
-              }}
-            >
-               + Quick Compare
-            </Button>
-          </div>
-
  {viewQuickCompare && (
   (() => {
     /*
@@ -3468,7 +3121,7 @@ return (
             width: "min(940px, calc(100vw - 32px))",
             maxHeight: "calc(100vh - 40px)",
             boxSizing: "border-box",
-            padding: "20px",
+            padding: "clamp(16px, 4vw, 24px)",
 
             overflowY: "auto",
 
@@ -4386,7 +4039,50 @@ Output tokens: ${Number(model.tokens_out).toLocaleString()}`;
           >
             {displayTxt || "Choose a model response to preview details here."}
           </div>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              flexWrap: "wrap",
+              gap: "12px",
+              width: "100%",
+              padding: "0 10px",
+            }}
+          >
+            <Button
+              darkMode={darkMode}
+              onClick={retryPrompt}
+              disabled={loading || !lastRequestPayload}
+              style={{
+                ...styles.responseButton,
+                minWidth: "180px",
+                maxWidth: "260px",
+                margin: 0,
+                opacity: loading || !lastRequestPayload ? 0.6 : 1,
+                cursor:
+                  loading || !lastRequestPayload
+                    ? "not-allowed"
+                    : "pointer",
+              }}
+            >
+              {loading ? "Retrying..." : "↻ Retry"}
+            </Button>
 
+            <Button
+              darkMode={darkMode}
+              onClick={() => toggleQuickCompare()}
+              disabled={loading}
+              style={{
+                ...styles.responseButton,
+                minWidth: "180px",
+                maxWidth: "260px",
+                margin: 0,
+              }}
+            >
+               + Quick Compare
+            </Button>
+          </div>
         </div>
       )}
 
@@ -4398,10 +4094,7 @@ Output tokens: ${Number(model.tokens_out).toLocaleString()}`;
 
       <>
 
-        <div
-          className="main-column home-main-column"
-          style={{ ...styles.mainColumn, ...styles.homeColumn }}
-        >
+        <div className="main-column" style={styles.mainColumn}>
           <h1 align="center" style={styles.titleTxt}>SwiftEval</h1>
           <h2 align="center" style={styles.secondaryTxt}>{secondTxt}</h2>
 
@@ -4467,6 +4160,405 @@ Output tokens: ${Number(model.tokens_out).toLocaleString()}`;
       )}
 
       </div>
+
+    {/* Create comparison modal */}
+    {generateURL && (
+      <div
+        onClick={() => {
+          toggleURL();
+          setCompError("");
+        }}
+        style={{
+          position: "fixed",
+          inset: 0,
+          zIndex: 2000,
+
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+
+          boxSizing: "border-box",
+          padding: "20px",
+          overflowY: "auto",
+
+          background: overlayBg,
+          backdropFilter: "blur(4px)",
+        }}
+      >
+        <div
+          role="dialog"
+          aria-modal="true"
+          aria-label="Create comparison"
+          onClick={(event) => event.stopPropagation()}
+          style={{
+            position: "relative",
+
+            width: "540px",
+            maxWidth: "calc(100vw - 40px)",
+            maxHeight: "calc(100dvh - 40px)",
+            boxSizing: "border-box",
+            padding: "clamp(16px, 4vw, 24px)",
+
+            overflowY: "auto",
+
+            background: panelBg,
+            border: panelBorder,
+            borderRadius: "18px",
+
+            color: panelText,
+
+            boxShadow: "0 24px 70px rgba(0, 0, 0, 0.35)",
+          }}
+        >
+          {/* Modal header */}
+          <div
+            style={{
+              display: "flex",
+              alignItems: "flex-start",
+              justifyContent: "space-between",
+              gap: "16px",
+              marginBottom: "22px",
+            }}
+          >
+            <div>
+              <h2
+                style={{
+                  margin: 0,
+                  fontFamily: '"Cormorant Garamond", serif',
+                  fontSize: "32px",
+                  fontWeight: 700,
+                }}
+              >
+                Create
+              </h2>
+
+              <p
+                style={{
+                  margin: "5px 0 0",
+                  color: mutedText,
+                  fontSize: "13px",
+                  lineHeight: 1.5,
+                }}
+              >
+                Add a title, optional notes, and sharing settings.
+              </p>
+            </div>
+
+            <Button
+              darkMode={darkMode}
+              size="sqr"
+              onClick={() => {
+                toggleURL();
+                setCompError("");
+              }}
+              aria-label="Close comparison window"
+              style={{
+                minWidth: "38px",
+                width: "38px",
+                height: "38px",
+                padding: 0,
+                flexShrink: 0,
+              }}
+            >
+              x
+            </Button>
+          </div>
+
+          {/* Selected chat */}
+          <div
+            style={{
+              marginBottom: "18px",
+              padding: "12px 14px",
+
+              backgroundColor: darkMode
+                ? "rgba(255, 255, 255, 0.04)"
+                : "#f8fafc",
+
+              border: darkMode
+                ? "1px solid rgba(255, 255, 255, 0.08)"
+                : "1px solid #e2e8f0",
+
+              borderRadius: "10px",
+            }}
+          >
+            <div
+              style={{
+                marginBottom: "4px",
+                color: mutedText,
+                fontSize: "11px",
+                fontWeight: 700,
+                textTransform: "uppercase",
+                letterSpacing: "0.07em",
+              }}
+            >
+              Selected chat
+            </div>
+
+            <div
+              style={{
+                color: panelText,
+                fontSize: "13px",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+                whiteSpace: "nowrap",
+              }}
+            >
+              {requestID
+                ? prompts[requestIDs.indexOf(requestID)] ||
+                  requestID
+                : "No chat selected"}
+            </div>
+          </div>
+
+          {/* Title */}
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: "8px",
+              marginBottom: "0px",
+            }}
+          >
+            <label
+              htmlFor="comparison-title"
+              style={{
+                color: panelText,
+                fontSize: "14px",
+                fontWeight: 650,
+              }}
+            >
+              Title
+            </label>
+
+            <input
+              id="comparison-title"
+              value={compTitle}
+              onChange={(e) => setTitle(e.target.value)}
+              placeholder="Enter a comparison title"
+              style={{
+                ...styles.paramArea,
+                width: "100%",
+                height: "46px",
+                padding: "0 14px",
+                borderRadius: "10px",
+              }}
+            />
+          </div>
+
+          {/* Notes */}
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: "8px",
+              marginBottom: "16px",
+            }}
+          >
+            <label
+              htmlFor="comparison-notes"
+              style={{
+                color: panelText,
+                fontSize: "14px",
+                fontWeight: 650,
+              }}
+            >
+              Notes
+            </label>
+
+            <Textarea
+              id="comparison-notes"
+              darkMode={darkMode}
+              value={compNotes}
+              onChange={(e) => setNotes(e.target.value)}
+              placeholder="Add optional notes about this comparison"
+              style={{
+                ...styles.paramArea,
+                width: "100%",
+                minHeight: "130px",
+                height: "130px",
+                boxSizing: "border-box",
+                padding: "14px",
+                borderRadius: "12px",
+                resize: "vertical",
+                fontSize: "14px",
+                lineHeight: 1.55,
+              }}
+            />
+          </div>
+
+          {/* Public setting */}
+          <label
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              gap: "16px",
+
+              width: "100%",
+              boxSizing: "border-box",
+              marginBottom: "16px",
+              padding: "13px 14px",
+
+              backgroundColor: darkMode
+                ? "rgba(255, 255, 255, 0.04)"
+                : "#f8fafc",
+
+              border: darkMode
+                ? "1px solid rgba(255, 255, 255, 0.08)"
+                : "1px solid #e2e8f0",
+
+              borderRadius: "10px",
+              cursor: "pointer",
+            }}
+          >
+            <div>
+              <div
+                style={{
+                  color: panelText,
+                  fontSize: "14px",
+                  fontWeight: 650,
+                }}
+              >
+                Public comparison
+              </div>
+
+              <div
+                style={{
+                  marginTop: "3px",
+                  color: mutedText,
+                  fontSize: "12px",
+                  lineHeight: 1.4,
+                }}
+              >
+                Anyone with the URL can view it.
+              </div>
+            </div>
+
+            <input
+              type="checkbox"
+              checked={isPublic}
+              onChange={(e) => {
+                setIsPublic(e.target.checked);
+
+                if (e.target.checked) {
+                  setKey("");
+                }
+              }}
+              style={{
+                width: "18px",
+                height: "18px",
+                flexShrink: 0,
+                cursor: "pointer",
+              }}
+            />
+          </label>
+
+          {/* Private key */}
+          {!isPublic && (
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                gap: "8px",
+                marginBottom: "16px",
+              }}
+            >
+              <label
+                htmlFor="comparison-key"
+                style={{
+                  color: panelText,
+                  fontSize: "14px",
+                  fontWeight: 650,
+                }}
+              >
+                Private key
+              </label>
+
+              <input
+                id="comparison-key"
+                type="password"
+                value={key}
+                onChange={(e) => setKey(e.target.value)}
+                placeholder="Enter at least 5 characters"
+                style={{
+                  ...styles.paramArea,
+                  width: "100%",
+                  height: "46px",
+                  padding: "0 14px",
+                  borderRadius: "10px",
+                }}
+              />
+
+              <span
+                style={{
+                  color: mutedText,
+                  fontSize: "12px",
+                  lineHeight: 1.45,
+                }}
+              >
+                A key is required at the end of the URL when the comparison is private.
+              </span>
+            </div>
+          )}
+
+          {/* Error */}
+          {compErrorTxt && (
+            <div
+              style={{
+                width: "100%",
+                boxSizing: "border-box",
+                marginBottom: "16px",
+                padding: "11px 13px",
+
+                color: "#ff8e8e",
+
+                backgroundColor: darkMode
+                  ? "rgba(239, 68, 68, 0.08)"
+                  : "#fef2f2",
+
+                border: darkMode
+                  ? "1px solid rgba(239, 68, 68, 0.2)"
+                  : "1px solid #fecaca",
+
+                borderRadius: "10px",
+                fontSize: "13px",
+                fontWeight: 600,
+              }}
+            >
+              {compErrorTxt}
+            </div>
+          )}
+
+          {/* Modal buttons */}
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "flex-end",
+              flexWrap: "wrap",
+              gap: "10px",
+            }}
+          >
+            <Button
+              darkMode={darkMode}
+              onClick={() => {
+                toggleURL();
+                setCompError("");
+              }}
+            >
+              Cancel
+            </Button>
+
+            <Button
+              darkMode={darkMode}
+              onClick={saveComparison}
+            >
+              Create
+            </Button>
+          </div>
+        </div>
+      </div>
+    )}
+
     </>
   );
 };
