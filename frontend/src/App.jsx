@@ -6,6 +6,11 @@ import { Card } from "@/components/ui/card"
 import { MainPrompt } from "./components/ui/mainPrompt"
 import { SideMenu } from "@/components/ui/sidemenu"
 
+const API_URL = (
+  import.meta.env.VITE_API_URL || "http://localhost:8000"
+).replace(/\/+$/, "")
+
+
 export default function App() {
   const [prompt, setPrompt] = useState("");
   const [model_id, setId] = useState("");
@@ -547,7 +552,7 @@ const removeModel = (index) => {
 
   const listComparisons = async () => {
   window.open(
-    "http://127.0.0.1:8000/api/prevcompare",
+    `${API_URL}/api/prevcompare`,
     "_blank",
     "noopener,noreferrer"
   )
@@ -567,7 +572,7 @@ const removeModel = (index) => {
         setCompError("");
         toggleURL();
         setComparisonURL("");
-        const comp = await fetch("http://localhost:8000/api/comparisons", {
+        const comp = await fetch(`${API_URL}/api/comparisons`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -651,7 +656,7 @@ const removeModel = (index) => {
     let requestSucceeded = false;
     try {
       // Pass the milliseconds directly into AbortSignal.timeout()
-      const res = await fetch("http://localhost:8000/api/chat", {
+      const res = await fetch(`${API_URL}/api/chat`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -1517,7 +1522,7 @@ return (
             darkMode={darkMode}
             onClick={() =>
               window.open(
-                "http://127.0.0.1:8000/api/models",
+                `${API_URL}/api/models`,
                 "_blank",
                 "noopener,noreferrer"
               )
