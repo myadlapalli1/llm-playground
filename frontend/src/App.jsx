@@ -2513,7 +2513,7 @@ return (
                   display: "flex",
                   alignItems: "flex-start",
                   justifyContent: "space-between",
-                  gap: "16px",
+                  gap: "160px",
                   marginBottom: "22px",
                 }}
               >
