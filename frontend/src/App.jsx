@@ -161,7 +161,7 @@ if (runRandom === false) {
     fontWeight: 1000,
     color: darkMode ? "#efeeee" : "#111827",
     animation: "fadeIn 0.6s ease-out forwards",
-    marginTop: "30%"
+    margin: 0,
   },
 
   pageTitle: {
@@ -171,7 +171,7 @@ if (runRandom === false) {
     fontWeight: 1000,
     color: darkMode ? "#efeeee" : "#111827",
     animation: "fadeIn 0.6s ease-out forwards",
-    marginTop: "0%"
+    marginTop: 0,
   },
 
   secondaryTxt: {
@@ -182,7 +182,7 @@ if (runRandom === false) {
     fontWeight: 700,
     color: darkMode ? "#efeeee" : "#111827",
     animation: "fadeIn 1s ease-out forwards",
-    bottom: "20px"
+    margin: 0,
   },
 
   mainColumn: {
@@ -198,6 +198,14 @@ if (runRandom === false) {
     transform: transitioningToResponse ? "translateY(-24px)" : "translateY(0)",
     transition: "opacity 0.35s ease, transform 0.35s ease",
     pointerEvents: transitioningToResponse ? "none" : "auto",
+  },
+
+  homeColumn: {
+    minHeight: "calc(100dvh - 64px)",
+    justifyContent: "center",
+    gap: "12px",
+    paddingTop: "24px",
+    paddingBottom: "72px",
   },
 
   pageBackButton: {
@@ -282,7 +290,7 @@ if (runRandom === false) {
     width: "min(100%, 520px)",
     height: "140px",
     padding: "5px",
-    marginTop: "5%",
+    marginTop: "20px",
     fontSize: "16px",
     backgroundColor: fieldBg,
     border: fieldBorder,
@@ -299,7 +307,7 @@ if (runRandom === false) {
   },
 
   clearModels: {
-    margin: "0px 50% 0px 25%",
+    margin: "0 auto",
     padding: "8px",
     fontSize: "14px",
     borderRadius: "4px",
@@ -359,7 +367,7 @@ if (runRandom === false) {
     display: "block",
     padding: "10px 15px",
     fontSize: "16px",
-    margin: "0 auto 5%",
+    margin: "0 auto 20px",
     borderRadius: "5px",
     backgroundColor: fieldBg,
     border: fieldBorder,
@@ -382,9 +390,9 @@ if (runRandom === false) {
   },
 
   viewCompareBtn: {
-    padding: "1%",
+    padding: "8px",
     fontSize: "16px",
-    margin: "0 40%",
+    margin: "0 auto",
     marginTop: "10px",
     borderRadius: "5px",
     backgroundColor: fieldBg,
@@ -394,19 +402,20 @@ if (runRandom === false) {
   },
 
   createCompareButton: {
-    width: "80%", 
-    height: "8%", 
+    width: "100%", 
+    maxWidth: "420px",
+    height: "40px", 
     fontSize: "16px", 
     minHeight: "30px", 
     borderRadius: "5px", 
-    marginTop: "3%",    
+    marginTop: "12px",    
     backgroundColor: fieldBg,
     border: fieldBorder,
     color: panelText,
   },
 
   error: {
-    marginTop: "5%",
+    marginTop: "20px",
     fontSize: "30px",
     fontFamily: '"Cormorant Garamond", serif',
     color: "#ff8e8e",
@@ -994,6 +1003,13 @@ return (
           gap: 12px !important;
         }
 
+        .home-main-column {
+          min-height: calc(100dvh - 72px) !important;
+          justify-content: center !important;
+          padding-top: 16px !important;
+          padding-bottom: 40px !important;
+        }
+
         .page-back-button {
           top: 14px !important;
           left: 68px !important;
@@ -1003,13 +1019,13 @@ return (
         }
 
         h1 {
-          font-size: clamp(38px, 13vw, 52px) !important;
+          font-size: 42px !important;
           line-height: 1.05 !important;
           overflow-wrap: anywhere;
         }
 
         h2 {
-          font-size: clamp(28px, 9vw, 40px) !important;
+          font-size: 32px !important;
           line-height: 1.1 !important;
           overflow-wrap: anywhere;
         }
@@ -1098,7 +1114,7 @@ return (
           <h2
             style={{
               ...styles.pageTitle,
-              marginBottom: "1%",
+              marginBottom: "8px",
             }}
           >
             Parameters
@@ -1503,7 +1519,7 @@ return (
               justifyContent: "center",
               alignItems: "center",
               width: "100%",
-              marginTop: "5%"
+              marginTop: "20px"
             }}
           >
             <Dropdown
@@ -1520,7 +1536,7 @@ return (
             width: "100%",
             boxSizing: "border-box",
             padding: "20px",
-            marginTop: "5%",
+            marginTop: "20px",
 
             backgroundColor: darkMode
               ? "rgba(255, 255, 255, 0.035)"
@@ -1870,7 +1886,7 @@ return (
                 maxHeight: "calc(100vh - 40px)",
 
                 boxSizing: "border-box",
-                padding: "clamp(16px, 4vw, 24px)",
+                padding: "20px",
 
                 display: "flex",
                 flexDirection: "column",
@@ -2059,7 +2075,7 @@ return (
           <h2
             style={{
               ...styles.pageTitle,
-              marginBottom: "1%",
+              marginBottom: "8px",
             }}
           >
             Comparison
@@ -2476,7 +2492,7 @@ return (
                 width: "min(540px, calc(100vw - 32px))",
                 maxHeight: "calc(100vh - 40px)",
                 boxSizing: "border-box",
-                padding: "clamp(16px, 4vw, 24px)",
+                padding: "20px",
 
                 overflowY: "auto",
 
@@ -2882,7 +2898,7 @@ return (
               fontWeight: 700,
               color: darkMode ? "#efeeee" : "#111827",
               animation: "fadeIn 1s ease-out forwards",
-              marginTop: "0%"
+              marginTop: 0,
             }}
           >
             Tap a response button below to view the model output.
@@ -3452,7 +3468,7 @@ return (
             width: "min(940px, calc(100vw - 32px))",
             maxHeight: "calc(100vh - 40px)",
             boxSizing: "border-box",
-            padding: "clamp(16px, 4vw, 24px)",
+            padding: "20px",
 
             overflowY: "auto",
 
@@ -4382,7 +4398,10 @@ Output tokens: ${Number(model.tokens_out).toLocaleString()}`;
 
       <>
 
-        <div className="main-column" style={styles.mainColumn}>
+        <div
+          className="main-column home-main-column"
+          style={{ ...styles.mainColumn, ...styles.homeColumn }}
+        >
           <h1 align="center" style={styles.titleTxt}>SwiftEval</h1>
           <h2 align="center" style={styles.secondaryTxt}>{secondTxt}</h2>
 
