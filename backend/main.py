@@ -55,12 +55,12 @@ def get_client(provider: str):
 origins = [
     "http://localhost:5173",
     "http://localhost:3000",
+    "https://llm-comparison-963abf6eg-buttery-ai-internship.vercel.app"
 ]
 
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
-    allow_origin_regex=r"https://.*\.vercel\.app",
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -222,12 +222,17 @@ async def run_model(model_id: str, request: ChatRequest):
             override_max_tokens = overrides.get("max_tokens")
             override_top_p = overrides.get("top_p")
 
-        response = client.chat.completions.create(
+        response = await asyncio.to_thread(
+            client.chat.completions.create,
             model=model_info["model_id"],
             messages=[
                 {
                     "role": "system",
-                    "content": override_system_prompt or request.system_prompt or "You are a helpful assistant. Answer clearly and concisely"
+                    "content": (
+                        override_system_prompt
+                        or request.system_prompt
+                        or "You are a helpful assistant. Answer clearly and concisely"
+                    )
                 },
                 {
                     "role": "user",
@@ -250,7 +255,7 @@ async def run_model(model_id: str, request: ChatRequest):
                 else request.params.top_p
             )
         )
-
+                
         print("[run_model] NVIDIA API returned successfully!")
 
         text = response.choices[0].message.content
