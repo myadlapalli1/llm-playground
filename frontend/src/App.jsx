@@ -4384,7 +4384,7 @@ Output tokens: ${Number(model.tokens_out).toLocaleString()}`;
       <>
 
         <div className="main-column" style={styles.mainColumn}>
-          <h1 align="center" style={styles.titleTxt}>Swift Compare</h1>
+          <h1 align="center" style={styles.titleTxt}>SwiftEval</h1>
           <h2 align="center" style={styles.secondaryTxt}>{secondTxt}</h2>
 
 
