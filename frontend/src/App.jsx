@@ -175,13 +175,14 @@ if (runRandom === false) {
   },
 
   secondaryTxt: {
+    position: "relative",
     fontFamily: '"Cormorant Garamond", serif',
     fontSize: "40px",
     opacity: 0,
     fontWeight: 700,
     color: darkMode ? "#efeeee" : "#111827",
     animation: "fadeIn 1s ease-out forwards",
-    marginTop: "0%"
+    bottom: "20px"
   },
 
   mainColumn: {
@@ -1190,18 +1191,16 @@ return (
               placeholder="You are a helpful assistant. Answer clearly and concisely."
               style={{
                 ...styles.paramArea,
-
-                width: "100%",
-                minHeight: "120px",
-                height: "120px",
-                boxSizing: "border-box",
-                padding: "14px",
-
-                borderRadius: "12px",
-                resize: "vertical",
-
-                fontSize: "14px",
-                lineHeight: 1.55,
+            
+              width: "100%",
+              minHeight: "120px",
+              height: "120px",
+              boxSizing: "border-box",
+              padding: "14px",
+              borderRadius: "12px",
+              resize: "none",
+              fontSize: "14px",
+              lineHeight: 1.55
               }}
             />
 
@@ -1439,7 +1438,7 @@ return (
               padding: "14px",
 
               borderRadius: "12px",
-              resize: "vertical",
+              resize: "none",
 
               fontFamily:
                 '"SFMono-Regular", Consolas, "Liberation Mono", monospace',
