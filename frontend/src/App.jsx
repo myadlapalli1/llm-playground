@@ -176,7 +176,7 @@ if (runRandom === false) {
 
   secondaryTxt: {
     fontFamily: '"Cormorant Garamond", serif',
-    fontSize: "40px",
+    fontSize: "35px",
     opacity: 0,
     fontWeight: 700,
     color: darkMode ? "#efeeee" : "#111827",
@@ -4424,7 +4424,7 @@ Output tokens: ${Number(model.tokens_out).toLocaleString()}`;
       <>
 
         <div className="main-column home-main-column" style={styles.homeColumn}>
-          <h1 align="center" style={styles.titleTxt}>Swift Compare</h1>
+          <h1 align="center" style={styles.titleTxt}>ModelEval</h1>
           <h2 align="center" style={styles.secondaryTxt}>{secondTxt}</h2>
 
 
