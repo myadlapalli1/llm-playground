@@ -60,10 +60,7 @@ origins = [
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
-
-    # Allow your Vercel production and preview deployments
-    allow_origin_regex=r"https://llm-comparison-[a-zA-Z0-9-]+-buttery-ai-internship\.vercel\.app",
-
+    allow_origin_regex=r"https://.*\.vercel\.app",
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
