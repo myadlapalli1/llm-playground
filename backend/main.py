@@ -408,7 +408,7 @@ async def chat(request: ChatRequest):
         "responses": responses
     }
 
-# CREATE COMPARISON 
+# CREATE COMPARISON
 @app.post("/api/comparisons")
 def create_comparison(request: ComparisonCreateRequest):
 
@@ -436,23 +436,21 @@ def create_comparison(request: ComparisonCreateRequest):
                 comparison_id, key
             )
             VALUES (?, ?)
-        """,
-        (
+        """, (
             comparison_id,
-            request.key,
+            request.key
         ))
 
         conn.commit()
 
     return {
         "comparison_id": comparison_id,
-        "share_url": f"http://127.0.0.1:8000/api/comparisons/{comparison_id}",
-        "created_at": created_at,
+        "share_url": f"https://llm-playground-lvj1.onrender.com/api/comparisons/{comparison_id}",
+        "created_at": created_at
     }
 
-# COMPARISON FROM ID
-@app.get("/api/comparisons/{comparison_id}/{key}")
-def get_comparison(comparison_id: str, key: str = None):
+
+def get_comparison_data(comparison_id: str, provided_key: Optional[str] = None):
 
     with sqlite3.connect("comparisons.db") as conn:
         cursor = conn.cursor()
@@ -465,11 +463,27 @@ def get_comparison(comparison_id: str, key: str = None):
 
         comp = cursor.fetchone()
 
-
         if not comp:
             return api_error(404, "NOT_FOUND", "Comparison not found")
 
         title, notes, is_public, created_at = comp
+
+        if is_public != 1:
+            cursor.execute("""
+                SELECT key
+                FROM privateKey
+                WHERE comparison_id = ?
+            """, (comparison_id,))
+
+            current_key_row = cursor.fetchone()
+
+            if not current_key_row:
+                return api_error(403, "FORBIDDEN", "No private key exists for this comparison")
+
+            current_key = current_key_row[0]
+
+            if provided_key != current_key:
+                return api_error(403, "FORBIDDEN", "Invalid key, comparison is private")
 
         cursor.execute("""
             SELECT request_id, prompt, system_prompt, model_ids,
@@ -479,13 +493,13 @@ def get_comparison(comparison_id: str, key: str = None):
             ORDER BY created_at DESC
         """, (comparison_id,))
 
-        requests = cursor.fetchall()
+        request_rows = cursor.fetchall()
 
-        request = []
-        response = []
+        requests = []
+        response_groups = []
 
-        for r in requests:
-            request_id = r[0]
+        for row in request_rows:
+            request_id = row[0]
 
             cursor.execute("""
                 SELECT model_id, text, tokens_in, tokens_out,
@@ -494,62 +508,55 @@ def get_comparison(comparison_id: str, key: str = None):
                 WHERE request_id = ?
             """, (request_id,))
 
-            responses = cursor.fetchall()
+            response_rows = cursor.fetchall()
 
-            request.append({
+            requests.append({
                 "request_id": request_id,
-                "prompt": r[1],
-                "system_prompt": r[2],
-                "model_ids": json.loads(r[3]),
+                "prompt": row[1],
+                "system_prompt": row[2],
+                "model_ids": json.loads(row[3]),
                 "params": {
-                    "temperature": r[4],
-                    "max_tokens": r[5],
-                    "top_p": r[6]
+                    "temperature": row[4],
+                    "max_tokens": row[5],
+                    "top_p": row[6]
                 },
-                "per_model_overrides": json.loads(r[7]) if r[7] else {},
+                "per_model_overrides": json.loads(row[7]) if row[7] else {}
             })
-            response.append([
+
+            response_groups.append([
                 {
-                    "model_id": row[0],
-                    "text": row[1],
-                    "tokens_in": row[2],
-                    "tokens_out": row[3],
-                    "latency_ms": row[4],
-                    "cost_cents": row[5],
-                    "error": row[6]
+                    "model_id": response_row[0],
+                    "text": response_row[1],
+                    "tokens_in": response_row[2],
+                    "tokens_out": response_row[3],
+                    "latency_ms": response_row[4],
+                    "cost_cents": response_row[5],
+                    "error": json.loads(response_row[6]) if response_row[6] else None
                 }
-                for row in responses
+                for response_row in response_rows
             ])
 
-    if (is_public == 1):
-        return {
-            "comparison_id": comparison_id,
-            "title": title,
-            "notes": notes,
-            "request": request,
-            "responses": response,
-            "created_at": created_at,
-        }
-    else:
-        cursor.execute("""
-            SELECT key
-            FROM privateKey
-            WHERE comparison_id = ?
-        """, (comparison_id,))
+    return {
+        "comparison_id": comparison_id,
+        "title": title,
+        "notes": notes,
+        "is_public": bool(is_public),
+        "request": requests,
+        "responses": response_groups,
+        "created_at": created_at
+    }
 
-        currentKey = cursor.fetchone()
 
-        if (key == currentKey[0]):
-            return {
-                "comparison_id": comparison_id,
-                "title": title,
-                "notes": notes,
-                "request": request,
-                "responses": response,
-                "created_at": created_at,
-            }
-        else:
-            return api_error(403, "FORBIDDEN", "Invalid key, comparsion is private")
+# PUBLIC COMPARISON LINK
+@app.get("/api/comparisons/{comparison_id}")
+def get_public_comparison(comparison_id: str):
+    return get_comparison_data(comparison_id)
+
+
+# PRIVATE COMPARISON LINK
+@app.get("/api/comparisons/{comparison_id}/{key}")
+def get_private_comparison(comparison_id: str, key: str):
+    return get_comparison_data(comparison_id, key)
 
 
 @app.get("/api/prevcompare")
