@@ -2509,6 +2509,7 @@ return (
               aria-modal="true"
               aria-label="Create comparison"
               style={{
+                marginTop: "50%",
                 position: "fixed",
                 top: "125%",
                 left: "50%",
