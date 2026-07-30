@@ -2510,7 +2510,7 @@ return (
               aria-label="Create comparison"
               style={{
                 position: "fixed",
-                top: "50%",
+                top: "125%",
                 left: "50%",
                 transform: "translate(-50%, -50%)",
 
