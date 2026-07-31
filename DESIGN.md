@@ -35,7 +35,8 @@ The desktop interface includes:
 - Responses
 - Decisions
 
-## Response Layout
+## Decisions
+# Response Layout
 
 When the user selects multiple models and then sends a prompt, each model is given a button on the response page.
 
@@ -43,7 +44,7 @@ When the user clicks a model button, the model's output and additional metrics a
 
 This is the best option because it allows the user to see the output of multiple models without dealing with the cramped display that would come with other layouts, such as side-by-side responses.
 
-## Error Handling
+# Error Handling
 
 All models are run in parallel, meaning one error will not stop all other models from responding.
 
@@ -51,7 +52,7 @@ If a model does not respond, it is grouped in a dedicated section with other mod
 
 Models that do not respond are not included in graph comparisons with other models and do not contribute to cost or token-usage comparisons. However, the time before the request failed or timed out may still be displayed.
 
-## Comparisons
+# Comparisons
 
 Users have the option to make their comparisons public or private. Comparisons are private by default.
 
@@ -59,7 +60,7 @@ Private comparisons require a key that is created by the user. The correct key i
 
 Users are able to view previous comparisons.
 
-## Metrics
+# Metrics
 
 Users can view the model with the lowest cost, latency, and token usage out of the models they selected.
 
@@ -67,7 +68,7 @@ Metrics are displayed on a graph for each model, allowing for easy visual compar
 
 These metrics can be saved in a created comparison.
 
-## Mobile Functionality
+# Mobile Functionality
 
 While PC is preferred when using this app, mobile is supported through a scalable design.
 
