@@ -621,7 +621,7 @@ const removeModel = (index) => {
     }
    if (models.length === 0) {
       setLoading(false);
-      setError("Select at least one model.");
+      setError("Select at least one model from the model selection.");
       return;
     }
   if (temperatureValue < 0 || temperatureValue > 1) {
@@ -631,12 +631,12 @@ const removeModel = (index) => {
     }
   if (maxTokensValue <= 0) {
       setLoading(false);
-      setError("Max tokens must be greater than 0")
+      setError("Max tokens must be greater than 0, select different parameters")
     return;
     }
   if (topPValue < 0 || topPValue > 1) {
       setLoading(false);
-      setError("Top P must be between 0 and 1")
+      setError("Top P must be between 0 and 1, select different parameters")
     return;
     }
    if (per_model_overrides.trim() !== "") {
@@ -645,7 +645,7 @@ const removeModel = (index) => {
       }
       catch (e) {
         setLoading(false);
-        setError("Invalid JSON format in per model overrides.");
+        setError("Invalid JSON format in per model overrides, select different parameters.");
         return;
       }
     }
