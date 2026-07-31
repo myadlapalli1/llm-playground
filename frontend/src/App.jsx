@@ -2509,9 +2509,8 @@ return (
               aria-modal="true"
               aria-label="Create comparison"
               style={{
-                marginTop: "50%",
                 position: "fixed",
-                top: "125%",
+                top: "50%",
                 left: "50%",
                 transform: "translate(-50%, -50%)",
 
