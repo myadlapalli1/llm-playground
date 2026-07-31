@@ -35,7 +35,7 @@ The desktop interface includes:
 - Responses
 - Decisions
 
-### Decisions
+# Decisions
 ## Response Layout
 
 When the user selects multiple models and then sends a prompt, each model is given a button on the response page.
