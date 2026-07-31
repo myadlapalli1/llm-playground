@@ -2701,7 +2701,7 @@ return (
                     boxSizing: "border-box",
                     padding: "14px",
                     borderRadius: "12px",
-                    resize: "vertical",
+                    resize: "none",
                     fontSize: "14px",
                     lineHeight: 1.55,
                   }}
