@@ -54,7 +54,7 @@ Swift Compare supports both light and dark themes.
 Users can select multiple models before submitting a prompt.
 
 <p align="center">
-  <img src="docs/darkMode2" alt="Swift Compare model selection screen" width="800">
+  <img src="docs/darkMode2.png" alt="Swift Compare model selection screen" width="800">
 </p>
 
 ## Response Comparison
