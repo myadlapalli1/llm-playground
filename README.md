@@ -4,6 +4,10 @@ Swift Compare is a web application that allows users to send one prompt to multi
 
 The application is designed to make it easier to evaluate different models through one consistent interface.
 
+### Home Page
+
+![Swift Compare home page](images/darkMode.png)
+
 ## Features
 
 - Send one prompt to multiple LLMs
