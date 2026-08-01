@@ -66,7 +66,7 @@ When a model button is selected, the model's response and performance metrics ar
 This avoids cramped side-by-side response columns while still allowing users to switch quickly between models.
 
 <p align="center">
-  <img src="docs/darkMode3.png" alt="Swift Compare response comparison screen" width="850">
+  <img src="docs/darkMode3.png" alt="Swift Compare response screen" width="850">
 </p>
 
 Each response may include:
@@ -101,7 +101,7 @@ When creating a private comparison, the creator chooses an access key.
 The correct key must be included at the end of the comparison URL to open the comparison. For private comparisons, replace `key-here` with the access key selected when the comparison was created.
 
 <p align="center">
-  <img src="docs/darkMode12.png" alt="Create a public or private comparison" width="600">
+  <img src="docs/darkMode12.png" alt="Create a public or private comparison" width="800">
 </p>
 
 Example:
@@ -129,7 +129,7 @@ The app highlights the models with the:
 - Lowest token usage
 
 <p align="center">
-  <img src="docs/darkMode6.png" alt="Swift Compare mobile interface" width="320">
+  <img src="docs/darkMode6.png" alt="Swift Compare metrics graph" width="800">
 </p>
 
 
@@ -313,7 +313,7 @@ Example:
 ```
 
 <p align="center">
-  <img src="docs/darkMode8.png" alt="Swift Compare mobile interface" width="320">
+  <img src="docs/darkMode8.png" alt="Swift Compare parameters page" width="700">
 </p>
 
 Invalid JSON should be rejected before the request is submitted.
