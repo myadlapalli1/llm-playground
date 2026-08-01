@@ -66,7 +66,7 @@ When a model button is selected, the model's response and performance metrics ar
 This avoids cramped side-by-side response columns while still allowing users to switch quickly between models.
 
 <p align="center">
-  <img src="docs/darkMode3.png" alt="Swift Compare response screen" width="850">
+  <img src="docs/darkMode3.png" alt="Swift Compare response screen" width="800">
 </p>
 
 Each response may include:
@@ -313,7 +313,7 @@ Example:
 ```
 
 <p align="center">
-  <img src="docs/darkMode8.png" alt="Swift Compare parameters page" width="700">
+  <img src="docs/darkMode8.png" alt="Swift Compare parameters page" width="800">
 </p>
 
 Invalid JSON should be rejected before the request is submitted.
