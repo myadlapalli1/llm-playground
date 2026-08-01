@@ -122,7 +122,7 @@ Supported metrics include:
 - Output token usage
 - Estimated cost
 
-The app highlights the models with the:
+The app displays the models with the:
 
 - Lowest latency
 - Lowest estimated cost
@@ -131,7 +131,6 @@ The app highlights the models with the:
 <p align="center">
   <img src="docs/darkMode6.png" alt="Swift Compare metrics graph" width="800">
 </p>
-
 
 Additional metrics are viewable in created comparisons.
 
@@ -157,10 +156,10 @@ These metrics measure performance and resource usage. They do not automatically 
 
 - SQLite
 
-### Hosting
+### Deployment
 
-- Vercel — frontend
-- Render — backend
+- Vercel
+- Render
 
 ## Project Structure
 
@@ -185,13 +184,6 @@ swift-compare/
 │   ├── main.py
 │   ├── requirements.txt
 │   └── sync_models.py
-├── docs/
-│   ├── home-dark.png
-│   ├── home-light.png
-│   ├── models-dark.png
-│   ├── response-dark.png
-│   ├── sharing-dark.png
-│   └── mobile.png
 ├── DESIGN.md
 ├── README.md
 └── .gitignore
@@ -229,7 +221,7 @@ pip install -r requirements.txt
 
 Create a `.env` file inside the backend folder.
 
-### Backend environment variables
+Example:
 
 ```env
 PORT=8000
@@ -238,19 +230,6 @@ OPENAI_API_KEY=your_openai_api_key
 NVIDIA_API_KEY=your_nvidia_api_key
 GROQ_API_KEY=your_groq_api_key
 FRONTEND_URL=http://localhost:5173
-```
-
-Create a separate `.env` file inside the frontend folder.
-
-### Frontend environment variables
-
-```env
-VITE_API_URL=http://localhost:8000
-```
-
-For deployment on Vercel, set:
-
-```env
 VITE_API_URL=https://llm-playground-lvj1.onrender.com
 ```
 
@@ -270,7 +249,7 @@ uvicorn main:app --reload --port 8000
 
 ### Start the Frontend
 
-Open a second terminal and run the following from the frontend folder:
+From the frontend folder:
 
 ```bash
 npm run dev
@@ -394,8 +373,6 @@ Example output directory for a Vite project:
 ```text
 dist
 ```
-
-The current version uses SQLite. Production deployments should use persistent storage or a managed database to prevent saved comparisons from being lost during backend restarts or redeployments.
 
 ## Future Improvements
 
