@@ -4,10 +4,6 @@ Swift Compare is a web application that allows users to send one prompt to multi
 
 The application is designed to make it easier to evaluate different models through one consistent interface.
 
-<p align="center">
-  <img src="docs/darkMode.png" alt="Swift Compare main interface" width="850">
-</p>
-
 ## Features
 
 - Send one prompt to multiple LLMs
@@ -34,10 +30,10 @@ Swift Compare supports both light and dark themes.
   </tr>
   <tr>
     <td>
-      <img src="docs/home-light.png" alt="Swift Compare light mode" width="420">
+      <img src="docs/darkMode.png" alt="Swift Compare light mode" width="420">
     </td>
     <td>
-      <img src="docs/home-dark.png" alt="Swift Compare dark mode" width="420">
+      <img src="docs/lightMode.png" alt="Swift Compare dark mode" width="420">
     </td>
   </tr>
 </table>
