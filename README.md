@@ -30,10 +30,10 @@ Swift Compare supports both light and dark themes.
   </tr>
   <tr>
     <td>
-      <img src="docs/darkMode.png" alt="Swift Compare light mode" width="420">
+      <img src="docs/lightMode1.png" alt="Swift Compare light mode" width="420">
     </td>
     <td>
-      <img src="docs/lightMode1.png" alt="Swift Compare dark mode" width="420">
+      <img src="docs/darkMode.png" alt="Swift Compare dark mode" width="420">
     </td>
   </tr>
 </table>
