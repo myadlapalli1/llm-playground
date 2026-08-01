@@ -33,7 +33,7 @@ Swift Compare supports both light and dark themes.
       <img src="docs/darkMode.png" alt="Swift Compare light mode" width="420">
     </td>
     <td>
-      <img src="docs/lightMode.png" alt="Swift Compare dark mode" width="420">
+      <img src="docs/lightMode1.png" alt="Swift Compare dark mode" width="420">
     </td>
   </tr>
 </table>
@@ -54,7 +54,7 @@ Swift Compare supports both light and dark themes.
 Users can select multiple models before submitting a prompt.
 
 <p align="center">
-  <img src="docs/models-dark.png" alt="Swift Compare model selection screen" width="800">
+  <img src="docs/darkMode2" alt="Swift Compare model selection screen" width="800">
 </p>
 
 ## Response Comparison
@@ -66,7 +66,7 @@ When a model button is selected, the model's response and performance metrics ar
 This avoids cramped side-by-side response columns while still allowing users to switch quickly between models.
 
 <p align="center">
-  <img src="docs/response-dark.png" alt="Swift Compare response comparison screen" width="850">
+  <img src="docs/darkMode3.png" alt="Swift Compare response comparison screen" width="850">
 </p>
 
 Each response may include:
@@ -101,7 +101,7 @@ When creating a private comparison, the creator chooses an access key.
 The correct key must be included at the end of the comparison URL to open the comparison. For private comparisons, replace `key-here` with the access key selected when the comparison was created.
 
 <p align="center">
-  <img src="docs/sharing-dark.png" alt="Create a public or private comparison" width="600">
+  <img src="docs/darkMode12.png" alt="Create a public or private comparison" width="600">
 </p>
 
 Example:
@@ -127,6 +127,11 @@ The app highlights the models with the:
 - Lowest latency
 - Lowest estimated cost
 - Lowest token usage
+
+<p align="center">
+  <img src="docs/darkMode6.png" alt="Swift Compare mobile interface" width="320">
+</p>
+
 
 Additional metrics are viewable in created comparisons.
 
@@ -307,6 +312,10 @@ Example:
 }
 ```
 
+<p align="center">
+  <img src="docs/darkMode8.png" alt="Swift Compare mobile interface" width="320">
+</p>
+
 Invalid JSON should be rejected before the request is submitted.
 
 ## API Keys
@@ -335,10 +344,6 @@ Mobile users should be able to:
 - View metrics
 - View raw JSON
 - Access saved comparisons
-
-<p align="center">
-  <img src="docs/mobile.png" alt="Swift Compare mobile interface" width="320">
-</p>
 
 ## Accessibility
 
