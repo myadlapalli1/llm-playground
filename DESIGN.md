@@ -39,7 +39,7 @@ The desktop interface includes:
 
 When the user selects multiple models and then sends a prompt, each model is given a button on the response page.
 
-When the user clicks a model button, the model's output and additional metrics are displayed in a box below.
+When the user clicks a model button, the model's output and additional metrics are displayed in a box below. This response is not displayed with token-by-token streaming as it would not work nicely with this setup.
 
 This is the best option because it allows the user to see the output of multiple models without dealing with the cramped display that would come with other layouts, such as side-by-side responses.
 
