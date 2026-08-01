@@ -4,9 +4,9 @@ Swift Compare is a web application that allows users to send one prompt to multi
 
 The application is designed to make it easier to evaluate different models through one consistent interface.
 
-### Home Page
-
-![Swift Compare home page](docs/darkMode.png)
+<p align="center">
+  <img src="docs/home-dark.png" alt="Swift Compare main interface" width="850">
+</p>
 
 ## Features
 
@@ -23,6 +23,25 @@ The application is designed to make it easier to evaluate different models throu
 - Use light and dark themes
 - Use the application on desktop and mobile devices
 
+## Themes
+
+Swift Compare supports both light and dark themes.
+
+<table>
+  <tr>
+    <td align="center"><strong>Light Mode</strong></td>
+    <td align="center"><strong>Dark Mode</strong></td>
+  </tr>
+  <tr>
+    <td>
+      <img src="docs/home-light.png" alt="Swift Compare light mode" width="420">
+    </td>
+    <td>
+      <img src="docs/home-dark.png" alt="Swift Compare dark mode" width="420">
+    </td>
+  </tr>
+</table>
+
 ## How It Works
 
 1. Select the models you want to compare.
@@ -34,6 +53,14 @@ The application is designed to make it easier to evaluate different models throu
 7. Review response metrics and comparison graphs.
 8. Save the comparison as public or private.
 
+### Model Selection
+
+Users can select multiple models before submitting a prompt.
+
+<p align="center">
+  <img src="docs/models-dark.png" alt="Swift Compare model selection screen" width="800">
+</p>
+
 ## Response Comparison
 
 Each selected model receives its own button on the response page.
@@ -41,6 +68,10 @@ Each selected model receives its own button on the response page.
 When a model button is selected, the model's response and performance metrics are displayed in the main response panel.
 
 This avoids cramped side-by-side response columns while still allowing users to switch quickly between models.
+
+<p align="center">
+  <img src="docs/response-dark.png" alt="Swift Compare response comparison screen" width="850">
+</p>
 
 Each response may include:
 
@@ -73,6 +104,10 @@ When creating a private comparison, the creator chooses an access key.
 
 The correct key must be included at the end of the comparison URL to open the comparison. For private comparisons, replace `key-here` with the access key selected when the comparison was created.
 
+<p align="center">
+  <img src="docs/sharing-dark.png" alt="Create a public or private comparison" width="600">
+</p>
+
 Example:
 
 ```text
@@ -91,7 +126,7 @@ Supported metrics include:
 - Output token usage
 - Estimated cost
 
-The app displays the models with the:
+The app highlights the models with the:
 
 - Lowest latency
 - Lowest estimated cost
@@ -121,10 +156,10 @@ These metrics measure performance and resource usage. They do not automatically 
 
 - SQLite
 
-### Deployment
+### Hosting
 
-- Vercel
-- Render
+- Vercel — frontend
+- Render — backend
 
 ## Project Structure
 
@@ -149,6 +184,13 @@ swift-compare/
 │   ├── main.py
 │   ├── requirements.txt
 │   └── sync_models.py
+├── docs/
+│   ├── home-dark.png
+│   ├── home-light.png
+│   ├── models-dark.png
+│   ├── response-dark.png
+│   ├── sharing-dark.png
+│   └── mobile.png
 ├── DESIGN.md
 ├── README.md
 └── .gitignore
@@ -186,7 +228,7 @@ pip install -r requirements.txt
 
 Create a `.env` file inside the backend folder.
 
-Example:
+### Backend environment variables
 
 ```env
 PORT=8000
@@ -195,6 +237,19 @@ OPENAI_API_KEY=your_openai_api_key
 NVIDIA_API_KEY=your_nvidia_api_key
 GROQ_API_KEY=your_groq_api_key
 FRONTEND_URL=http://localhost:5173
+```
+
+Create a separate `.env` file inside the frontend folder.
+
+### Frontend environment variables
+
+```env
+VITE_API_URL=http://localhost:8000
+```
+
+For deployment on Vercel, set:
+
+```env
 VITE_API_URL=https://llm-playground-lvj1.onrender.com
 ```
 
@@ -214,7 +269,7 @@ uvicorn main:app --reload --port 8000
 
 ### Start the Frontend
 
-From the frontend folder:
+Open a second terminal and run the following from the frontend folder:
 
 ```bash
 npm run dev
@@ -285,6 +340,10 @@ Mobile users should be able to:
 - View raw JSON
 - Access saved comparisons
 
+<p align="center">
+  <img src="docs/mobile.png" alt="Swift Compare mobile interface" width="320">
+</p>
+
 ## Accessibility
 
 The interface should support:
@@ -334,6 +393,8 @@ Example output directory for a Vite project:
 ```text
 dist
 ```
+
+The current version uses SQLite. Production deployments should use persistent storage or a managed database to prevent saved comparisons from being lost during backend restarts or redeployments.
 
 ## Future Improvements
 
