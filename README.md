@@ -17,7 +17,6 @@ The application is designed to make it easier to evaluate different models throu
 - Access private comparisons using a creator-defined key
 - View raw request and response JSON
 - Use light and dark themes
-- Use the application on desktop and mobile devices
 
 ## Themes
 
@@ -74,12 +73,8 @@ Each response may include:
 - Model name or model ID
 - Response content
 - Response latency
-- Input tokens
 - Output tokens
-- Total token usage
 - Estimated cost
-- Raw JSON
-- Loading status
 - Error status
 
 ## Error Handling
@@ -98,11 +93,11 @@ Comparisons are private by default.
 
 When creating a private comparison, the creator chooses an access key.
 
-The correct key must be included at the end of the comparison URL to open the comparison. For private comparisons, replace `key-here` with the access key selected when the comparison was created.
-
 <p align="center">
   <img src="docs/darkMode12.png" alt="Create a public or private comparison" width="800">
 </p>
+
+The correct key must be included at the end of the comparison URL to open the comparison. For private comparisons, replace `key-here` with the access key selected when the comparison was created.
 
 Example:
 
@@ -184,6 +179,8 @@ swift-compare/
 │   ├── main.py
 │   ├── requirements.txt
 │   └── sync_models.py
+├── docs/
+├── next-app/
 ├── DESIGN.md
 ├── README.md
 └── .gitignore
@@ -295,8 +292,6 @@ Example:
   <img src="docs/darkMode8.png" alt="Swift Compare parameters page" width="800">
 </p>
 
-Invalid JSON should be rejected before the request is submitted.
-
 ## API Keys
 
 API keys should be stored securely using environment variables or an approved secrets-management system.
@@ -324,6 +319,8 @@ Mobile users should be able to:
 - View raw JSON
 - Access saved comparisons
 
+Depending on screen size, the app may appear cramped.
+
 ## Accessibility
 
 The interface should support:
@@ -346,7 +343,6 @@ See `DESIGN.md` for information about:
 - Response navigation
 - Colors
 - Typography
-- Mobile behavior
 - Accessibility
 - UI restrictions
 
