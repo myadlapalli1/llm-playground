@@ -6,7 +6,7 @@ The application is designed to make it easier to evaluate different models throu
 
 ### Home Page
 
-![Swift Compare home page](images/darkMode.png)
+![Swift Compare home page](docs/darkMode.png)
 
 ## Features
 
