@@ -29,7 +29,11 @@ export default function App() {
   const [requestID, setRequestId] = useState("");
   const [key, setKey] = useState("");
   const [allComparisons, setAllComparisons] = useState("");
-  const [customEndpoint, setCustomEndpoint] = useState("");
+  const [customDisplayName, setCustomDisplayName] = useState("");
+  const [customBaseUrl, setCustomBaseUrl] = useState("");
+  const [customApiKey, setCustomApiKey] = useState("");
+  const [customModelId, setCustomModelId] = useState("");
+  const [customEndpoints, setCustomEndpoints] = useState({});
   const [userModelTxt, setUserModelTxt] = useState("");
   const [prompts, setPrompts] = useState([]);
   const [responses, setResponse] = useState([]);
@@ -480,7 +484,7 @@ const removeModel = (index) => {
     currentModelNames.filter((_, currentIndex) => currentIndex !== index)
   );
 
-  // If it was a custom endpoint, remove it from custom model tracking
+  // If it was a custom endpoint, remove its credentials/configuration too.
   if (customModels.includes(modelIdToRemove)) {
     const remainingCustomModels = customModels.filter(
       (customModel) => customModel !== modelIdToRemove
@@ -488,9 +492,13 @@ const removeModel = (index) => {
 
     setCustomModels(remainingCustomModels);
     setCustomNum(remainingCustomModels.length);
-
-    // Rebuild the custom endpoint text
     setUserModelTxt(remainingCustomModels.join("\n"));
+
+    setCustomEndpoints((currentEndpoints) => {
+      const nextEndpoints = { ...currentEndpoints };
+      delete nextEndpoints[modelIdToRemove];
+      return nextEndpoints;
+    });
   }
 };
 
@@ -682,6 +690,7 @@ const removeModel = (index) => {
           per_model_overrides: per_model_overrides
             ? JSON.parse(per_model_overrides)
             : {},
+          custom_endpoints: customEndpoints,
           }),
         });
       const data = await res.json();
@@ -732,78 +741,86 @@ const removeModel = (index) => {
     }
   };
 
-  const createCustomEndpoint = (customId) => {
-    const cleanedId = customId.trim();
+  const isValidHttpsUrl = (value) => {
+    try {
+      const parsedUrl = new URL(value);
+      return parsedUrl.protocol === "https:";
+    } catch {
+      return false;
+    }
+  };
 
-    // Do not allow an empty endpoint
-    if (cleanedId === "") {
-      setError("Enter a custom endpoint");
+  const createCustomEndpoint = () => {
+    const displayName = customDisplayName.trim();
+    const baseUrl = customBaseUrl.trim().replace(/\/+$/, "");
+    const apiKey = customApiKey.trim();
+    const providerModelId = customModelId.trim();
+
+    if (!displayName || !baseUrl || !apiKey || !providerModelId) {
+      setError("Complete all four custom endpoint fields");
       return;
     }
 
-    // Do not allow duplicate endpoints
-    if (models.includes(cleanedId)) {
-      setError("This endpoint has already been added");
+    if (!isValidHttpsUrl(baseUrl)) {
+      setError("Base URL must be a valid HTTPS URL");
       return;
     }
 
-    // Maximum of five custom endpoints
+    if (models.includes(displayName) || customEndpoints[displayName]) {
+      setError("This display name has already been added");
+      return;
+    }
+
     if (customEndpointNum >= 5) {
       setError("5 custom endpoints max");
       return;
     }
 
-    // Add endpoint ID used by the API
-    setModels((currentModels) => [
-      ...currentModels,
-      cleanedId,
-    ]);
+    // The display name is the ID used in model_ids and the key in custom_endpoints.
+    setModels((currentModels) => [...currentModels, displayName]);
+    setModelNames((currentModelNames) => [...currentModelNames, displayName]);
+    setCustomModels((currentCustomModels) => [...currentCustomModels, displayName]);
 
-    // Remember which endpoints are custom
-    setCustomModels((currentCustomModels) => [
-      ...currentCustomModels,
-      cleanedId,
-    ]);
+    setCustomEndpoints((currentEndpoints) => ({
+      ...currentEndpoints,
+      [displayName]: {
+        base_url: baseUrl,
+        api_key: apiKey,
+        model_id: providerModelId,
+      },
+    }));
 
-    // Add endpoint to the model display screen
-    setModelNames((currentModelNames) => [
-      ...currentModelNames,
-      cleanedId,
-    ]);
-
-    // Update the custom endpoint modal display
     setUserModelTxt((currentText) =>
-      currentText
-        ? `${currentText}\n${cleanedId}`
-        : cleanedId
+      currentText ? `${currentText}\n${displayName}` : displayName
     );
 
     setCustomNum((currentNumber) => currentNumber + 1);
 
-    // Clear input and error after creation
-    setCustomEndpoint("");
+    // Do not persist API keys. Clear all credential fields after adding the model.
+    setCustomDisplayName("");
+    setCustomBaseUrl("");
+    setCustomApiKey("");
+    setCustomModelId("");
     setError("");
   };
 
   const clearCustomEndpoints = () => {
-    // Remove custom endpoints from the API model IDs
     setModels((currentModels) =>
-      currentModels.filter(
-        (modelId) => !customModels.includes(modelId)
-      )
+      currentModels.filter((modelId) => !customModels.includes(modelId))
     );
 
-    // Remove custom endpoints from the displayed model names
     setModelNames((currentModelNames) =>
-      currentModelNames.filter(
-        (modelName) => !customModels.includes(modelName)
-      )
+      currentModelNames.filter((modelName) => !customModels.includes(modelName))
     );
 
     setUserModelTxt("");
     setCustomModels([]);
+    setCustomEndpoints({});
     setCustomNum(0);
-    setCustomEndpoint("");
+    setCustomDisplayName("");
+    setCustomBaseUrl("");
+    setCustomApiKey("");
+    setCustomModelId("");
     setError("");
   };
 
@@ -1893,7 +1910,7 @@ return (
                 background: overlayBg,
                 backdropFilter: "blur(4px)",
                 opacity: "0.5",
-                                zIndex: 1000,
+                zIndex: 1000,
               }}
             />
 
@@ -1906,34 +1923,27 @@ return (
                 top: "50%",
                 left: "50%",
                 transform: "translate(-50%, -50%)",
-
-                width: "min(520px, calc(100vw - 32px))",
+                width: "min(560px, calc(100vw - 32px))",
                 maxHeight: "calc(100vh - 40px)",
-
                 boxSizing: "border-box",
                 padding: "clamp(16px, 4vw, 24px)",
-
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "stretch",
                 gap: "18px",
-
                 overflowY: "auto",
-
                 background: panelBg,
                 border: panelBorder,
                 borderRadius: "18px",
-
                 color: panelText,
                 boxShadow: "0 24px 70px rgba(0, 0, 0, 0.35)",
-
                 zIndex: 1001,
               }}
             >
               <div
                 style={{
                   display: "flex",
-                  alignItems: "center",
+                  alignItems: "flex-start",
                   justifyContent: "space-between",
                   gap: "16px",
                 }}
@@ -1955,9 +1965,11 @@ return (
                       margin: "4px 0 0",
                       color: mutedText,
                       fontSize: "15px",
+                      lineHeight: 1.5,
                     }}
                   >
-                    Add a custom model endpoint to be used. View list of all models to see supported endpoints
+                    Connect an OpenAI-compatible endpoint using its base URL,
+                    API key, and model ID.
                   </p>
                 </div>
 
@@ -1974,46 +1986,90 @@ return (
                     flexShrink: 0,
                   }}
                 >
-                  <span
-                    style={{
-                      display: "block",
-                      lineHeight: 1,
-                      transform: "translateY(-2px)",
-                    }}
-                  >
+                  <span style={{ display: "block", lineHeight: 1, transform: "translateY(-2px)" }}>
                     ×
                   </span>
                 </Button>
               </div>
 
-              <input
-                style={{
-                  ...styles.paramArea,
-                  width: "100%",
-                  height: "46px",
-                  padding: "0 14px",
-                  borderRadius: "10px",
-                }}
-                placeholder="Enter endpoint"
-                value={customEndpoint}
-                onChange={(e) => setCustomEndpoint(e.target.value)}
-              />
+              <div style={{ display: "flex", flexDirection: "column", gap: "14px" }}>
+                <label style={{ display: "flex", flexDirection: "column", gap: "7px" }}>
+                  <span style={{ color: panelText, fontSize: "13px", fontWeight: 650 }}>
+                    Display name
+                  </span>
+                  <input
+                    type="text"
+                    autoComplete="off"
+                    style={{ ...styles.paramArea, width: "100%", height: "46px", padding: "0 14px", borderRadius: "10px" }}
+                    placeholder="My Custom Model"
+                    value={customDisplayName}
+                    onChange={(e) => setCustomDisplayName(e.target.value)}
+                  />
+                </label>
 
-              <div
-                style={{
-                  display: "flex",
-                  flexWrap: "wrap",
-                  justifyContent: "center",
-                  gap: "12px",
-                }}
-              >
+                <label style={{ display: "flex", flexDirection: "column", gap: "7px" }}>
+                  <span style={{ color: panelText, fontSize: "13px", fontWeight: 650 }}>
+                    Base URL
+                  </span>
+                  <input
+                    type="url"
+                    autoComplete="off"
+                    spellCheck="false"
+                    style={{ ...styles.paramArea, width: "100%", height: "46px", padding: "0 14px", borderRadius: "10px" }}
+                    placeholder="https://provider.example.com/v1"
+                    value={customBaseUrl}
+                    onChange={(e) => setCustomBaseUrl(e.target.value)}
+                  />
+                </label>
+
+                <label style={{ display: "flex", flexDirection: "column", gap: "7px" }}>
+                  <span style={{ color: panelText, fontSize: "13px", fontWeight: 650 }}>
+                    API key
+                  </span>
+                  <input
+                    type="password"
+                    autoComplete="new-password"
+                    spellCheck="false"
+                    style={{ ...styles.paramArea, width: "100%", height: "46px", padding: "0 14px", borderRadius: "10px" }}
+                    placeholder="Enter API key"
+                    value={customApiKey}
+                    onChange={(e) => setCustomApiKey(e.target.value)}
+                  />
+                </label>
+
+                <label style={{ display: "flex", flexDirection: "column", gap: "7px" }}>
+                  <span style={{ color: panelText, fontSize: "13px", fontWeight: 650 }}>
+                    Model ID
+                  </span>
+                  <input
+                    type="text"
+                    autoComplete="off"
+                    spellCheck="false"
+                    style={{ ...styles.paramArea, width: "100%", height: "46px", padding: "0 14px", borderRadius: "10px" }}
+                    placeholder="provider/model-name"
+                    value={customModelId}
+                    onChange={(e) => setCustomModelId(e.target.value)}
+                  />
+                </label>
+
+                <p style={{ margin: 0, color: mutedText, fontSize: "12px", lineHeight: 1.5 }}>
+                  The API key is kept only in this page's memory and sent with chat requests. It is not saved by this frontend.
+                </p>
+              </div>
+
+              <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", gap: "12px" }}>
                 <Button
                   darkMode={darkMode}
-                  onClick={() => createCustomEndpoint(customEndpoint)}
+                  onClick={createCustomEndpoint}
+                  disabled={
+                    !customDisplayName.trim() ||
+                    !customBaseUrl.trim() ||
+                    !customApiKey.trim() ||
+                    !customModelId.trim()
+                  }
                 >
                   Create
                 </Button>
-
               </div>
 
               {userModelTxt && (
@@ -2021,16 +2077,10 @@ return (
                   style={{
                     minHeight: "70px",
                     padding: "14px",
-
                     color: panelText,
-
-                    backgroundColor: darkMode
-                      ? "rgba(255,255,255,0.04)"
-                      : "rgba(15,23,42,0.03)",
-
+                    backgroundColor: darkMode ? "rgba(255,255,255,0.04)" : "rgba(15,23,42,0.03)",
                     border: panelBorder,
                     borderRadius: "10px",
-
                     whiteSpace: "pre-wrap",
                     overflowWrap: "anywhere",
                     textAlign: "left",
@@ -2048,7 +2098,6 @@ return (
                   >
                     Added endpoints
                   </div>
-
                   {userModelTxt}
                 </div>
               )}
