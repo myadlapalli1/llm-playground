@@ -2051,10 +2051,6 @@ return (
                     onChange={(e) => setCustomModelId(e.target.value)}
                   />
                 </label>
-
-                <p style={{ margin: 0, color: mutedText, fontSize: "12px", lineHeight: 1.5 }}>
-                  The API key is kept only in this page's memory and sent with chat requests. It is not saved by this frontend.
-                </p>
               </div>
 
               <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", gap: "12px" }}>
