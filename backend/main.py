@@ -8,6 +8,9 @@ import uuid
 import json
 import sqlite3
 import asyncio
+import ipaddress
+import socket
+from urllib.parse import urlparse
 from dotenv import load_dotenv
 from pydantic import BaseModel
 from openai import OpenAI
@@ -29,6 +32,43 @@ MODELS = load_models()
 def get_model_info(model_id: str):
     clean_id = model_id.split(":", 1)[-1]
     return next((m for m in MODELS if m["model_id"] == clean_id), None)
+
+
+
+def validate_custom_base_url(base_url: str):
+    parsed = urlparse(base_url)
+
+    if parsed.scheme != "https":
+        raise ValueError("Custom endpoint must use HTTPS")
+
+    if not parsed.hostname:
+        raise ValueError("Invalid custom endpoint URL")
+
+    hostname = parsed.hostname.lower()
+
+    if hostname == "localhost" or hostname.endswith(".localhost"):
+        raise ValueError("Localhost endpoints are not allowed")
+
+    try:
+        addresses = socket.getaddrinfo(hostname, parsed.port or 443)
+    except socket.gaierror as error:
+        raise ValueError("Custom endpoint hostname could not be resolved") from error
+
+    for address in addresses:
+        ip_text = address[4][0]
+        ip = ipaddress.ip_address(ip_text)
+
+        if (
+            ip.is_private
+            or ip.is_loopback
+            or ip.is_link_local
+            or ip.is_multicast
+            or ip.is_reserved
+            or ip.is_unspecified
+        ):
+            raise ValueError("Private or local endpoint addresses are not allowed")
+
+    return base_url.rstrip("/")
 
 def get_client(provider: str):
     if provider == "openai":
@@ -168,12 +208,18 @@ class ChatParams(BaseModel):
     max_tokens: int
     top_p: float
 
+class CustomEndpoint(BaseModel):
+    base_url: str
+    api_key: str
+    model_id: str
+
 class ChatRequest(BaseModel):
     prompt: str
     system_prompt: Optional[str] = None
     model_ids: List[str]
     params: ChatParams
     per_model_overrides: Optional[Dict[str, Any]] = None
+    custom_endpoints: Optional[Dict[str, CustomEndpoint]] = None
 
 class ComparisonCreateRequest(BaseModel):
     request_id: str
@@ -190,36 +236,55 @@ async def run_model(model_id: str, request: ChatRequest):
 
     print(f"[run_model] Starting model: {model_id}")
 
-    # Look up the model in models.json
     model_info = get_model_info(model_id)
+    custom_endpoint = None
 
-    override_temp = None
-    override_max_tokens = None
-    override_top_p = None
-
-    if model_info is None:
-        return {
-            "model_id": model_id,
-            "text": None,
-            "tokens_in": 0,
-            "tokens_out": 0,
-            "latency_ms": 0,
-            "cost_cents": 0,
-            "error": {
-                "type": "MODEL_NOT_FOUND",
-                "message": f"Unknown model: {model_id}"
-            }
-        }
-
-    # Create the correct client based on the provider
-    client = get_client(model_info["provider"])
-
-    override_system_prompt = None
-    override_temp = None
-    override_max_tokens = None
-    override_top_p = None
+    if request.custom_endpoints:
+        custom_endpoint = request.custom_endpoints.get(model_id)
 
     try:
+        if custom_endpoint:
+            safe_base_url = validate_custom_base_url(custom_endpoint.base_url)
+
+            client = OpenAI(
+                api_key=custom_endpoint.api_key,
+                base_url=safe_base_url
+            )
+
+            actual_model_id = custom_endpoint.model_id
+            input_cost_rate = 0
+            output_cost_rate = 0
+
+        elif model_info:
+            client = get_client(model_info["provider"])
+            actual_model_id = model_info["model_id"]
+            input_cost_rate = model_info.get(
+                "input_cost_per_million_tokens_cents",
+                0
+            )
+            output_cost_rate = model_info.get(
+                "output_cost_per_million_tokens_cents",
+                0
+            )
+
+        else:
+            return {
+                "model_id": model_id,
+                "text": None,
+                "tokens_in": 0,
+                "tokens_out": 0,
+                "latency_ms": 0,
+                "cost_cents": 0,
+                "error": {
+                    "type": "MODEL_NOT_FOUND",
+                    "message": f"Unknown model: {model_id}"
+                }
+            }
+
+        override_system_prompt = None
+        override_temp = None
+        override_max_tokens = None
+        override_top_p = None
 
         if request.per_model_overrides:
             overrides = request.per_model_overrides.get(model_id, {})
@@ -230,7 +295,7 @@ async def run_model(model_id: str, request: ChatRequest):
 
         response = await asyncio.to_thread(
             client.chat.completions.create,
-            model=model_info["model_id"],
+            model=actual_model_id,
             messages=[
                 {
                     "role": "system",
@@ -261,36 +326,19 @@ async def run_model(model_id: str, request: ChatRequest):
                 else request.params.top_p
             )
         )
-                
-        print("[run_model] NVIDIA API returned successfully!")
 
         text = response.choices[0].message.content
 
-        print("[run_model] Extracted response text")
-
-        tokens_in = response.usage.prompt_tokens
-        tokens_out = response.usage.completion_tokens
+        usage = getattr(response, "usage", None)
+        tokens_in = getattr(usage, "prompt_tokens", 0) or 0
+        tokens_out = getattr(usage, "completion_tokens", 0) or 0
         latency_ms = int((time.time() - start_time) * 1000)
 
-        model_info["input_cost_per_million_tokens_cents"] = model_info.get(
-            "input_cost_per_million_tokens_cents", 0
-        )
-        model_info["output_cost_per_million_tokens_cents"] = model_info.get(
-            "output_cost_per_million_tokens_cents", 0
-        )
-
-        cost_in = (
-            tokens_in / 1_000_000
-        ) * model_info["input_cost_per_million_tokens_cents"]
-
-        cost_out = (
-            tokens_out / 1_000_000
-        ) * model_info["output_cost_per_million_tokens_cents"]
-
-        print("[run_model] Returning successful response")
+        cost_in = (tokens_in / 1_000_000) * input_cost_rate
+        cost_out = (tokens_out / 1_000_000) * output_cost_rate
 
         return {
-            "model_id": model_info["model_id"],
+            "model_id": model_id,
             "text": text,
             "tokens_in": tokens_in,
             "tokens_out": tokens_out,
@@ -305,9 +353,9 @@ async def run_model(model_id: str, request: ChatRequest):
         print(str(e))
 
         return {
-            "model_id": model_info["model_id"],
+            "model_id": model_id,
             "text": None,
-            "tokens_in": 0, 
+            "tokens_in": 0,
             "tokens_out": 0,
             "latency_ms": int((time.time() - start_time) * 1000),
             "cost_cents": 0,
